@@ -57,6 +57,11 @@
   [_webView reload];
 }
 
+- (void)send:(id)message
+{
+  NSLog(@"Message got %@", message);
+}
+
 - (void)setURL:(NSURL *)URL
 {
   // Because of the way React works, as pages redirect, we actually end up

@@ -15,9 +15,16 @@ var {
 } = React;
 
 var webview = React.createClass({
+  componentDidMount: function () {
+    this.refs.myWebView.onMessage(function () {
+      console.log('called from objective c');
+    });
+
+    this.refs.myWebView.send("HELLO");
+  },
   render: function() {
     return (
-      <WebViewEx style={{flex: 1}} url="http://google.com"/>
+      <WebViewEx ref="myWebView" style={{flex: 1}} url="http://google.com"/>
     );
   }
 });

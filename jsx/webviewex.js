@@ -73,7 +73,7 @@ var defaultRenderError = (errorDomain, errorCode, errorDesc) => (
   </View>
 );
 
-var WebViewEx = React.createClass({
+var WebView = React.createClass({
   statics: {
     NavigationType: NavigationType,
   },
@@ -177,6 +177,14 @@ var WebViewEx = React.createClass({
     WebViewExManager.reload(this.getWebWiewHandle());
   },
 
+  onMessage: function (cb) {
+    WebViewExManager.onMessage(cb);
+  },
+
+  send: function (message) {
+    WebViewExManager.send(this.getWebWiewHandle(), message);
+  },
+
   /**
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward
@@ -213,7 +221,7 @@ var WebViewEx = React.createClass({
   },
 });
 
-var WebViewEx = requireNativeComponent('WebViewEx', WebViewEx);
+var WebViewEx = requireNativeComponent('WebViewEx', WebView);
 
 var styles = StyleSheet.create({
   container: {
@@ -250,4 +258,4 @@ var styles = StyleSheet.create({
   }
 });
 
-module.exports = WebViewEx;
+module.exports = WebView;
