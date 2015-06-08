@@ -18,6 +18,8 @@
 #import "RCTView.h"
 #import "UIView+React.h"
 
+#import "WebViewJavascriptBridge.h"
+
 @interface WebViewEx () <UIWebViewDelegate, RCTAutoInsetsProtocol>
 
 @end
@@ -26,6 +28,8 @@
 {
   RCTEventDispatcher *_eventDispatcher;
   UIWebView *_webView;
+  WebViewJavascriptBridge* _bridge;
+  RCTResponseSenderBlock _callback;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
@@ -37,6 +41,15 @@
     _eventDispatcher = eventDispatcher;
     _webView = [[UIWebView alloc] initWithFrame:self.bounds];
     _webView.delegate = self;
+    
+    
+    _bridge = [WebViewJavascriptBridge bridgeForWebView:_webView handler:^(id data, WVJBResponseCallback responseCallback) {
+      NSLog(@"Received message from javascript: %@", data);
+      _callback(data);
+      //responseCallback(@"Right back atcha");
+    }];
+    
+    
     [self addSubview:_webView];
   }
   return self;
@@ -59,7 +72,12 @@
 
 - (void)send:(id)message
 {
-  NSLog(@"Message got %@", message);
+  [_bridge send:message];
+}
+
+- (void)onMessage:(RCTResponseSenderBlock)callback
+{
+  _callback = callback;
 }
 
 - (void)setURL:(NSURL *)URL

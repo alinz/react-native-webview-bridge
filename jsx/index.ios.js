@@ -24,7 +24,10 @@ var webview = React.createClass({
   },
   render: function() {
     return (
-      <WebViewEx ref="myWebView" style={{flex: 1}} url="http://google.com"/>
+      <WebViewEx
+        ref="myWebView"
+        style={{flex: 1}}
+        url="http://google.com"/>
     );
   }
 });

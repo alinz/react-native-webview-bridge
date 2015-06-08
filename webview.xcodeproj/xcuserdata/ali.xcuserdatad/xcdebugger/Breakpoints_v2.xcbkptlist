@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WebViewJavascriptBridge/WebViewEx.m"
-            timestampString = "455486993.854932"
+            timestampString = "455489463.013497"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "-initWithEventDispatcher:"
             landmarkType = "5">
          </BreakpointContent>

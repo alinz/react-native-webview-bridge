@@ -178,7 +178,7 @@ var WebView = React.createClass({
   },
 
   onMessage: function (cb) {
-    WebViewExManager.onMessage(cb);
+    WebViewExManager.onMessage(this.getWebWiewHandle(), cb);
   },
 
   send: function (message) {

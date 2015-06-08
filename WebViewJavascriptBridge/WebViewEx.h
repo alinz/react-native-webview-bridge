@@ -8,6 +8,7 @@
  */
 
 #import "RCTView.h"
+#import "RCTBridge.h"
 
 @class RCTEventDispatcher;
 
@@ -24,5 +25,6 @@
 - (void)goBack;
 - (void)reload;
 - (void)send:(id)message;
+- (void)onMessage:(RCTResponseSenderBlock)callback;
 
 @end
