@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node_modules/react-native/packager/packager.sh"
   },
+  "main": "jsx/webview-bridge.js",
   "dependencies": {
     "react-native": "^0.5.0"
   }
