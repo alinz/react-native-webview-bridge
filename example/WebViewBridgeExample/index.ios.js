@@ -5,7 +5,7 @@
 'use strict';
 
 var React = require('react-native');
-var WebViewEx = require('./webviewex.js');
+var WebViewBridge = require('react-native-webview-bridge');
 
 var {
   AppRegistry,
@@ -60,7 +60,7 @@ var htmlContent = `
 `;
 
 
-var webview = React.createClass({
+var WebViewBridgeExample = React.createClass({
   componentDidMount: function () {
     this.refs.myWebView.onMessage((message) => {
       console.log('got a message from webview:', message);
@@ -73,7 +73,7 @@ var webview = React.createClass({
   },
   render: function() {
     return (
-      <WebViewEx
+      <WebViewBridge
         ref="myWebView"
         style={{flex: 1}}
         html={htmlContent}/>
@@ -100,4 +100,4 @@ var styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('webview', () => webview);
+AppRegistry.registerComponent('WebViewBridgeExample', () => WebViewBridgeExample);
