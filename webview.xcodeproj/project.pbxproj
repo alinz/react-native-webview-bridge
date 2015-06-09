@@ -25,6 +25,7 @@
 		41117F301B25EB7800342843 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 41117F2F1B25EB7800342843 /* WebViewJavascriptBridge.m */; };
 		41117F3D1B25ED7700342843 /* WebViewExManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 41117F3C1B25ED7700342843 /* WebViewExManager.m */; };
 		41117F401B260BBB00342843 /* WebViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = 41117F3F1B260BBB00342843 /* WebViewEx.m */; };
+		41117F581B271CFC00342843 /* WebViewJavascriptBridge.js.txt in Resources */ = {isa = PBXBuildFile; fileRef = 41117F571B271CFC00342843 /* WebViewJavascriptBridge.js.txt */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +135,7 @@
 		41117F3C1B25ED7700342843 /* WebViewExManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewExManager.m; sourceTree = "<group>"; };
 		41117F3E1B260BBB00342843 /* WebViewEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewEx.h; sourceTree = "<group>"; };
 		41117F3F1B260BBB00342843 /* WebViewEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewEx.m; sourceTree = "<group>"; };
+		41117F571B271CFC00342843 /* WebViewJavascriptBridge.js.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WebViewJavascriptBridge.js.txt; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -264,6 +266,7 @@
 		41117F2D1B25EB7800342843 /* WebViewJavascriptBridge */ = {
 			isa = PBXGroup;
 			children = (
+				41117F571B271CFC00342843 /* WebViewJavascriptBridge.js.txt */,
 				41117F2E1B25EB7800342843 /* WebViewJavascriptBridge.h */,
 				41117F2F1B25EB7800342843 /* WebViewJavascriptBridge.m */,
 				41117F3B1B25ED7700342843 /* WebViewExManager.h */,
@@ -528,6 +531,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41117F581B271CFC00342843 /* WebViewJavascriptBridge.js.txt in Resources */,
 				008F07F31AC5B25A0029DE68 /* main.jsbundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,

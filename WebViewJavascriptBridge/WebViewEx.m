@@ -44,9 +44,8 @@
     
     
     _bridge = [WebViewJavascriptBridge bridgeForWebView:_webView handler:^(id data, WVJBResponseCallback responseCallback) {
-      NSLog(@"Received message from javascript: %@", data);
-      _callback(data);
-      //responseCallback(@"Right back atcha");
+      //NSLog(@"Received message from javascript: %@", data);
+      _callback(@[data]);
     }];
     
     
@@ -73,6 +72,7 @@
 - (void)send:(id)message
 {
   [_bridge send:message];
+  //_callback(@[message]);
 }
 
 - (void)onMessage:(RCTResponseSenderBlock)callback

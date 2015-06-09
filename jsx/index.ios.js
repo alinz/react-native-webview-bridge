@@ -14,20 +14,69 @@ var {
   View
 } = React;
 
-var webview = React.createClass({
-  componentDidMount: function () {
-    this.refs.myWebView.onMessage(function (message) {
-      console.log('got a message from webview:', message);
+
+var htmlContent = `
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Test Content</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+</head>
+<body>
+  <div id="debug">
+    Hello this is a temp page;
+  </div>
+  <script>
+
+  function connectWebViewJavascriptBridge(callback) {
+    if (window.WebViewJavascriptBridge) {
+        callback(WebViewJavascriptBridge)
+    } else {
+        document.addEventListener('WebViewJavascriptBridgeReady', function() {
+            callback(WebViewJavascriptBridge);
+        }, false)
+    }
+  }
+
+  connectWebViewJavascriptBridge(function(bridge) {
+
+    bridge.init(function (message) {
+      alert(message);
     });
 
-    //this.refs.myWebView.send("HELLO");
+
+    alert('send a message from webview');
+    bridge.send('Hello from the javascript');
+  });
+
+  </script>
+</body>
+</html>
+
+`;
+
+
+var webview = React.createClass({
+  componentDidMount: function () {
+    this.refs.myWebView.onMessage((message) => {
+      console.log('got a message from webview:', message);
+
+      setTimeout(() => {
+        this.refs.myWebView.send("You got it.")
+      }, 1000);
+
+    });
   },
   render: function() {
     return (
       <WebViewEx
         ref="myWebView"
         style={{flex: 1}}
-        url="https://2046e2ce.ngrok.io"/>
+        html={htmlContent}/>
     );
   }
 });
