@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/alinz/react-native-webview-bridge.git"
+    "url": "git@github.com:alinz/react-native-webview-bridge.git"
   },
   "keywords": [
     "React Native",
     "WebView Bridge"
   ],
   "author": "Ali Najafizadeh",
-  "license": "BSD",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/alinz/react-native-webview-bridge/issues"
   },
