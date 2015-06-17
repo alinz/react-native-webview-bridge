@@ -118,5 +118,19 @@ class MyAwesomeView extends Component {
 
 #### onMessage(callback)
 
+
+### Common Problems
+If you are rendering `WebViewBridge` make sure that you also keep registering to the callback.
+
+```js
+registerCallback() {
+  var webViewBridge = this.refs[WEBVIEW_REF];
+  webViewBridge.onMessage(this.onBridgeMessage.bind(this));
+}
+```
+
+I used that method inside my component and I keep calling it inside `componentDidUpdate`.
+
+
 ## Thanks
 Thanks to @marcuswestin for amazing [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge) library.
