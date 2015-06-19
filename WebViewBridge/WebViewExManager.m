@@ -67,7 +67,6 @@ RCT_EXPORT_METHOD(goForward:(NSNumber *)reactTag)
   }];
 }
 
-
 RCT_EXPORT_METHOD(reload:(NSNumber *)reactTag)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
@@ -79,18 +78,26 @@ RCT_EXPORT_METHOD(reload:(NSNumber *)reactTag)
   }];
 }
 
-RCT_EXPORT_METHOD(onMessage:(NSNumber *)reactTag :(RCTResponseSenderBlock)callback)
+/**
+ * Copyright (c) 2015-present, Ali Najafizadeh.
+ * Ali Najafizadeh
+ * MIT
+ */
+
+RCT_EXPORT_METHOD(onMessage:(NSNumber *)reactTag
+               withCallback:(RCTResponseSenderBlock)callback)
 {
-  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
-    WebViewEx *view = viewRegistry[reactTag];
-    if (![view isKindOfClass:[WebViewEx class]]) {
-      RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
-    }
-    [view onMessage:callback];
-  }];
+    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+      WebViewEx *view = viewRegistry[reactTag];
+      if (![view isKindOfClass:[WebViewEx class]]) {
+        RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+      }
+      [view onMessage:callback];
+    }];
 }
 
-RCT_EXPORT_METHOD(send:(NSNumber *)reactTag :(id)message)
+RCT_EXPORT_METHOD(send:(NSNumber *)reactTag
+           withMessage:(id)message)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
     WebViewEx *view = viewRegistry[reactTag];
@@ -100,6 +107,5 @@ RCT_EXPORT_METHOD(send:(NSNumber *)reactTag :(id)message)
     [view send:message];
   }];
 }
-
 
 @end
