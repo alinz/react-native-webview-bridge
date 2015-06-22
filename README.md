@@ -7,7 +7,7 @@ This is an attempt to create a Javascript Bridge between React Native and Webvie
 
 In order to use this frame work you have to do couple of simple step.
 
-1. run `npm install react-natve-webview-bridge`
+1. run `npm install react-native-webview-bridge`
 2. go to `Project Navigator` tab in xcode
 3. right click on `Libraries`
 4. select `Add Files to ...` option
