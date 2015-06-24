@@ -11,6 +11,7 @@
 
 @interface WebViewEx : RCTWebView
 
+- (void)eval:(NSString *)value;
 - (void)send:(id)message;
 - (void)onMessage:(RCTResponseSenderBlock)callback;
 

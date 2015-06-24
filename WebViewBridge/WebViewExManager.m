@@ -84,16 +84,29 @@ RCT_EXPORT_METHOD(reload:(NSNumber *)reactTag)
  * MIT
  */
 
+RCT_EXPORT_METHOD(eval:(NSNumber *)reactTag
+                 value:(NSString*)value)
+{
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+    WebViewEx *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[WebViewEx class]]) {
+      RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+    }
+    [view eval:value];
+  }];
+}
+
+
 RCT_EXPORT_METHOD(onMessage:(NSNumber *)reactTag
                withCallback:(RCTResponseSenderBlock)callback)
 {
-    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
-      WebViewEx *view = viewRegistry[reactTag];
-      if (![view isKindOfClass:[WebViewEx class]]) {
-        RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
-      }
-      [view onMessage:callback];
-    }];
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+    WebViewEx *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[WebViewEx class]]) {
+      RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+    }
+    [view onMessage:callback];
+  }];
 }
 
 RCT_EXPORT_METHOD(send:(NSNumber *)reactTag
