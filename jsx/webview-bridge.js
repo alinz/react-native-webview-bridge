@@ -182,6 +182,10 @@ var WebView = React.createClass({
     WebViewExManager.onMessage(this.getWebWiewHandle(), cb);
   },
 
+  eval: function (value) {
+    WebViewExManager.eval(this.getWebWiewHandle(), value);
+  },
+
   send: function (message) {
     WebViewExManager.send(this.getWebWiewHandle(), message);
   },

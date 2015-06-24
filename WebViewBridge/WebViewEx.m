@@ -22,7 +22,7 @@
 {
   WebViewJavascriptBridge* _bridge;
   RCTResponseSenderBlock _callback;
-
+  UIWebView* _webview;
 }
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher
@@ -35,7 +35,8 @@
     {
       if ([subview isKindOfClass: [UIWebView class]])
       {
-        _bridge = [WebViewJavascriptBridge bridgeForWebView:(UIWebView *)subview handler:^(id data, WVJBResponseCallback responseCallback) {
+        _webview = (UIWebView *)subview;
+        _bridge = [WebViewJavascriptBridge bridgeForWebView:_webview handler:^(id data, WVJBResponseCallback responseCallback) {
           //NSLog(@"Received message from javascript: %@", data);
           _callback(@[data]);
         }];
@@ -46,6 +47,10 @@
   }
 
   return self;
+}
+
+- (void)eval:(NSString *) value {
+  [_webview stringByEvaluatingJavaScriptFromString:value];
 }
 
 - (void)send:(id)message
