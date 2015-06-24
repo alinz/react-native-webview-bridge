@@ -114,10 +114,14 @@ class MyAwesomeView extends Component {
 ### WebViewBridge
 `WebViewBridge` extends 'WebView' so you can have all the available feature of `WebView`. I have just added 2 methods
 
-#### send(message)
+#### send(message <any>)
+send any message from react-native to `web view`
 
-#### onMessage(callback)
+#### onMessage(callback <function>)
+any messages coming from `web view` will invoke callback with an argument message. Message can be any types.
 
+#### eval(value <string>)
+it will execute javascript string and eval it inside the `web view`. It is useful if you need to set some global variable before your script is executing. For example set JWT token as a global variable.
 
 ### Common Problems
 If you are rendering `WebViewBridge` make sure that you also keep registering to the callback.
