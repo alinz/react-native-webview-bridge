@@ -1,12 +1,11 @@
 {
-  "name": "WebViewBridgeExample",
+  "name": "Sample1",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "react-native": "^0.6.0",
-    "react-native-webview-bridge": "0.1.0"
+    "react-native": "^0.6.0"
   }
 }

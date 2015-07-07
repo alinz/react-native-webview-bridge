@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "WebViewBridgeExample.app"
-               BlueprintName = "WebViewBridgeExample"
-               ReferencedContainer = "container:WebViewBridgeExample.xcodeproj">
+               BuildableName = "Sample1.app"
+               BlueprintName = "Sample1"
+               ReferencedContainer = "container:Sample1.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "WebViewBridgeExampleTests.xctest"
-               BlueprintName = "WebViewBridgeExampleTests"
-               ReferencedContainer = "container:WebViewBridgeExample.xcodeproj">
+               BuildableName = "Sample1Tests.xctest"
+               BlueprintName = "Sample1Tests"
+               ReferencedContainer = "container:Sample1.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "WebViewBridgeExampleTests.xctest"
-               BlueprintName = "WebViewBridgeExampleTests"
-               ReferencedContainer = "container:WebViewBridgeExample.xcodeproj">
+               BuildableName = "Sample1Tests.xctest"
+               BlueprintName = "Sample1Tests"
+               ReferencedContainer = "container:Sample1.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "WebViewBridgeExample.app"
-            BlueprintName = "WebViewBridgeExample"
-            ReferencedContainer = "container:WebViewBridgeExample.xcodeproj">
+            BuildableName = "Sample1.app"
+            BlueprintName = "Sample1"
+            ReferencedContainer = "container:Sample1.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "WebViewBridgeExample.app"
-            BlueprintName = "WebViewBridgeExample"
-            ReferencedContainer = "container:WebViewBridgeExample.xcodeproj">
+            BuildableName = "Sample1.app"
+            BlueprintName = "Sample1"
+            ReferencedContainer = "container:Sample1.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "WebViewBridgeExample.app"
-            BlueprintName = "WebViewBridgeExample"
-            ReferencedContainer = "container:WebViewBridgeExample.xcodeproj">
+            BuildableName = "Sample1.app"
+            BlueprintName = "Sample1"
+            ReferencedContainer = "container:Sample1.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
