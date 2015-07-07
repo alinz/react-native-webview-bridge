@@ -50,7 +50,7 @@ In order for WebView's javascript communicates to React-Native, you have to add 
         if (window.WebViewJavascriptBridge) {
             callback(WebViewJavascriptBridge)
         } else {
-            document.addEventListener('WebViewJavascriptBridgeReady', function() {
+            window.addEventListener('WebViewJavascriptBridgeReady', function() {
                 callback(WebViewJavascriptBridge);
             }, false)
         }
