@@ -108,10 +108,6 @@
 		_handleMessageFromObjC: _handleMessageFromObjC
 	}
 
-	var doc = document
-	_createQueueReadyIframe(doc)
-	var readyEvent = doc.createEvent('Events')
-	readyEvent.initEvent('WebViewJavascriptBridgeReady')
-	readyEvent.bridge = WebViewJavascriptBridge
-	doc.dispatchEvent(readyEvent)
+	_createQueueReadyIframe(document)
+	window.dispatchEvent(new CustomEvent('WebViewJavascriptBridgeReady'));
 })();

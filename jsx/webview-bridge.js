@@ -12,19 +12,22 @@
  */
 'use strict';
 
-var ActivityIndicatorIOS = require('ActivityIndicatorIOS');
+var React = require('react-native');
+var keyMirror = require('keymirror');
 var EdgeInsetsPropType = require('EdgeInsetsPropType');
-var React = require('React');
-var StyleSheet = require('StyleSheet');
-var Text = require('Text');
-var View = require('View');
 
-var invariant = require('invariant');
-var keyMirror = require('keyMirror');
-var requireNativeComponent = require('requireNativeComponent');
-
-var PropTypes = React.PropTypes;
-var WebViewExManager = require('NativeModules').WebViewExManager;
+var {
+  ActivityIndicatorIOS,
+  StyleSheet,
+  Text,
+  View,
+  invariant,
+  requireNativeComponent,
+  PropTypes,
+  NativeModules: {
+    WebViewExManager
+  }
+} = React;
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEW_REF = 'webviewex';
