@@ -10,23 +10,32 @@ var {
   StyleSheet,
   Text,
   View,
+  WebView
 } = React;
 
+var WebViewBridge = require('react-native-webview-bridge');
+
+console.log(WebViewBridge);
+
 var Sample1 = React.createClass({
+
+  componentDidMount: function () {
+    //this.refs.myWebView.eval("window.test='cool'");
+  },
+
+  onNavigationStateChange: function () {
+    console.log('called onNavigationStateChange');
+  },
+
   render: function() {
+
+    var url = "http://yahoo.com";
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <WebViewBridge
+        ref="myWebView"
+        onNavigationStateChange={this.onNavigationStateChange}
+        url={url}/>
     );
   }
 });

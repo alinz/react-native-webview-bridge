@@ -22,10 +22,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		4144F9261B4C615E005C34CC /* WebViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = 4144F9201B4C615E005C34CC /* WebViewEx.m */; };
-		4144F9271B4C615E005C34CC /* WebViewExManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4144F9221B4C615E005C34CC /* WebViewExManager.m */; };
-		4144F9281B4C615E005C34CC /* WebViewJavascriptBridge.js.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4144F9241B4C615E005C34CC /* WebViewJavascriptBridge.js.txt */; };
-		4144F9291B4C615E005C34CC /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4144F9251B4C615E005C34CC /* WebViewJavascriptBridge.m */; };
+		4144F9321B4C62C0005C34CC /* WebViewEx.m in Sources */ = {isa = PBXBuildFile; fileRef = 4144F92C1B4C62C0005C34CC /* WebViewEx.m */; };
+		4144F9331B4C62C0005C34CC /* WebViewExManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4144F92E1B4C62C0005C34CC /* WebViewExManager.m */; };
+		4144F9341B4C62C0005C34CC /* WebViewJavascriptBridge.js.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4144F9301B4C62C0005C34CC /* WebViewJavascriptBridge.js.txt */; };
+		4144F9351B4C62C0005C34CC /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4144F9311B4C62C0005C34CC /* WebViewJavascriptBridge.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -129,13 +129,13 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = iOS/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iOS/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		4144F91F1B4C615E005C34CC /* WebViewEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewEx.h; path = ../../WebViewBridge/WebViewEx.h; sourceTree = "<group>"; };
-		4144F9201B4C615E005C34CC /* WebViewEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewEx.m; path = ../../WebViewBridge/WebViewEx.m; sourceTree = "<group>"; };
-		4144F9211B4C615E005C34CC /* WebViewExManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewExManager.h; path = ../../WebViewBridge/WebViewExManager.h; sourceTree = "<group>"; };
-		4144F9221B4C615E005C34CC /* WebViewExManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewExManager.m; path = ../../WebViewBridge/WebViewExManager.m; sourceTree = "<group>"; };
-		4144F9231B4C615E005C34CC /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WebViewJavascriptBridge.h; path = ../../WebViewBridge/WebViewJavascriptBridge.h; sourceTree = "<group>"; };
-		4144F9241B4C615E005C34CC /* WebViewJavascriptBridge.js.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = WebViewJavascriptBridge.js.txt; path = ../../WebViewBridge/WebViewJavascriptBridge.js.txt; sourceTree = "<group>"; };
-		4144F9251B4C615E005C34CC /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WebViewJavascriptBridge.m; path = ../../WebViewBridge/WebViewJavascriptBridge.m; sourceTree = "<group>"; };
+		4144F92B1B4C62C0005C34CC /* WebViewEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewEx.h; sourceTree = "<group>"; };
+		4144F92C1B4C62C0005C34CC /* WebViewEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewEx.m; sourceTree = "<group>"; };
+		4144F92D1B4C62C0005C34CC /* WebViewExManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewExManager.h; sourceTree = "<group>"; };
+		4144F92E1B4C62C0005C34CC /* WebViewExManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewExManager.m; sourceTree = "<group>"; };
+		4144F92F1B4C62C0005C34CC /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
+		4144F9301B4C62C0005C34CC /* WebViewJavascriptBridge.js.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WebViewJavascriptBridge.js.txt; sourceTree = "<group>"; };
+		4144F9311B4C62C0005C34CC /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -263,6 +263,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4144F92A1B4C62C0005C34CC /* WebViewBridge */ = {
+			isa = PBXGroup;
+			children = (
+				4144F92B1B4C62C0005C34CC /* WebViewEx.h */,
+				4144F92C1B4C62C0005C34CC /* WebViewEx.m */,
+				4144F92D1B4C62C0005C34CC /* WebViewExManager.h */,
+				4144F92E1B4C62C0005C34CC /* WebViewExManager.m */,
+				4144F92F1B4C62C0005C34CC /* WebViewJavascriptBridge.h */,
+				4144F9301B4C62C0005C34CC /* WebViewJavascriptBridge.js.txt */,
+				4144F9311B4C62C0005C34CC /* WebViewJavascriptBridge.m */,
+			);
+			name = WebViewBridge;
+			path = "node_modules/react-native-webview-bridge/WebViewBridge";
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,13 +289,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				4144F91F1B4C615E005C34CC /* WebViewEx.h */,
-				4144F9201B4C615E005C34CC /* WebViewEx.m */,
-				4144F9211B4C615E005C34CC /* WebViewExManager.h */,
-				4144F9221B4C615E005C34CC /* WebViewExManager.m */,
-				4144F9231B4C615E005C34CC /* WebViewJavascriptBridge.h */,
-				4144F9241B4C615E005C34CC /* WebViewJavascriptBridge.js.txt */,
-				4144F9251B4C615E005C34CC /* WebViewJavascriptBridge.m */,
+				4144F92A1B4C62C0005C34CC /* WebViewBridge */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -523,7 +532,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4144F9281B4C615E005C34CC /* WebViewJavascriptBridge.js.txt in Resources */,
+				4144F9341B4C62C0005C34CC /* WebViewJavascriptBridge.js.txt in Resources */,
 				008F07F31AC5B25A0029DE68 /* main.jsbundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
@@ -547,9 +556,9 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				4144F9271B4C615E005C34CC /* WebViewExManager.m in Sources */,
-				4144F9261B4C615E005C34CC /* WebViewEx.m in Sources */,
-				4144F9291B4C615E005C34CC /* WebViewJavascriptBridge.m in Sources */,
+				4144F9331B4C62C0005C34CC /* WebViewExManager.m in Sources */,
+				4144F9321B4C62C0005C34CC /* WebViewEx.m in Sources */,
+				4144F9351B4C62C0005C34CC /* WebViewJavascriptBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

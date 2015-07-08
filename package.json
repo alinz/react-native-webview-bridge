@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/alinz/react-native-webview-bridge/issues"
   },
-  "homepage": "https://github.com/alinz/react-native-webview-bridge"
+  "homepage": "https://github.com/alinz/react-native-webview-bridge",
+  "dependencies": {
+    "keymirror": "^0.1.1"
+  }
 }
