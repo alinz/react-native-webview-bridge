@@ -22,6 +22,11 @@ class WebViewBridge extends Component {
     WebViewManager.eval(ref.getWebWiewHandle(), value);
   }
 
+  injectBridgeScript() {
+    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
+    WebViewManager.injectBridgeScript(ref.getWebWiewHandle());
+  }
+
   render() {
     return (
       <WebView

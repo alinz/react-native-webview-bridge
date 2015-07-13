@@ -10,6 +10,7 @@
 
 @interface RCTWebView (WebViewExBridge)
 - (void)eval:(NSString *) value;
+- (void)injectBridgeScript;
 
 //in this category I'm going to make this mothod visible.
 - (NSMutableDictionary *)baseEvent;
