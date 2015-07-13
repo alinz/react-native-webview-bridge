@@ -15,6 +15,10 @@
 
 @implementation RCTWebViewManager (WebViewExManager)
 
+//NOTE
+//DO not include RCT_EXPORT_MODULE() here because RCTWebViewManager already has it and
+//we are using category feature in objective-c
+
 
 RCT_EXPORT_METHOD(eval:(NSNumber *)reactTag
                  value:(NSString*)value)
