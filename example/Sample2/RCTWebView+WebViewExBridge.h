@@ -10,11 +10,13 @@
 #import "RCTBridgeModule.h"
 
 @interface RCTWebView (WebViewExBridge)
-- (void)eval:(NSString *) value;
-- (void)injectBridgeScript;
 
-- (void) bridgeSetup;
-- (void) callbackCleanup:(NSNumber *)reactTag;
+- (void)injectBridgeScript:(NSNumber*)reactTag;
+
+- (void)eval:(NSString *) value;
+- (void)bridgeSetup;
+- (void)send:(NSString*)message;
+- (void)callbackCleanup:(NSNumber *)reactTag;
 - (void)onMessageCallback:(RCTResponseSenderBlock)callback withReactTag:(NSNumber *)reactTag;
 
 //in this category I'm going to make this mothod visible.

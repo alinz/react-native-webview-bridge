@@ -17,9 +17,24 @@ class WebViewBridge extends Component {
     super(props);
   }
 
+  onMessage(cb) {
+    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
+    WebViewManager.onMessage(ref.getWebWiewHandle(), cb);
+  }
+
   evalScript(value) {
     var ref = this.refs[WEB_VIEW_BRIDGE_REF];
     WebViewManager.eval(ref.getWebWiewHandle(), value);
+  }
+
+  send(message) {
+    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
+
+    if (typeof message !== 'string') {
+      message = JSON.stringify(message);
+    }
+
+    WebViewManager.send(ref.getWebWiewHandle(), message);
   }
 
   componentDidMount() {
@@ -33,9 +48,7 @@ class WebViewBridge extends Component {
 
   componentWillUnmount() {
     var ref = this.refs[WEB_VIEW_BRIDGE_REF];
-    WebViewManager.bridgeSetup(ref.getWebWiewHandle());
-
-
+    WebViewManager.callbackCleanup(ref.getWebWiewHandle());
   }
 
   render() {

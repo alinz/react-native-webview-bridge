@@ -18,6 +18,11 @@ var Sample2 = React.createClass({
   onNavigationStateChange: function () {
     console.log('onNavigationStateChange is called');
   },
+  componentDidMount: function () {
+    this.refs.ali.onMessage(function () {
+      console.log('hello world!');
+    });
+  },
   render: function() {
     var timeStamp = new Date().getTime();
     var url = "http://192.168.1.112:8080?" + timeStamp;//"http://ali.local:8080";

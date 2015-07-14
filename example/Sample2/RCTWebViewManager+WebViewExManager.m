@@ -59,6 +59,18 @@ RCT_EXPORT_METHOD(onMessage:(NSNumber *)reactTag
   }];
 }
 
+RCT_EXPORT_METHOD(send:(NSNumber *)reactTag
+                  value:(NSString*)message)
+{
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+    RCTWebView *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[RCTWebView class]]) {
+      RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+    }
+    [view send:message];
+  }];
+}
+
 RCT_EXPORT_METHOD(eval:(NSNumber *)reactTag
                  value:(NSString*)value)
 {
@@ -78,7 +90,7 @@ RCT_EXPORT_METHOD(injectBridgeScript:(NSNumber *)reactTag)
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
     }
-    [view injectBridgeScript];
+    [view injectBridgeScript: reactTag];
   }];
 }
 

@@ -21,11 +21,17 @@ static dispatch_queue_t serialQueue;
 
 - (void) bridgeSetup {
   static dispatch_once_t onceQueue;
-  
+
   dispatch_once(&onceQueue, ^{
     callbackMap = [[NSMutableDictionary alloc] init];
     serialQueue = dispatch_queue_create("react-native-webview-bridge", NULL);
   });
+}
+
+- (void)send:(NSString*)message {
+  UIWebView* _webView = [self valueForKey:@"_webView"];
+  NSString *command = [NSString stringWithFormat: @"WebViewBridge.onMessage('%@');", message];
+  [_webView stringByEvaluatingJavaScriptFromString:command];
 }
 
 - (void) callbackCleanup:(NSNumber *)reactTag {
@@ -49,14 +55,14 @@ static dispatch_queue_t serialQueue;
   NSURL *URL = [request URL];
   if ([[URL scheme] isEqualToString:RNWBSchema]) {
     // parse the rest of the URL object and execute functions
-    
+
     NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge._fetch()"];
-    
+
     NSLog(@"%@", message);
-    
+
     return YES;
   }
-  
+
   return NO;
 }
 
@@ -89,13 +95,16 @@ static dispatch_queue_t serialQueue;
   return [[webView stringByEvaluatingJavaScriptFromString:@"typeof WebViewBridge == 'object'"] isEqualToString:@"true"];
 }
 
-- (void)injectBridgeScript {
+- (void)injectBridgeScript:(NSNumber*)reactTag {
   UIWebView* _webView = [self valueForKey:@"_webView"];
-  
+
   if (![self isWebViewBridgeInstantiated:_webView]) {
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *filePath = [bundle pathForResource:@"webview-bridge-script" ofType:@"js"];
+    NSString *handlerId = [NSString stringWithFormat: @"var webViewBridgeHandlerId = %@;", reactTag];
     NSString *js = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+    js = [js stringByReplacingOccurrencesOfString:@"var webViewBridgeHandlerId = 0;"
+                                       withString:handlerId];
     [_webView stringByEvaluatingJavaScriptFromString:js];
   }
 }

@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  var webViewBridgeHandlerId = 0;
+
   var doc = document;
   var WebViewBridge = {};
   var RNWBSchema = "rnwb";
@@ -13,7 +15,9 @@
   WebViewBridge = {
     //do not call _fetch directly. this is for internal use
     _fetch: function () {
-      var message = JSON.stringify(queue);
+      var message;
+      queue.unshift(webViewBridgeHandlerId);
+      message = JSON.stringify(queue);
       queue = [];
       inProcess = false;
       return message;
