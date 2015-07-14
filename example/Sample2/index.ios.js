@@ -18,11 +18,17 @@ var Sample2 = React.createClass({
   componentDidMount: function () {
     this.refs.ali.injectBridgeScript();
   },
+  onNavigationStateChange: function () {
+    console.log('onNavigationStateChange is called');
+  },
   render: function() {
     var timeStamp = new Date().getTime();
     var url = "http://192.168.1.112:8080?" + timeStamp;//"http://ali.local:8080";
     return (
-      <WebViewBridge ref="ali" url={url}/>
+      <WebViewBridge
+        onNavigationStateChange={this.onNavigationStateChange}
+        ref="ali"
+        url={url}/>
     );
   }
 });
