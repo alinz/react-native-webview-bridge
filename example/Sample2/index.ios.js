@@ -15,9 +15,6 @@ var {
 } = React;
 
 var Sample2 = React.createClass({
-  componentDidMount: function () {
-    this.refs.ali.injectBridgeScript();
-  },
   onNavigationStateChange: function () {
     console.log('onNavigationStateChange is called');
   },

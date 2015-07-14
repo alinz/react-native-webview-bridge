@@ -12,7 +12,31 @@
 static NSString *const RCTJSAJAXScheme = @"react-ajax";
 static NSString *const RNWBSchema = @"rnwb";
 
+//since category won't let us add variables to class, we need a static map
+//to store information about our callbacks. These callbacks can be refereced by reactTag ids.
+static NSMutableDictionary * callbackMap;
+static dispatch_queue_t serialQueue;
+
 @implementation RCTWebView (WebViewExBridge)
+
+- (void) bridgeSetup {
+  static dispatch_once_t onceQueue;
+  
+  dispatch_once(&onceQueue, ^{
+    callbackMap = [[NSMutableDictionary alloc] init];
+    serialQueue = dispatch_queue_create("react-native-webview-bridge", NULL);
+  });
+}
+
+- (void) callbackCleanup:(NSNumber *)reactTag {
+  [callbackMap removeObjectForKey:reactTag];
+}
+
+- (void)onMessageCallback:(RCTResponseSenderBlock)callback withReactTag:(NSNumber *)reactTag {
+  dispatch_sync(serialQueue, ^{
+    [callbackMap setObject:callback forKeyedSubscript:reactTag];
+  });
+}
 
 - (void)eval:(NSString *) value {
   //access to provate variable

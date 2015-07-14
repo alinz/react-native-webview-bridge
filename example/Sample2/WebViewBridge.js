@@ -22,9 +22,20 @@ class WebViewBridge extends Component {
     WebViewManager.eval(ref.getWebWiewHandle(), value);
   }
 
-  injectBridgeScript() {
+  componentDidMount() {
+    //setup the internal variables of webview bridge
     var ref = this.refs[WEB_VIEW_BRIDGE_REF];
+    WebViewManager.bridgeSetup(ref.getWebWiewHandle());
+
+    //inject script into webView
     WebViewManager.injectBridgeScript(ref.getWebWiewHandle());
+  }
+
+  componentWillUnmount() {
+    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
+    WebViewManager.bridgeSetup(ref.getWebWiewHandle());
+
+
   }
 
   render() {
