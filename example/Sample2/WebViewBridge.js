@@ -24,7 +24,7 @@ class WebViewBridge extends Component {
         cb(message);
       });
 
-      //re register the callback again
+      //re-register the callback again
       this.onMessage(cb);
     });
   }

@@ -19,7 +19,7 @@
 - (void)callbackCleanup:(NSNumber *)reactTag;
 - (void)onMessageCallback:(RCTResponseSenderBlock)callback withReactTag:(NSNumber *)reactTag;
 
-//in this category I'm going to make this mothod visible.
+//we are making this method visible to public. [Can't find any other way]
 - (NSMutableDictionary *)baseEvent;
 
 @end

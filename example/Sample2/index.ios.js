@@ -19,8 +19,10 @@ var Sample2 = React.createClass({
     console.log('onNavigationStateChange is called');
   },
   componentDidMount: function () {
-    this.refs.ali.onMessage(function (value) {
-      console.log('####', value);
+    var bridge = this.refs.bridge;
+    bridge.onMessage((value) => {
+      console.log('react-native:', value);
+      bridge.send(value);
     });
   },
   render: function() {
@@ -29,7 +31,7 @@ var Sample2 = React.createClass({
     return (
       <WebViewBridge
         onNavigationStateChange={this.onNavigationStateChange}
-        ref="ali"
+        ref="bridge"
         url={url}/>
     );
   }

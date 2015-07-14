@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  //this variable will be set during the injection by objective-c
+  //we need to know the handlerId in order to locate the callback properly.
   var webViewBridgeHandlerId = 0;
 
   var doc = document;
