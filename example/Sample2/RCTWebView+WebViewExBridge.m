@@ -58,6 +58,11 @@ static dispatch_queue_t serialQueue;
 
     NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge._fetch()"];
 
+    NSArray* messageArray = [self __jsonParseArray: message];
+    RCTResponseSenderBlock callbackHandler = (RCTResponseSenderBlock)[callbackMap objectForKey:messageArray[0]];
+    
+    callbackHandler(@[message]);
+
     NSLog(@"%@", message);
 
     return YES;
