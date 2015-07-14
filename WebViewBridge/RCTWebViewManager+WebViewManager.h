@@ -1,5 +1,5 @@
 //
-//  RCTWebViewManager+WebViewExManager.h
+//  RCTWebViewManager+WebViewManager.h
 //  Sample2
 //
 //  Created by Ali Najafizadeh on 2015-07-10.
@@ -8,6 +8,6 @@
 
 #import "RCTWebViewManager.h"
 
-@interface RCTWebViewManager (WebViewExManager)
+@interface RCTWebViewManager (WebViewManager)
 
 @end

@@ -1,8 +1,8 @@
 {
   "name": "react-native-webview-bridge",
-  "version": "0.6.0",
+  "version": "0.3.0",
   "description": "React Native WebView Javascript Bridge",
-  "main": "jsx/webview-bridge.js",
+  "main": "jsx/WebViewBridge.js",
   "directories": {
     "example": "example"
   },
@@ -25,8 +25,5 @@
   "bugs": {
     "url": "https://github.com/alinz/react-native-webview-bridge/issues"
   },
-  "homepage": "https://github.com/alinz/react-native-webview-bridge",
-  "dependencies": {
-    "keymirror": "^0.1.1"
-  }
+  "homepage": "https://github.com/alinz/react-native-webview-bridge"
 }

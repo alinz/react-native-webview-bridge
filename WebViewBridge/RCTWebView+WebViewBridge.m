@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Facebook. All rights reserved.
 //
 
-#import "RCTWebView+WebViewExBridge.h"
+#import "RCTWebView+WebViewBridge.h"
 #import "RCTEventDispatcher.h"
 
 static NSString *const RCTJSAJAXScheme = @"react-ajax";
@@ -17,7 +17,7 @@ static NSString *const RNWBSchema = @"rnwb";
 static NSMutableDictionary * callbackMap;
 static dispatch_queue_t serialQueue;
 
-@implementation RCTWebView (WebViewExBridge)
+@implementation RCTWebView (WebViewBridge)
 
 - (void) bridgeSetup {
   static dispatch_once_t onceQueue;
@@ -61,7 +61,7 @@ static dispatch_queue_t serialQueue;
     NSArray* temp = [self __jsonParseArray: message];
     RCTResponseSenderBlock callbackHandler = (RCTResponseSenderBlock)[callbackMap objectForKey:temp[0]];
     NSArray* messageArray = [self removeObjectFromArray:temp withIndex:0];
-    
+
     callbackHandler(@[messageArray]);
 
     return YES;

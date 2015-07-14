@@ -9,7 +9,7 @@
 #import "RCTWebView.h"
 #import "RCTBridgeModule.h"
 
-@interface RCTWebView (WebViewExBridge)
+@interface RCTWebView (WebViewBridge)
 
 - (void)injectBridgeScript:(NSNumber*)reactTag;
 

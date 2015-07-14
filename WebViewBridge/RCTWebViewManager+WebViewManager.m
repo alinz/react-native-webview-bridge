@@ -1,22 +1,17 @@
 //
-//  RCTWebViewManager+WebViewExManager.m
+//  RCTWebViewManager+WebViewManager.m
 //  Sample2
 //
 //  Created by Ali Najafizadeh on 2015-07-10.
-//  Copyright (c) 2015 Facebook. All rights reserved.
-//
 
-#import "RCTWebViewManager+WebViewExManager.h"
+#import "RCTWebViewManager+WebViewManager.h"
 #import "RCTBridge.h"
 #import "RCTSparseArray.h"
 #import "RCTUIManager.h"
 #import "RCTWebView.h"
-#import "RCTWebView+WebViewExBridge.h"
+#import "RCTWebView+WebViewBridge.h"
 
-static NSMutableDictionary * objectMap;
-static dispatch_queue_t serialQueue;
-
-@implementation RCTWebViewManager (WebViewExManager)
+@implementation RCTWebViewManager (WebViewManager)
 
 //NOTE
 //DO not include RCT_EXPORT_MODULE() here because RCTWebViewManager already has it and
@@ -29,7 +24,7 @@ RCT_EXPORT_METHOD(bridgeSetup:(NSNumber *)reactTag)
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
     }
-  
+
     [view bridgeSetup];
   }];
 }
@@ -41,7 +36,7 @@ RCT_EXPORT_METHOD(callbackCleanup:(NSNumber *)reactTag)
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
     }
-    
+
     [view callbackCleanup:reactTag];
   }];
 }
@@ -54,7 +49,7 @@ RCT_EXPORT_METHOD(onMessage:(NSNumber *)reactTag
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
     }
-    
+
     [view onMessageCallback:callback withReactTag:reactTag];
   }];
 }
