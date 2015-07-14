@@ -1,14 +1,14 @@
 # React Native WebView Javascript Bridge
-This is an attempt to create a Javascript Bridge between React Native and Webview.
+This project is inspired by [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge).
 
-> In order for me to port [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge) to React Native, I had to extends WebView component provided by Facebook. I wanted a feature like `send` and `onMessage` to communicate between React-Native Components and Web View content.
+> In order for me to extend React-Native's WebView, I had to use `Category` feature objective-c, that would be the simplest and most elegant way by far.
 
 ## Installation
 
-In order to use this frame work you have to do couple of simple step.
+In order to use this extension, you have to do the following steps:
 
-1. run `npm install react-native-webview-bridge`
-2. go to `Project Navigator` tab in xcode
+1. in your react-native project, run `npm install react-native-webview-bridge`
+2. go to xcode's `Project Navigator` tab
 3. right click on `Libraries`
 4. select `Add Files to ...` option
 5. navigate to `node_modules/react-native-webview-bridge` and add `WebViewBridge` folder
@@ -16,60 +16,69 @@ In order to use this frame work you have to do couple of simple step.
 
 ## Usage
 
-In order for WebView's javascript communicates to React-Native, you have to add couple of function into your existing web app.
+There is a script which will be injected by this extension to the first page that you load. In order for your webpage to get access to the injected script, you have to use the following function.
 
-```html
-<html>
-  <head>
-    <title>My Awesome Web App</title>
-  </head>
+```js
+function WebViewBridgeReady(cb) {
+  //checks whether WebViewBirdge exists in global scope.
+  if (window.WebViewBridge) {
+    cb(window.WebViewBridge);
+    return;
+  }
 
-  <body>
-    <script>
-      var myBridge = null;
+  function handler() {
+    //remove the handler from listener since we don't need it anymore
+    document.removeEventListener('WebViewBridge', handler, false);
+    //pass the WebViewBridge object to the callback
+    cb(window.WebViewBridge);
+  }
 
-      //whenever react native component sends a message to WebView,
-      //this callback is called.
-      function onMessage(message) {
-        console.log('This message coming from react-native', message);
-      }
+  //if WebViewBridge doesn't exist in global scope attach itself to document
+  //event system. Once the code is being injected by extension, the handler will
+  //be called.
+  document.addEventListener('WebViewBridge', handler, false);
+}
+```
 
-      //if the bridge is established, you can use this function to send
-      //a message to react native code.
-      function send(message) {
-        if (myBridge) {
-          myBridge.send(message);
-        }
-      }
+so now, anywhere in your script in webpage, you can call
 
+```js
+WebViewBridgeReady(function (WebViewBridge) {
+  //at this time, you should be able to use the injected code here.
+});
+```
 
-      //this function register a callback into inject code in webview
-      //and once the bridge is ready, it  will pass the bridge ref to the
-      //callback
-      function connectWebViewJavascriptBridge(callback) {
-        if (window.WebViewJavascriptBridge) {
-            callback(WebViewJavascriptBridge)
-        } else {
-            window.addEventListener('WebViewJavascriptBridgeReady', function() {
-                callback(WebViewJavascriptBridge);
-            }, false)
-        }
-      }
+`WebViewBridge` exposes 2 methods, `send` and `onMessage`;
 
-      connectWebViewJavascriptBridge(function (bridge) {
-        myBridge = bridge;
-        bridge.init(onMessage);
+if you want to send a message to `React-Native` component, call the `send` method.
 
-        //you can call any other function here to notify that
-        //bridge is connected and ready to be used.
-      });
-    </script>
-  </body>
-</html>
+if you want to receive message from `React-Native`, attach a function to `onMessage`.
+
+For Example:
+
+```js
+WebViewBridgeReady(function (WebViewBridge) {
+  WebViewBridge.onMessage = function(message) {
+    console.log('got a message from react-native', message);
+  };
+
+  //sending a message to react-native
+  WebViewBridge.send("Hello this is me calling from web page");
+});
 ```
 
 
-on React Native side, instead of using `WebView` component, use the following one.
+On React-Native side, you just have to load the `WebViewBridge` component.
+
+```js
+var React = require('react-native');
+var WebViewBridge = require('react-native-webview-bridge');
+```
+
+Since `WebViewBridge` is extending `WebView` component, it behaves exactly as WebView.
+What it means that `WebViewBridge` has all the methods and props of `WebView` component.
+
+So here's an example of using `WebViewBridge`,
 
 ```js
 var React = require('react-native');
@@ -91,10 +100,7 @@ class MyAwesomeView extends Component {
 
     webviewRef.onMessage(function (message) {
       console.log("This message coming from web view", message);
-
-      setTimeout(function () {
-        webviewRef.send("Hello from react-native");
-      }, 1000);
+      webviewRef.send("Hello from react-native");
     });
   }
 
@@ -110,31 +116,3 @@ class MyAwesomeView extends Component {
 }
 
 ```
-
-### WebViewBridge
-`WebViewBridge` extends 'WebView' so you can have all the available feature of `WebView`. I have just added 2 methods
-
-#### send(message <any>)
-send any message from react-native to `web view`
-
-#### onMessage(callback <function>)
-any messages coming from `web view` will invoke callback with an argument message. Message can be any types.
-
-#### eval(value <string>)
-it will execute javascript string and eval it inside the `web view`. It is useful if you need to set some global variable before your script is executing. For example set JWT token as a global variable.
-
-### Common Problems
-If you are rendering `WebViewBridge` make sure that you also keep registering to the callback.
-
-```js
-registerCallback() {
-  var webViewBridge = this.refs[WEBVIEW_REF];
-  webViewBridge.onMessage(this.onBridgeMessage.bind(this));
-}
-```
-
-I used that method inside my component and I keep calling it inside `componentDidUpdate`.
-
-
-## Thanks
-Thanks to @marcuswestin for amazing [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge) library.
