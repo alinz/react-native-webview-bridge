@@ -14,4 +14,5 @@
 
 //in this category I'm going to make this mothod visible.
 - (NSMutableDictionary *)baseEvent;
+
 @end

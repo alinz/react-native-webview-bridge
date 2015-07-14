@@ -76,4 +76,17 @@ static NSString *const RNWBSchema = @"rnwb";
   }
 }
 
+- (NSArray*)__jsonParseArray:(NSString *)messageJSON {
+  return [NSJSONSerialization JSONObjectWithData:[messageJSON dataUsingEncoding:NSUTF8StringEncoding]
+                                         options:NSJSONReadingAllowFragments
+                                           error:nil];
+}
+
+- (NSString *)__jsonStringify:(id)message {
+  return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:message
+                                                                        options:0
+                                                                          error:nil]
+                               encoding:NSUTF8StringEncoding];
+}
+
 @end
