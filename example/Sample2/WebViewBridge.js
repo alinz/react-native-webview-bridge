@@ -19,7 +19,14 @@ class WebViewBridge extends Component {
 
   onMessage(cb) {
     var ref = this.refs[WEB_VIEW_BRIDGE_REF];
-    WebViewManager.onMessage(ref.getWebWiewHandle(), cb);
+    WebViewManager.onMessage(ref.getWebWiewHandle(), (messages) => {
+      messages.forEach((message) => {
+        cb(message);
+      });
+
+      //re register the callback again
+      this.onMessage(cb);
+    });
   }
 
   evalScript(value) {

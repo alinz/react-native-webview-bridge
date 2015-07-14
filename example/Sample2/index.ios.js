@@ -19,8 +19,8 @@ var Sample2 = React.createClass({
     console.log('onNavigationStateChange is called');
   },
   componentDidMount: function () {
-    this.refs.ali.onMessage(function () {
-      console.log('hello world!');
+    this.refs.ali.onMessage(function (value) {
+      console.log('####', value);
     });
   },
   render: function() {

@@ -58,12 +58,11 @@ static dispatch_queue_t serialQueue;
 
     NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge._fetch()"];
 
-    NSArray* messageArray = [self __jsonParseArray: message];
-    RCTResponseSenderBlock callbackHandler = (RCTResponseSenderBlock)[callbackMap objectForKey:messageArray[0]];
+    NSArray* temp = [self __jsonParseArray: message];
+    RCTResponseSenderBlock callbackHandler = (RCTResponseSenderBlock)[callbackMap objectForKey:temp[0]];
+    NSArray* messageArray = [self removeObjectFromArray:temp withIndex:0];
     
-    callbackHandler(@[message]);
-
-    NSLog(@"%@", message);
+    callbackHandler(@[messageArray]);
 
     return YES;
   }
@@ -125,6 +124,12 @@ static dispatch_queue_t serialQueue;
                                                                         options:0
                                                                           error:nil]
                                encoding:NSUTF8StringEncoding];
+}
+
+-(NSArray *) removeObjectFromArray:(NSArray *) array withIndex:(NSInteger) index {
+  NSMutableArray *modifyableArray = [[NSMutableArray alloc] initWithArray:array];
+  [modifyableArray removeObjectAtIndex:index];
+  return [[NSArray alloc] initWithArray:modifyableArray];
 }
 
 @end
