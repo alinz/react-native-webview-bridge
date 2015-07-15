@@ -17,9 +17,23 @@ class WebViewBridge extends Component {
     super(props);
   }
 
-  onMessage(cb) {
+ /*
+  * returns internal handler id
+  */
+  getWebViewBridgeHandler() {
     var ref = this.refs[WEB_VIEW_BRIDGE_REF];
-    WebViewManager.onMessage(ref.getWebWiewHandle(), (messages) => {
+    return ref.getWebWiewHandle();
+  }
+
+ /*
+  * inject script into webView
+  */
+  injectBridgeScript() {
+    WebViewManager.injectBridgeScript(this.getWebViewBridgeHandler());
+  }
+
+  onMessage(cb) {
+    WebViewManager.onMessage(this.getWebViewBridgeHandler(), (messages) => {
       messages.forEach((message) => {
         cb(message);
       });
@@ -30,32 +44,26 @@ class WebViewBridge extends Component {
   }
 
   evalScript(value) {
-    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
-    WebViewManager.eval(ref.getWebWiewHandle(), value);
+    WebViewManager.eval(this.getWebViewBridgeHandler(), value);
   }
 
   send(message) {
-    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
-
     if (typeof message !== 'string') {
       message = JSON.stringify(message);
     }
 
-    WebViewManager.send(ref.getWebWiewHandle(), message);
+    WebViewManager.send(this.getWebViewBridgeHandler(), message);
   }
 
   componentDidMount() {
     //setup the internal variables of webview bridge
-    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
-    WebViewManager.bridgeSetup(ref.getWebWiewHandle());
-
-    //inject script into webView
-    WebViewManager.injectBridgeScript(ref.getWebWiewHandle());
+    WebViewManager.bridgeSetup(this.getWebViewBridgeHandler());
   }
 
   componentWillUnmount() {
-    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
-    WebViewManager.callbackCleanup(ref.getWebWiewHandle());
+    //removed the internal variables from objective-c side related to
+    //handler id
+    WebViewManager.callbackCleanup(this.getWebViewBridgeHandler());
   }
 
   render() {
