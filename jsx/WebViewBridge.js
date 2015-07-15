@@ -4,15 +4,12 @@ var React = require('react-native');
 
 var {
   WebView,
-  Component,
   NativeModules: {
     WebViewManager
   }
 } = React;
 
-var WEB_VIEW_BRIDGE_REF = 'WEBVIEW_BRIDGE';
-
-class WebViewBridge extends Component {
+class WebViewBridge extends WebView {
   constructor(props) {
     super(props);
   }
@@ -21,8 +18,8 @@ class WebViewBridge extends Component {
   * returns internal handler id
   */
   getWebViewBridgeHandler() {
-    var ref = this.refs[WEB_VIEW_BRIDGE_REF];
-    return ref.getWebWiewHandle();
+    //this method defines in WebView component.
+    return this.getWebWiewHandle();
   }
 
  /*
@@ -56,22 +53,20 @@ class WebViewBridge extends Component {
   }
 
   componentDidMount() {
+    if (super.componentDidMount) {
+      super.componentDidMount();
+    }
     //setup the internal variables of webview bridge
     WebViewManager.bridgeSetup(this.getWebViewBridgeHandler());
   }
 
   componentWillUnmount() {
+    if (super.componentWillUnmount) {
+      super.componentWillMount();
+    }
     //removed the internal variables from objective-c side related to
     //handler id
     WebViewManager.callbackCleanup(this.getWebViewBridgeHandler());
-  }
-
-  render() {
-    return (
-      <WebView
-        ref={WEB_VIEW_BRIDGE_REF}
-        {...this.props}/>
-    );
   }
 }
 
