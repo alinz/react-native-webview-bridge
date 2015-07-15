@@ -48,7 +48,7 @@ static dispatch_queue_t serialQueue;
   //access to provate variable
   UIWebView* _webView = [self valueForKey:@"_webView"];
   [_webView stringByEvaluatingJavaScriptFromString:value];
-  NSLog(@"Called Eval %@", value);
+  //NSLog(@"Called Eval %@", value);
 }
 
 - (BOOL) isSignalTriggered:(UIWebView *)webView withRequest:(NSURLRequest *)request {
