@@ -1,3 +1,5 @@
+> NOTE: THIS VERSION IS CUSTOM, please don't use this one!
+
 # React Native WebView Javascript Bridge
 This project is inspired by [WebViewJavascriptBridge](https://github.com/marcuswestin/WebViewJavascriptBridge).
 

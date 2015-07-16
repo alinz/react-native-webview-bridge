@@ -10,11 +10,12 @@
   var RNWBSchema = "rnwb";
   var queue = [];
   var inProcess = false;
-  var customEvent = doc.createEvent('Event');
+  var customEvent;
 
   function noop() {}
 
   WebViewBridge = {
+    init: noop,
     //do not call _fetch directly. this is for internal use
     _fetch: function () {
       var message;
@@ -35,8 +36,10 @@
     onMessage: noop
   };
 
+  window.WebViewJavascriptBridge = WebViewBridge;
   window.WebViewBridge = WebViewBridge;
 
-  customEvent.initEvent('WebViewBridge', true, true);
-  doc.dispatchEvent(customEvent);
+  doc.dispatchEvent(
+    new CustomEvent("WebViewJavascriptBridgeReady", { bubbles: true, cancelable: true })
+  );
 }());

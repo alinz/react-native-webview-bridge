@@ -96,13 +96,13 @@ static dispatch_queue_t serialQueue;
 }
 
 - (BOOL)isWebViewBridgeInstantiated:(UIWebView *)webView {
-  return [[webView stringByEvaluatingJavaScriptFromString:@"typeof WebViewBridge == 'object'"] isEqualToString:@"true"];
+  return [[webView stringByEvaluatingJavaScriptFromString:@"typeof window.WebViewBridge == 'object'"] isEqualToString:@"true"];
 }
 
 - (void)injectBridgeScript:(NSNumber*)reactTag {
   UIWebView* _webView = [self valueForKey:@"_webView"];
 
-  if (![self isWebViewBridgeInstantiated:_webView]) {
+  //if (![self isWebViewBridgeInstantiated:_webView]) {
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *filePath = [bundle pathForResource:@"webview-bridge-script" ofType:@"js"];
     NSString *handlerId = [NSString stringWithFormat: @"var webViewBridgeHandlerId = %@;", reactTag];
@@ -110,7 +110,7 @@ static dispatch_queue_t serialQueue;
     js = [js stringByReplacingOccurrencesOfString:@"var webViewBridgeHandlerId = 0;"
                                        withString:handlerId];
     [_webView stringByEvaluatingJavaScriptFromString:js];
-  }
+  //}
 }
 
 - (NSArray*)__jsonParseArray:(NSString *)messageJSON {
