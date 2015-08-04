@@ -12,21 +12,28 @@ var {
 class WebViewBridge extends WebView {
   constructor(props) {
     super(props);
+    this.handlerId = 0;
   }
 
  /*
   * call the callback with handler id
-  * this is a hack to make the new version working properly.
-  * returns void
   */
   getWebViewBridgeHandler(fn) {
     //this method defines in WebView component.
+    //in react-native 0.6 and below, getWebWiewHandle
+    //in react-native 0.7 and above getWebViewHandle
     var handler = this.getWebWiewHandle || this.getWebViewHandle;
 
-    setTimeout(() => {
-      var handlerId = handler();
-      fn(handlerId);
-    }, 0);
+    if (this.handlerId) {
+      fn(this.handlerId);
+    } else {
+      // this is a hack to get the handleId correctly and
+      // also avoid race condition.
+      setTimeout(() => {
+        this.handlerId = handler();
+        fn(this.handlerId);
+      }, 0);
+    }
   }
 
  /*
@@ -85,6 +92,7 @@ class WebViewBridge extends WebView {
     //handler id
     this.getWebViewBridgeHandler((handlerId) => {
       WebViewManager.callbackCleanup(handlerId);
+      this.handlerId = 0;
     });
   }
 }
