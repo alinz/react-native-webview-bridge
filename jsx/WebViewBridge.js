@@ -15,33 +15,46 @@ class WebViewBridge extends WebView {
   }
 
  /*
-  * returns internal handler id
+  * call the callback with handler id
+  * this is a hack to make the new version working properly.
+  * returns void
   */
-  getWebViewBridgeHandler() {
+  getWebViewBridgeHandler(fn) {
     //this method defines in WebView component.
-    return this.getWebWiewHandle();
+    var handler = this.getWebWiewHandle || this.getWebViewHandle;
+
+    setTimeout(() => {
+      var handlerId = handler();
+      fn(handlerId);
+    }, 0);
   }
 
  /*
   * inject script into webView
   */
   injectBridgeScript() {
-    WebViewManager.injectBridgeScript(this.getWebViewBridgeHandler());
+    this.getWebViewBridgeHandler((handlerId) => {
+      WebViewManager.injectBridgeScript(handlerId);
+    });
   }
 
   onMessage(cb) {
-    WebViewManager.onMessage(this.getWebViewBridgeHandler(), (messages) => {
-      messages.forEach((message) => {
-        cb(message);
-      });
+    this.getWebViewBridgeHandler((handlerId) => {
+      WebViewManager.onMessage(handlerId, (messages) => {
+        messages.forEach((message) => {
+          cb(message);
+        });
 
-      //re-register the callback again
-      this.onMessage(cb);
+        //re-register the callback again
+        this.onMessage(cb);
+      });
     });
   }
 
   evalScript(value) {
-    WebViewManager.eval(this.getWebViewBridgeHandler(), value);
+    this.getWebViewBridgeHandler((handlerId) => {
+      WebViewManager.eval(handlerId, value);
+    });
   }
 
   send(message) {
@@ -49,7 +62,9 @@ class WebViewBridge extends WebView {
       message = JSON.stringify(message);
     }
 
-    WebViewManager.send(this.getWebViewBridgeHandler(), message);
+    this.getWebViewBridgeHandler((handlerId) => {
+      WebViewManager.send(handlerId, message);
+    });
   }
 
   componentDidMount() {
@@ -57,7 +72,9 @@ class WebViewBridge extends WebView {
       super.componentDidMount();
     }
     //setup the internal variables of webview bridge
-    WebViewManager.bridgeSetup(this.getWebViewBridgeHandler());
+    this.getWebViewBridgeHandler((handlerId) => {
+      WebViewManager.bridgeSetup(handlerId);
+    });
   }
 
   componentWillUnmount() {
@@ -66,7 +83,9 @@ class WebViewBridge extends WebView {
     }
     //removed the internal variables from objective-c side related to
     //handler id
-    WebViewManager.callbackCleanup(this.getWebViewBridgeHandler());
+    this.getWebViewBridgeHandler((handlerId) => {
+      WebViewManager.callbackCleanup(handlerId);
+    });
   }
 }
 
