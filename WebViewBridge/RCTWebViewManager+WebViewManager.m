@@ -31,27 +31,54 @@ RCT_EXPORT_METHOD(bridgeSetup:(NSNumber *)reactTag)
 
 RCT_EXPORT_METHOD(callbackCleanup:(NSNumber *)reactTag)
 {
+  __block BOOL retry = FALSE;
+  
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
-      RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+      retry = TRUE;
+    } else {
+      [view callbackCleanup:reactTag];
     }
-
-    [view callbackCleanup:reactTag];
   }];
+  
+  if (retry) {
+    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+      RCTWebView *view = viewRegistry[reactTag];
+      if (![view isKindOfClass:[RCTWebView class]]) {
+        RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+      }
+      
+      [view callbackCleanup:reactTag];
+    }];
+  }
 }
+
 
 RCT_EXPORT_METHOD(onMessage:(NSNumber *)reactTag
                   withCallback:(RCTResponseSenderBlock)callback)
 {
+  __block BOOL retry = FALSE;
+  
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
-      RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+      retry = TRUE;
+    } else {
+      [view onMessageCallback:callback withReactTag:reactTag];
     }
-
-    [view onMessageCallback:callback withReactTag:reactTag];
   }];
+  
+  if (retry) {
+    [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+      RCTWebView *view = viewRegistry[reactTag];
+      if (![view isKindOfClass:[RCTWebView class]]) {
+        RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+      }
+      
+      [view onMessageCallback:callback withReactTag:reactTag];
+    }];
+  }
 }
 
 RCT_EXPORT_METHOD(send:(NSNumber *)reactTag
