@@ -17,7 +17,7 @@
 //DO not include RCT_EXPORT_MODULE() here because RCTWebViewManager already has it and
 //we are using category feature in objective-c
 
-RCT_EXPORT_METHOD(bridgeSetup:(NSNumber *)reactTag)
+RCT_EXPORT_METHOD(bridgeSetup:(nonnull NSNumber *)reactTag)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
@@ -29,7 +29,7 @@ RCT_EXPORT_METHOD(bridgeSetup:(NSNumber *)reactTag)
   }];
 }
 
-RCT_EXPORT_METHOD(callbackCleanup:(NSNumber *)reactTag)
+RCT_EXPORT_METHOD(callbackCleanup:(nonnull NSNumber *)reactTag)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
@@ -41,7 +41,7 @@ RCT_EXPORT_METHOD(callbackCleanup:(NSNumber *)reactTag)
   }];
 }
 
-RCT_EXPORT_METHOD(onMessage:(NSNumber *)reactTag
+RCT_EXPORT_METHOD(onMessage:(nonnull NSNumber *)reactTag
                   withCallback:(RCTResponseSenderBlock)callback)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
@@ -54,7 +54,7 @@ RCT_EXPORT_METHOD(onMessage:(NSNumber *)reactTag
   }];
 }
 
-RCT_EXPORT_METHOD(send:(NSNumber *)reactTag
+RCT_EXPORT_METHOD(send:(nonnull NSNumber *)reactTag
                   value:(NSString*)message)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
@@ -66,7 +66,7 @@ RCT_EXPORT_METHOD(send:(NSNumber *)reactTag
   }];
 }
 
-RCT_EXPORT_METHOD(eval:(NSNumber *)reactTag
+RCT_EXPORT_METHOD(eval:(nonnull NSNumber *)reactTag
                  value:(NSString*)value)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
@@ -78,7 +78,7 @@ RCT_EXPORT_METHOD(eval:(NSNumber *)reactTag
   }];
 }
 
-RCT_EXPORT_METHOD(injectBridgeScript:(NSNumber *)reactTag)
+RCT_EXPORT_METHOD(injectBridgeScript:(nonnull NSNumber *)reactTag)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
