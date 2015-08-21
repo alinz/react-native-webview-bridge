@@ -74,6 +74,12 @@ class WebViewBridge extends WebView {
     });
   }
 
+  print() {
+    this.getWebViewBridgeHandler((handlerId) => {
+      WebViewManager.print(handlerId);
+    });
+  }
+
   componentDidMount() {
     if (super.componentDidMount) {
       super.componentDidMount();

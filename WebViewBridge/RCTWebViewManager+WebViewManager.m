@@ -89,5 +89,16 @@ RCT_EXPORT_METHOD(injectBridgeScript:(nonnull NSNumber *)reactTag)
   }];
 }
 
+RCT_EXPORT_METHOD(print:(NSNumber *)reactTag)
+{
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+    RCTWebView *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[RCTWebView class]]) {
+      RCTLogMustFix(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
+    }
+
+    [view print];
+  }];
+}
 
 @end
