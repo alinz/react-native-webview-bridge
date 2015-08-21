@@ -47,6 +47,11 @@ class Sample1 extends Component {
     myWebViewBridgeRef.onMessage(onMessage);
 
     myWebViewBridgeRef.injectBridgeScript();
+
+    //this opens up the printer window dialoge
+    setTimeout(() => {
+      myWebViewBridgeRef.print();
+    }, 5000);
   }
 
   onNavigationStateChange(navState) {

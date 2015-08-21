@@ -115,4 +115,7 @@ class MyAwesomeView extends Component {
   }
 }
 
-```
+Added feature
+
+- 0.3.4
+  - added `print` feature [exampl ecode](https://github.com/alinz/react-native-webview-bridge/blob/v0.3.4/example/Sample1/index.ios.js#L53)

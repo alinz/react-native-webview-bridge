@@ -28,6 +28,31 @@ static dispatch_queue_t serialQueue;
   });
 }
 
+//ref http://stackoverflow.com/questions/6544733/ios-air-print-for-uiwebview
+- (void) print {
+  UIPrintInteractionController *pic = [UIPrintInteractionController sharedPrintController];
+  //pic.delegate = self;
+  UIPrintInfo *printInfo = [UIPrintInfo printInfo];
+  printInfo.outputType = UIPrintInfoOutputGeneral;
+  printInfo.jobName = @"print-job";
+  printInfo.duplex = UIPrintInfoDuplexLongEdge;
+  pic.printInfo = printInfo;
+  pic.showsPageRange = YES;
+
+  UIWebView *webview = [self valueForKey:@"_webView"];
+  UIViewPrintFormatter *formatter = [webview viewPrintFormatter];
+  pic.printFormatter = formatter;
+
+  void (^completionHandler)(UIPrintInteractionController *, BOOL, NSError *) =
+  ^(UIPrintInteractionController *printController, BOOL completed, NSError *error) {
+    if (!completed && error) {
+      NSLog(@"Printing could not complete because of error: %@", error);
+    }
+  };
+
+  [pic presentAnimated:YES completionHandler:completionHandler];
+}
+
 - (void)send:(NSString*)message {
   UIWebView* _webView = [self valueForKey:@"_webView"];
   NSString *command = [NSString stringWithFormat: @"WebViewBridge.onMessage('%@');", message];
