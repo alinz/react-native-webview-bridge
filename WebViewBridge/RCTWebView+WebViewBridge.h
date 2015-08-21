@@ -12,7 +12,7 @@
 @interface RCTWebView (WebViewBridge)
 
 - (void)injectBridgeScript:(NSNumber*)reactTag;
-
+- (void)print;
 - (void)eval:(NSString *) value;
 - (void)bridgeSetup;
 - (void)send:(NSString*)message;
