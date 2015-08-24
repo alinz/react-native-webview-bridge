@@ -102,6 +102,8 @@ class MyAwesomeView extends Component {
       console.log("This message coming from web view", message);
       webviewRef.send("Hello from react-native");
     });
+    
+    webviewRef.injectBridgeScript();
   }
 
   render() {
