@@ -89,7 +89,7 @@ RCT_EXPORT_METHOD(injectBridgeScript:(nonnull NSNumber *)reactTag)
   }];
 }
 
-RCT_EXPORT_METHOD(print:(NSNumber *)reactTag)
+RCT_EXPORT_METHOD(print:(nonnull NSNumber *)reactTag)
 {
   [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
