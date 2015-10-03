@@ -21,12 +21,18 @@ public class WebViewBridgeManager extends SimpleViewManager<WebViewBridge> {
     @UIProp(UIProp.Type.STRING)
     public static final String PROP_URL = "url";
 
+    @UIProp(UIProp.Type.STRING)
+    public static final String PROP_HTML = "html";
+
     @Override
     public void updateView(WebViewBridge view, CatalystStylesDiffMap props) {
         super.updateView(view, props);
 
         if (props.hasKey(PROP_URL)) {
             view.setURL(props.getString(PROP_URL));
+        }
+        else if (props.hasKey(PROP_HTML)) {
+            view.setHTML(props.getString(PROP_HTML));
         }
     }
 }

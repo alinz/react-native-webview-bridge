@@ -139,7 +139,8 @@ if (React.StatusBarIOS) {
     WebViewBridge.propTypes = {
       ...View.propTypes,
       onChange: PropTypes.func,
-      url: PropTypes.string
+      url: PropTypes.string,
+      html: PropTypes.string
     };
 
     WebViewBridge.defaultProps = {

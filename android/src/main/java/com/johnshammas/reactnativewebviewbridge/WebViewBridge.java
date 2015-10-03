@@ -25,6 +25,7 @@ public class WebViewBridge extends WebView {
     public WebViewBridge(ThemedReactContext context) {
         super(context);
         mContext = context;
+        this.getSettings().setJavaScriptEnabled(true)
     }
 
     private final Runnable mLayoutRunnable = new Runnable() {
@@ -39,6 +40,11 @@ public class WebViewBridge extends WebView {
     public void setURL(String url) {
         this.setWebViewClient(new WebViewClient());
         this.loadUrl(url);
+    }
+
+    public void setHTML(String html) {
+        this.setWebViewClient(new WebViewClient());
+        this.loadData(html, "text/html", null);
     }
 
     @Override
