@@ -12,7 +12,8 @@ In order to use this extension, you have to do the following steps:
 3. right click on `Libraries`
 4. select `Add Files to ...` option
 5. navigate to `node_modules/react-native-webview-bridge` and add `WebViewBridge` folder
-6. clean compile to make sure your project can compile and build.
+6. ensure you have the `Copy items if needed` and `Create groups` options checked in the Add files dialog 
+7. clean compile to make sure your project can compile and build.
 
 ## Usage
 
