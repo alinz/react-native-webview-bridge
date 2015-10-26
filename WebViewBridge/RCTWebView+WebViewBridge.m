@@ -98,7 +98,7 @@ static dispatch_queue_t serialQueue;
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
   //access to provate variable
-  RCTEventDispatcher *_eventDispatcher = [self valueForKey:@"_eventDispatcher"];
+  RCTEventDispatcher *_eventDispatcher;
 
   //we need to check whether it's coming from our request schema
   if ([self isSignalTriggered:webView withRequest:request]) {
