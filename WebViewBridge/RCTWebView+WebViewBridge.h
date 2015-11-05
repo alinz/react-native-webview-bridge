@@ -11,6 +11,7 @@
 
 @interface RCTWebView (WebViewBridge)
 
+- (void)setEvetnDispatcher:(RCTEventDispatcher *)eventDispatcher;
 - (void)injectBridgeScript:(NSNumber*)reactTag;
 - (void)print;
 - (void)eval:(NSString *) value;
