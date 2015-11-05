@@ -4,7 +4,8 @@
   "description": "React Native WebView Javascript Bridge",
   "main": "jsx/WebViewBridge.js",
   "directories": {
-    "example": "example"
+    "example": "example",
+    "lib": "lib"
   },
   "peerDependencies": {
     "react-native": ">= 0.10.0"
