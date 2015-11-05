@@ -224,7 +224,11 @@
 		4151254C1BEB04C40042928F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../../react-native/React";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../../react-native/React/**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -234,7 +238,11 @@
 		4151254D1BEB04C40042928F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"HEADER_SEARCH_PATHS[arch=*]" = "$(SRCROOT)/../../react-native/React";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../../react-native/React/**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
