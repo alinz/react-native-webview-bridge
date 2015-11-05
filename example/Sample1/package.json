@@ -6,7 +6,6 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "react-native": "0.10.0",
-    "react-native-webview-bridge": "../.."
+    "react-native": "^0.13.2"
   }
 }
