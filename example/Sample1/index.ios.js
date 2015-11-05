@@ -5,49 +5,79 @@
 'use strict';
 
 var React = require('react-native');
+var WebViewBridgeNative = require('react-native-webview-bridge');
+
+var myPageScripts = function() {
+  function WebViewBridgeReady(cb) {
+    if (window.WebViewBridge) {
+      cb(window.WebViewBridge);
+      return;
+    }
+    function handler() {
+      document.removeEventListener('WebViewBridge', handler, false);
+      cb(window.WebViewBridge);
+    }
+    document.addEventListener('WebViewBridge', handler, false);
+  }
+  WebViewBridgeReady(function (WebViewBridge) {
+    WebViewBridge.send("Hello this is me calling from web page");
+  });
+};
+
+//convert function definition into string
+myPageScripts = `(${myPageScripts.toString()}());`;
+
 var {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View,
+  Component
 } = React;
 
-var Sample1 = React.createClass({
-  render: function() {
+class Sample1 extends Component {
+  constructor(props) {
+    super(props);
+    this.once = true;
+  }
+
+  componentDidMount() {
+    var myWebViewBridgeRef = this.refs.myWebViewBridge;
+
+    var onMessage = function(message) {
+      console.log("Received message", message);
+    };
+    myWebViewBridgeRef.onMessage(onMessage);
+
+    myWebViewBridgeRef.injectBridgeScript();
+
+    //this opens up the printer window dialoge
+    setTimeout(() => {
+      myWebViewBridgeRef.print();
+    }, 5000);
+  }
+
+  onNavigationStateChange(navState) {
+    var myWebViewBridgeRef = this.refs.myWebViewBridge;
+    if (this.once) {
+      this.once = false;
+      setTimeout(() => {
+        myWebViewBridgeRef.evalScript(myPageScripts);
+      }, 1000);
+    }
+
+    console.log(navState.url);
+  }
+
+  render() {
+    var url = 'http://google.com';
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <WebViewBridgeNative
+        ref="myWebViewBridge"
+        onNavigationStateChange={this.onNavigationStateChange.bind(this)}
+        url={url}
+        style={{flex: 1}}/>
     );
   }
-});
+}
 
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
 
 AppRegistry.registerComponent('Sample1', () => Sample1);
