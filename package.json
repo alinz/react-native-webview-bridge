@@ -1,13 +1,14 @@
 {
   "name": "react-native-webview-bridge",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "React Native WebView Javascript Bridge",
   "main": "jsx/WebViewBridge.js",
   "directories": {
-    "example": "example"
+    "example": "example",
+    "lib": "lib"
   },
   "peerDependencies": {
-    "react-native": ">= 0.6.0"
+    "react-native": ">= 0.10.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
