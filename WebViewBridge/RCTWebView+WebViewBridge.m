@@ -8,6 +8,7 @@
 
 #import "RCTWebView+WebViewBridge.h"
 #import "RCTEventDispatcher.h"
+#import "UIView+React.h"
 
 static NSString *const RCTJSAJAXScheme = @"react-ajax";
 static NSString *const RNWBSchema = @"rnwb";
@@ -18,6 +19,11 @@ static NSMutableDictionary * callbackMap;
 static dispatch_queue_t serialQueue;
 
 @implementation RCTWebView (WebViewBridge)
+
+RCTEventDispatcher *_eventDispatcher;
+- (void)setEvetnDispatcher:(RCTEventDispatcher *)eventDispatcher{
+  _eventDispatcher = eventDispatcher;
+}
 
 - (void) bridgeSetup {
   static dispatch_once_t onceQueue;
@@ -97,8 +103,6 @@ static dispatch_queue_t serialQueue;
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-  //access to provate variable
-  RCTEventDispatcher *_eventDispatcher = [self valueForKey:@"_eventDispatcher"];
 
   //we need to check whether it's coming from our request schema
   if ([self isSignalTriggered:webView withRequest:request]) {
@@ -110,6 +114,7 @@ static dispatch_queue_t serialQueue;
   if (isTopFrame) {
     NSMutableDictionary *event = [self baseEvent];
     [event addEntriesFromDictionary: @{
+                                      @"target": self.reactTag,
                                       @"url": [request.URL absoluteString],
                                       @"navigationType": @(navigationType)
                                       }];

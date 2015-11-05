@@ -8,9 +8,11 @@
 
 #import "RCTWebView.h"
 #import "RCTBridgeModule.h"
+#import "RCTEventDispatcher.h"
 
 @interface RCTWebView (WebViewBridge)
 
+- (void)setEvetnDispatcher:(RCTEventDispatcher *)eventDispatcher;
 - (void)injectBridgeScript:(NSNumber*)reactTag;
 - (void)print;
 - (void)eval:(NSString *) value;
