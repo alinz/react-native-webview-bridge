@@ -1,6 +1,6 @@
 {
   "name": "react-native-webview-bridge",
-  "version": "0.3.6",
+  "version": "0.4.0",
   "description": "React Native WebView Javascript Bridge",
   "main": "jsx/WebViewBridge.js",
   "directories": {
@@ -18,8 +18,10 @@
     "url": "git@github.com:alinz/react-native-webview-bridge.git"
   },
   "keywords": [
-    "React Native",
-    "WebView Bridge"
+    "react-native",
+    "react-component",
+    "ios",
+    "webview-bridge"
   ],
   "author": "Ali Najafizadeh",
   "license": "MIT",
