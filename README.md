@@ -117,6 +117,10 @@ class MyAwesomeView extends Component {
   }
 }
 
+## Limitations
+
+Message's are wrapped in a single quote and eval'd.   Base64 encoding is recommended.
+
 Added feature
 
 - 0.3.4
