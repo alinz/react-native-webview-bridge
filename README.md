@@ -116,8 +116,13 @@ class MyAwesomeView extends Component {
     );
   }
 }
+```
+
+## Limitations
+
+Messages are passed as eval'd javascript wrapped in single quotes.   To pass arbitrary data, JSON encoding is not sufficient.  URL encoding or Base64 encoding is recommended.
 
 Added feature
 
 - 0.3.4
-  - added `print` feature [exampl ecode](https://github.com/alinz/react-native-webview-bridge/blob/v0.3.4/example/Sample1/index.ios.js#L53)
+  - added `print` feature [examplecode](https://github.com/alinz/react-native-webview-bridge/blob/v0.3.4/example/Sample1/index.ios.js#L53)
