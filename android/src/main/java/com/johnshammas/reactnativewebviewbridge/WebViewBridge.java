@@ -25,7 +25,7 @@ public class WebViewBridge extends WebView {
     public WebViewBridge(ThemedReactContext context) {
         super(context);
         mContext = context;
-        this.getSettings().setJavaScriptEnabled(true)
+        this.getSettings().setJavaScriptEnabled(true);
     }
 
     private final Runnable mLayoutRunnable = new Runnable() {
