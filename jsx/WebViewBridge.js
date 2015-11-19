@@ -115,37 +115,90 @@ if (React.StatusBarIOS) {
 
     var NativeWebView = requireNativeComponent('WebViewAndroid', WebViewBridge);
 
+    var WEBVIEW_REF = 'androidWebView';
+
     class WebViewBridge extends React.Component {
-      constructor() {
-        super();
-        this._onChange = this._onChange.bind(this);
-      }
-
-      _onChange(event) {
-        if (this.props.onChange) {
-          this.props.onChange(event.nativeEvent);
+        constructor() {
+            super();
+            this.handlerId = 0;
         }
-      }
 
-      render() {
-        return (
-          <NativeWebView
-            {...this.props} onChange={this._onChange}
-            values={this.props.values} selected={this.props.selected} />
-        );
-      }
+        _onChange(event) {
+            if (this.props.onChange) {
+                this.props.onChange(event.nativeEvent);
+            }
+        }
+
+        _onNavigationStateChange(event) {
+            if (this && this.props && this.props.onNavigationStateChange) {
+                this.props.onNavigationStateChange(event.nativeEvent);
+            }
+        }
+
+        getWebViewBridgeHandler(fn) {
+          //this method defines in WebView component.
+          //in react-native 0.6 and below, getWebWiewHandle
+          //in react-native 0.7 and above getWebViewHandle
+          var handler = this.getWebWiewHandle || this.getWebViewHandle;
+
+          if (this.handlerId) {
+            fn(this.handlerId);
+          } else {
+            // this is a hack to get the handleId correctly and
+            // also avoid race condition.
+            setTimeout(() => {
+              this.handlerId = handler.call(this);
+              fn(this.handlerId);
+            }, 0);
+          }
+        }
+
+        getWebViewHandle() {
+            return React.findNodeHandle(this.refs[WEBVIEW_REF]);
+        }
+
+        injectBridgeScript() {
+          this.getWebViewBridgeHandler((handlerId) => {
+              console.log(888);
+              console.log(Object.keys(NativeWebView));
+            NativeWebView.injectBridgeScript(handlerId);
+          });
+        }
+
+        onMessage(cb) {
+          this.getWebViewBridgeHandler((handlerId) => {
+            WebViewManager.onMessage(handlerId, (messages) => {
+              messages.forEach((message) => {
+                cb(message);
+              });
+
+              //re-register the callback again
+              this.onMessage(cb);
+            });
+          });
+        }
+
+        render() {
+            return (
+                <NativeWebView
+                    {...this.props}
+                    ref={WEBVIEW_REF} />
+            );
+        }
     }
 
     WebViewBridge.propTypes = {
-      ...View.propTypes,
-      onChange: PropTypes.func,
-      url: PropTypes.string,
-      html: PropTypes.string
+        ...View.propTypes,
+        url: PropTypes.string,
+        html: PropTypes.string,
+        htmlCharset: PropTypes.string,
+        injectedJavaScript: PropTypes.string,
+        disableCookies: PropTypes.bool,
+        javaScriptEnabled: PropTypes.bool,
+        geolocationEnabled: PropTypes.bool,
+        builtInZoomControls: PropTypes.bool,
+        onNavigationStateChange: PropTypes.func
     };
-
-    WebViewBridge.defaultProps = {
-
-    }
 
     module.exports = WebViewBridge;
 

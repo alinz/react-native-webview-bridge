@@ -1,55 +1,102 @@
 package com.johnshammas.reactnativewebviewbridge;
 
-import android.content.Context;
 import android.os.SystemClock;
-import android.support.v7.widget.AppCompatSpinner;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.util.Log;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Build;
+import android.webkit.GeolocationPermissions;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
-
-import java.util.ArrayList;
+import com.facebook.react.uimanager.events.EventDispatcher;
 
 public class WebViewBridge extends WebView {
 
-    private Context mContext;
-    private boolean firstEventFired = false;
-    private int mSelected = 0;
-
-    public WebViewBridge(ThemedReactContext context) {
-        super(context);
-        mContext = context;
-        this.getSettings().setJavaScriptEnabled(true);
-    }
-
-    private final Runnable mLayoutRunnable = new Runnable() {
+    protected class GeoWebChromeClient extends WebChromeClient {
         @Override
-        public void run() {
-            measure(MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.EXACTLY));
-            layout(getLeft(), getTop(), getRight(), getBottom());
+        public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+            callback.invoke(origin, true, false);
         }
-    };
-
-    public void setURL(String url) {
-        this.setWebViewClient(new WebViewClient());
-        this.loadUrl(url);
     }
 
-    public void setHTML(String html) {
-        this.setWebViewClient(new WebViewClient());
-        this.loadData(html, "text/html", null);
+    protected class EventWebClient extends WebViewClient {
+
+        private String injectedJavaScript = null;
+
+        public void setInjectedJavaScript(String injectedJavaScript) {
+            this.injectedJavaScript = injectedJavaScript;
+        }
+
+        public String getInjectedJavaScript() {
+            return this.injectedJavaScript;
+        }
+
+        public void onPageFinished(WebView view, String url) {
+            mEventDispatcher.dispatchEvent(
+                    new NavigationStateChangeEvent(getId(), SystemClock.uptimeMillis(), false, url, view.canGoBack(), view.canGoForward()));
+
+            if(getInjectedJavaScript() != null) {
+                view.loadUrl("javascript:(function() { " + getInjectedJavaScript() + "})()");
+            }
+        }
+
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            mEventDispatcher.dispatchEvent(
+                    new NavigationStateChangeEvent(getId(), SystemClock.uptimeMillis(), true, url, view.canGoBack(), view.canGoForward()));
+        }
     }
 
-    @Override
-    public void requestLayout() {
-        super.requestLayout();
-        post(mLayoutRunnable);
+    private final EventDispatcher mEventDispatcher;
+    private final EventWebClient mWebViewClient;
+    private String charset = "UTF-8";
+
+    public WebViewBridge(ReactContext reactContext) {
+        super(reactContext);
+
+        mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        mWebViewClient = new EventWebClient();
+
+        this.getSettings().setJavaScriptEnabled(true);
+        this.getSettings().setBuiltInZoomControls(false);
+        this.getSettings().setGeolocationEnabled(false);
+        this.getSettings().setAllowFileAccess(true);
+        this.getSettings().setAllowFileAccessFromFileURLs(true);
+        this.getSettings().setAllowUniversalAccessFromFileURLs(true);
+        this.getSettings().setLoadsImagesAutomatically(true);
+        this.getSettings().setBlockNetworkImage(false);
+        this.getSettings().setBlockNetworkLoads(false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
+        this.setWebViewClient(mWebViewClient);
+        this.setWebChromeClient(new WebChromeClient());
     }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
+
+    public String getCharset() {
+        return this.charset;
+    }
+
+    public void setInjectedJavaScript(String injectedJavaScript) {
+        mWebViewClient.setInjectedJavaScript(injectedJavaScript);
+    }
+
+    public String getInjectedJavaScript() {
+        return mWebViewClient.getInjectedJavaScript();
+    }
+
+    public GeoWebChromeClient getGeoClient() {
+        return new GeoWebChromeClient();
+    }
+
 }
