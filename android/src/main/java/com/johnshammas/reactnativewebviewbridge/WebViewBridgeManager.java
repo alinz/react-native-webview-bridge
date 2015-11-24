@@ -95,7 +95,9 @@ public class WebViewBridgeManager extends ViewGroupManager<WebViewBridge> {
         return MapBuilder.of(
             "goBack", GO_BACK,
             "goForward", GO_FORWARD,
-            "reload", RELOAD
+            "reload", RELOAD,
+            "injectBridgeScript", INJECT_BRIDGE_SCRIPT,
+            "send", SEND
         );
     }
 

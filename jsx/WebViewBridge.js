@@ -140,39 +140,39 @@ if (React.StatusBarIOS) {
         }
 
         injectBridgeScript() {
-          this.getWebViewBridgeHandler((handlerId) => {
-              console.log(888);
-              console.log(Object.keys(NativeWebView));
-            NativeWebView.injectBridgeScript(handlerId);
-          });
+            RCTUIManager.dispatchViewManagerCommand(
+                this.getWebViewHandle(),
+                RCTUIManager.WebViewAndroid.Commands.injectBridgeScript,
+                null
+            );
         }
 
         goBack() {
             RCTUIManager.dispatchViewManagerCommand(
-                this._getWebViewHandle(),
-                RCTUIManager.RNWebViewAndroid.Commands.goBack,
+                this.getWebViewHandle(),
+                RCTUIManager.WebViewAndroid.Commands.goBack,
                 null
             );
         }
         goForward() {
             RCTUIManager.dispatchViewManagerCommand(
-                this._getWebViewHandle(),
-                RCTUIManager.RNWebViewAndroid.Commands.goForward,
+                this.getWebViewHandle(),
+                RCTUIManager.WebViewAndroid.Commands.goForward,
                 null
             );
         }
         reload() {
             RCTUIManager.dispatchViewManagerCommand(
-                this._getWebViewHandle(),
-                RCTUIManager.RNWebViewAndroid.Commands.reload,
+                this.getWebViewHandle(),
+                RCTUIManager.WebViewAndroid.Commands.reload,
                 null
             );
         }
 
         send(message) {
             RCTUIManager.dispatchViewManagerCommand(
-                this._getWebViewHandle(),
-                RCTUIManager.RNWebViewAndroid.Commands.send,
+                this.getWebViewHandle(),
+                RCTUIManager.WebViewAndroid.Commands.send,
                 [message]
             );
         }
