@@ -112,8 +112,8 @@ if (React.StatusBarIOS) {
 } else {
 
     var { requireNativeComponent, PropTypes, View } = React;
-
     var NativeWebView = requireNativeComponent('WebViewAndroid', WebViewBridge);
+    var RCTUIManager = React.NativeModules.UIManager;
 
     var WEBVIEW_REF = 'androidWebView';
 
@@ -135,24 +135,6 @@ if (React.StatusBarIOS) {
             }
         }
 
-        getWebViewBridgeHandler(fn) {
-          //this method defines in WebView component.
-          //in react-native 0.6 and below, getWebWiewHandle
-          //in react-native 0.7 and above getWebViewHandle
-          var handler = this.getWebWiewHandle || this.getWebViewHandle;
-
-          if (this.handlerId) {
-            fn(this.handlerId);
-          } else {
-            // this is a hack to get the handleId correctly and
-            // also avoid race condition.
-            setTimeout(() => {
-              this.handlerId = handler.call(this);
-              fn(this.handlerId);
-            }, 0);
-          }
-        }
-
         getWebViewHandle() {
             return React.findNodeHandle(this.refs[WEBVIEW_REF]);
         }
@@ -165,17 +147,38 @@ if (React.StatusBarIOS) {
           });
         }
 
-        onMessage(cb) {
-          this.getWebViewBridgeHandler((handlerId) => {
-            WebViewManager.onMessage(handlerId, (messages) => {
-              messages.forEach((message) => {
-                cb(message);
-              });
+        goBack() {
+            RCTUIManager.dispatchViewManagerCommand(
+                this._getWebViewHandle(),
+                RCTUIManager.RNWebViewAndroid.Commands.goBack,
+                null
+            );
+        }
+        goForward() {
+            RCTUIManager.dispatchViewManagerCommand(
+                this._getWebViewHandle(),
+                RCTUIManager.RNWebViewAndroid.Commands.goForward,
+                null
+            );
+        }
+        reload() {
+            RCTUIManager.dispatchViewManagerCommand(
+                this._getWebViewHandle(),
+                RCTUIManager.RNWebViewAndroid.Commands.reload,
+                null
+            );
+        }
 
-              //re-register the callback again
-              this.onMessage(cb);
-            });
-          });
+        send(message) {
+            RCTUIManager.dispatchViewManagerCommand(
+                this._getWebViewHandle(),
+                RCTUIManager.RNWebViewAndroid.Commands.send,
+                [message]
+            );
+        }
+
+        onMessage(cb) {
+
         }
 
         render() {

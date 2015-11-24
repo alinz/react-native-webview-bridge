@@ -7,15 +7,22 @@ import javax.annotation.Nullable;
 import android.webkit.WebChromeClient;
 import android.webkit.CookieManager;
 
-import com.facebook.react.common.annotations.VisibleForTesting;
+import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.common.MapBuilder;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.uimanager.ViewGroupManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ReactProp;
+import com.facebook.react.common.annotations.VisibleForTesting;
 
 public class WebViewBridgeManager extends ViewGroupManager<WebViewBridge> {
     public static final String REACT_CLASS = "WebViewAndroid";
+
+    public static final int GO_BACK = 1;
+    public static final int GO_FORWARD = 2;
+    public static final int RELOAD = 3;
+    public static final int INJECT_BRIDGE_SCRIPT = 4;
+    public static final int SEND = 5;
 
     @Override
     public String getName() {
@@ -81,6 +88,36 @@ public class WebViewBridgeManager extends ViewGroupManager<WebViewBridge> {
     @ReactProp(name = "injectedJavaScript")
     public void setInjectedJavaScript(WebViewBridge view, @Nullable String injectedJavaScript) {
         view.setInjectedJavaScript(injectedJavaScript);
+    }
+
+    @Override
+    public @Nullable Map<String, Integer> getCommandsMap() {
+        return MapBuilder.of(
+            "goBack", GO_BACK,
+            "goForward", GO_FORWARD,
+            "reload", RELOAD
+        );
+    }
+
+    @Override
+    public void receiveCommand(WebViewBridge view, int commandId, @Nullable ReadableArray args) {
+        switch (commandId) {
+            case GO_BACK:
+                view.goBack();
+                break;
+            case GO_FORWARD:
+                view.goForward();
+                break;
+            case RELOAD:
+                view.reload();
+                break;
+            case INJECT_BRIDGE_SCRIPT:
+                view.injectBridgeScript();
+                break;
+            case SEND:
+                view.send(args.getString(0));
+                break;
+        }
     }
 
     @Override

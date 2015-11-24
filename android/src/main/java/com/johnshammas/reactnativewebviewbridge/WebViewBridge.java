@@ -99,4 +99,32 @@ public class WebViewBridge extends WebView {
         return new GeoWebChromeClient();
     }
 
+    protected class JavascriptBridge {
+        public void send(String message) {
+
+        }
+    }
+
+    public void injectBridgeScript() {
+        this.addJavascriptInterface(new JavascriptBridge(), "WebViewBridgeAndroid");
+        this.reload();
+
+        this.evaluateJavascript(""
++ "(function() {"
+    + "var customEvent = document.createEvent('Event');"
+    + "WebViewBridge = {"
+        + "send: function(message) { WebViewBridgeAndroid.send(message); },"
+        + "onMessage: function() {}"
+    + "};"
+    + "window.WebViewBridge = WebViewBridge;"
+    + "customEvent.initEvent('WebViewBridge', true, true);"
+    + "document.dispatchEvent(customEvent);"
++"}())", null);
+
+    }
+
+    public void send(String message) {
+        this.evaluateJavascript("WebViewBridge.onMessage('" + message + "');", null);
+    }
+
 }
