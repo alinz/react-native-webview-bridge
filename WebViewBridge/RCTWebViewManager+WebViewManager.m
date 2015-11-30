@@ -6,7 +6,6 @@
 
 #import "RCTWebViewManager+WebViewManager.h"
 #import "RCTBridge.h"
-#import "RCTSparseArray.h"
 #import "RCTUIManager.h"
 #import "RCTWebView.h"
 #import "RCTWebView+WebViewBridge.h"
@@ -19,7 +18,7 @@
 
 RCT_EXPORT_METHOD(bridgeSetup:(nonnull NSNumber *)reactTag)
 {
-  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebView *> *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogWarn(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
@@ -31,7 +30,7 @@ RCT_EXPORT_METHOD(bridgeSetup:(nonnull NSNumber *)reactTag)
 
 RCT_EXPORT_METHOD(callbackCleanup:(nonnull NSNumber *)reactTag)
 {
-  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebView *> *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogWarn(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
@@ -44,7 +43,7 @@ RCT_EXPORT_METHOD(callbackCleanup:(nonnull NSNumber *)reactTag)
 RCT_EXPORT_METHOD(onMessage:(nonnull NSNumber *)reactTag
                   withCallback:(RCTResponseSenderBlock)callback)
 {
-  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebView *> *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogWarn(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
@@ -57,7 +56,7 @@ RCT_EXPORT_METHOD(onMessage:(nonnull NSNumber *)reactTag
 RCT_EXPORT_METHOD(send:(nonnull NSNumber *)reactTag
                   value:(NSString*)message)
 {
-  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebView *> *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogWarn(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
@@ -69,7 +68,7 @@ RCT_EXPORT_METHOD(send:(nonnull NSNumber *)reactTag
 RCT_EXPORT_METHOD(eval:(nonnull NSNumber *)reactTag
                  value:(NSString*)value)
 {
-  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebView *> *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogWarn(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
@@ -80,7 +79,7 @@ RCT_EXPORT_METHOD(eval:(nonnull NSNumber *)reactTag
 
 RCT_EXPORT_METHOD(injectBridgeScript:(nonnull NSNumber *)reactTag)
 {
-  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebView *> *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogWarn(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
@@ -91,7 +90,7 @@ RCT_EXPORT_METHOD(injectBridgeScript:(nonnull NSNumber *)reactTag)
 
 RCT_EXPORT_METHOD(print:(nonnull NSNumber *)reactTag)
 {
-  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, RCTSparseArray *viewRegistry) {
+  [self.bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebView *> *viewRegistry) {
     RCTWebView *view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebView class]]) {
       RCTLogWarn(@"Invalid view returned from registry, expecting RKWebView, got: %@", view);
