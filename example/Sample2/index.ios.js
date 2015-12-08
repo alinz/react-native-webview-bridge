@@ -12,21 +12,13 @@ var {
   View,
 } = React;
 
+var WebViewBridge = require('react-native-webview-bridge');
+console.log(WebViewBridge);
+
 var Sample2 = React.createClass({
   render: function() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
+      <WebViewBridge url={"http://google.com"}/>
     );
   }
 });

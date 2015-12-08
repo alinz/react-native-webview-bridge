@@ -21,7 +21,8 @@
 #import "RCTView.h"
 #import "UIView+React.h"
 
-NSString *const RCTJSNavigationScheme = @"react-js-navigation";
+//we don'e need this one since it has been defined in RCTWebView.m
+//NSString *const RCTJSNavigationScheme = @"react-js-navigation";
 
 @interface RCTWebViewBridge () <UIWebViewDelegate, RCTAutoInsetsProtocol>
 
