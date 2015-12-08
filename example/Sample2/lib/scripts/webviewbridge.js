@@ -63,9 +63,4 @@
   };
 
   window.WebViewBridge = WebViewBridge;
-
-
-  setInterval(function () {
-    WebViewBridge.send("HELLO");
-  }, 5000);
 }(window));

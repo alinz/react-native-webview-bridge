@@ -21,6 +21,11 @@
 #import "RCTView.h"
 #import "UIView+React.h"
 
+//This is very elegent way of defining multiline string on objective-c.
+//source: http://stackoverflow.com/a/23387659/828487
+#define NSStringMultiline(...) [[NSString alloc] initWithCString:#__VA_ARGS__ encoding:NSUTF8StringEncoding]
+
+
 //we don'e need this one since it has been defined in RCTWebView.m
 //NSString *const RCTJSNavigationScheme = @"react-js-navigation";
 NSString *const RCTWebViewBridgeSchema = @"wvb";
@@ -31,6 +36,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingFinish;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingError;
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
+@property (nonatomic, copy) RCTDirectEventBlock onBridgeMessage;
 
 @end
 
@@ -68,6 +74,22 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)reload
 {
   [_webView reload];
+}
+
+- (void)sendToBridge: NSString *message
+{
+  //we are warpping the send message in a function to make sure that if
+  //WebView is not injected, we don't crash the app.
+  NSString *format = NSStringMultiline(
+    (function(){
+      if (WebViewBridge && WebViewBridge.__push__) {
+        WebViewBridge.__push__('%@');
+      }
+    }());
+  );
+
+  NSString *command = [NSString stringWithFormat: format, message];
+  [_webView stringByEvaluatingJavaScriptFromString:command];
 }
 
 - (NSURL *)URL
@@ -150,11 +172,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
   BOOL isJSNavigation = [request.URL.scheme isEqualToString:RCTJSNavigationScheme];
 
-  if ([request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
+  if (!isJSNavigation && [request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
     NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge._fetch()"];
-    NSArray* messages = [self stringArrayJsonToArray: message];
 
-    NSLog(@"%@", messages);
+    NSMutableDictionary<NSString *, id> *onBridgeMessageEvent = [[NSMutableDictionary alloc] initWithDictionary:@{
+      @"messages": [self stringArrayJsonToArray: message]
+    }];
+
+    _onBridgeMessage(onBridgeMessageEvent);
 
     isJSNavigation = YES;
   }

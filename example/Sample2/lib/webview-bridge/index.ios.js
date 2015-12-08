@@ -138,6 +138,11 @@ var WebViewBridge = React.createClass({
      * @platform ios
      */
     allowsInlineMediaPlayback: PropTypes.bool,
+
+    /**
+     * Will be called once the message is being sent from webview
+     */
+    onBridgeMessage: PropTypes.func,
   },
 
   getInitialState: function() {
@@ -189,6 +194,15 @@ var WebViewBridge = React.createClass({
       RCTWebViewBridgeManager.startLoadWithResult(!!shouldStart, event.nativeEvent.lockIdentifier);
     });
 
+    var onBridgeMessage = (event: Event) => {
+      var onBridgeMessageCallback = this.props.onBridgeMessage;
+      if (onBridgeMessageCallback) {
+        event.messages.forEach((message) => {
+          onBridgeMessageCallback(message);
+        });
+      }
+    };
+
     var webViewBridge =
       <RCTWebViewBridge
         ref={RCT_WEBVIEW_BRIDGE_REF}
@@ -207,6 +221,7 @@ var WebViewBridge = React.createClass({
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
         scalesPageToFit={this.props.scalesPageToFit}
         allowsInlineMediaPlayback={this.props.allowsInlineMediaPlayback}
+        onBridgeMessage={onBridgeMessage}
       />;
 
     return (
@@ -227,6 +242,10 @@ var WebViewBridge = React.createClass({
 
   reload: function() {
     RCTWebViewBridgeManager.reload(this.getWebViewBridgeHandle());
+  },
+
+  sendToBridge: function (message) {
+    RCTWebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
   },
 
   /**

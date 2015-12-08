@@ -23,6 +23,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		4134EF261C17548C00CA8394 /* RCTWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4134EF231C17548C00CA8394 /* RCTWebViewBridge.m */; };
 		4134EF271C17548C00CA8394 /* RCTWebViewBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4134EF251C17548C00CA8394 /* RCTWebViewBridgeManager.m */; };
+		4134EF331C1767B200CA8394 /* webviewbridge.js in Resources */ = {isa = PBXBuildFile; fileRef = 4134EF321C1767B200CA8394 /* webviewbridge.js */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -130,6 +131,7 @@
 		4134EF231C17548C00CA8394 /* RCTWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridge.m; sourceTree = "<group>"; };
 		4134EF241C17548C00CA8394 /* RCTWebViewBridgeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTWebViewBridgeManager.h; sourceTree = "<group>"; };
 		4134EF251C17548C00CA8394 /* RCTWebViewBridgeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridgeManager.m; sourceTree = "<group>"; };
+		4134EF321C1767B200CA8394 /* webviewbridge.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = webviewbridge.js; path = ../scripts/webviewbridge.js; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -260,6 +262,7 @@
 		4134EF211C17548C00CA8394 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				4134EF321C1767B200CA8394 /* webviewbridge.js */,
 				4134EF221C17548C00CA8394 /* RCTWebViewBridge.h */,
 				4134EF231C17548C00CA8394 /* RCTWebViewBridge.m */,
 				4134EF241C17548C00CA8394 /* RCTWebViewBridgeManager.h */,
@@ -524,6 +527,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4134EF331C1767B200CA8394 /* webviewbridge.js in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);

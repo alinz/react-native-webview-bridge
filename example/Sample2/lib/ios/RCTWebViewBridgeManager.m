@@ -49,6 +49,7 @@ RCT_EXPORT_VIEW_PROPERTY(onLoadingFinish, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onLoadingError, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onShouldStartLoadWithRequest, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(allowsInlineMediaPlayback, _webView.allowsInlineMediaPlayback, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(onBridgeMessage, RCTDirectEventBlock)
 
 - (NSDictionary<NSString *, id> *)constantsToExport
 {
@@ -97,6 +98,19 @@ RCT_EXPORT_METHOD(reload:(nonnull NSNumber *)reactTag)
       RCTLogError(@"Invalid view returned from registry, expecting RCTWebViewBridge, got: %@", view);
     } else {
       [view reload];
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(sendToBridge:(nonnull NSNumber *)reactTag
+                  value:(NSString*)message)
+{
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebViewBridge *> *viewRegistry) {
+    RCTWebViewBridge *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[RCTWebViewBridge class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting RCTWebViewBridge, got: %@", view);
+    } else {
+      [view sendToBridge: message];
     }
   }];
 }
