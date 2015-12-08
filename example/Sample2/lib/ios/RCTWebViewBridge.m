@@ -239,6 +239,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
   //injecting WebViewBridge Script
+  NSBundle *bundle = [NSBundle mainBundle];
   NSString *webViewBridgeScriptFile = [bundle pathForResource:@"webviewbridge"
                                                        ofType:@"js"];
   NSString *webViewBridgeScriptContent = [NSString stringWithContentsOfFile:webViewBridgeScriptFile
