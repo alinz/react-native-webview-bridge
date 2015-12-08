@@ -152,9 +152,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
   if ([request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
     NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge._fetch()"];
-    NSArray* messages = [stringArrayJsonToArray: message];
+    NSArray* messages = [self stringArrayJsonToArray: message];
 
-    NSLog(messages);
+    NSLog(@"%@", messages);
 
     isJSNavigation = YES;
   }
