@@ -197,7 +197,8 @@ var WebViewBridge = React.createClass({
     var onBridgeMessage = (event: Event) => {
       var onBridgeMessageCallback = this.props.onBridgeMessage;
       if (onBridgeMessageCallback) {
-        event.messages.forEach((message) => {
+        const messages = event.nativeEvent.messages;
+        messages.forEach((message) => {
           onBridgeMessageCallback(message);
         });
       }

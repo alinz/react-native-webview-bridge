@@ -16,9 +16,19 @@ var WebViewBridge = require('react-native-webview-bridge');
 console.log(WebViewBridge);
 
 var Sample2 = React.createClass({
+  componentDidMount() {
+    setTimeout(() => {
+      this.refs.webviewbridge.sendToBridge("hahaha");
+    }, 5000);
+  },
   render: function() {
     return (
-      <WebViewBridge url={"http://google.com"}/>
+      <WebViewBridge
+        ref="webviewbridge"
+        onBridgeMessage={(message) => {
+          console.log(message);
+        }}
+        url={"http://google.com"}/>
     );
   }
 });
