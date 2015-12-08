@@ -21,7 +21,7 @@
 #import "RCTView.h"
 #import "UIView+React.h"
 
-//This is very elegent way of defining multiline string on objective-c.
+//This is a very elegent way of defining multiline string in objective-c.
 //source: http://stackoverflow.com/a/23387659/828487
 #define NSStringMultiline(...) [[NSString alloc] initWithCString:#__VA_ARGS__ encoding:NSUTF8StringEncoding]
 
@@ -76,7 +76,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   [_webView reload];
 }
 
-- (void)sendToBridge: NSString *message
+- (void)sendToBridge:(NSString *)message
 {
   //we are warpping the send message in a function to make sure that if
   //WebView is not injected, we don't crash the app.
@@ -238,6 +238,15 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+  //injecting WebViewBridge Script
+  NSString *webViewBridgeScriptFile = [bundle pathForResource:@"webviewbridge"
+                                                       ofType:@"js"];
+  NSString *webViewBridgeScriptContent = [NSString stringWithContentsOfFile:webViewBridgeScriptFile
+                                                                   encoding:NSUTF8StringEncoding
+                                                                      error:nil];
+  [webView stringByEvaluatingJavaScriptFromString:webViewBridgeScriptContent];
+  //////////////////////////////////////////////////////////////////////////////
+
   if (_injectedJavaScript != nil) {
     NSString *jsEvaluationValue = [webView stringByEvaluatingJavaScriptFromString:_injectedJavaScript];
 
