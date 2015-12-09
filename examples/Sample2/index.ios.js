@@ -24,8 +24,6 @@ const injectScript = `
         WebViewBridge.send("message from webview");
       };
 
-
-
     }
   }());
 `;
