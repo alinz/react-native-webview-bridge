@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>react-native-webview-bridge.xcscheme</key>
+		<key>React-Native-Webview-Bridge.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>41C393AB1C1875330094CF58</key>
+		<key>4114DC4B1C187C3A003CD988</key>
 		<dict>
 			<key>primary</key>
 			<true/>

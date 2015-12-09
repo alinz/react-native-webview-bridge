@@ -7,35 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		41C393BC1C1875C80094CF58 /* RCTWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C393B91C1875C80094CF58 /* RCTWebViewBridge.m */; };
-		41C393BD1C1875C80094CF58 /* RCTWebViewBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 41C393BB1C1875C80094CF58 /* RCTWebViewBridgeManager.m */; };
-		41C393BF1C18761A0094CF58 /* webviewbridge.js in CopyFiles */ = {isa = PBXBuildFile; fileRef = 41C393BE1C18761A0094CF58 /* webviewbridge.js */; };
+		4114DC5C1C187CCB003CD988 /* RCTWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */; };
+		4114DC5D1C187CCB003CD988 /* RCTWebViewBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4114DC5B1C187CCB003CD988 /* RCTWebViewBridgeManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		41C393AA1C1875330094CF58 /* CopyFiles */ = {
+		4114DC4A1C187C3A003CD988 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				41C393BF1C18761A0094CF58 /* webviewbridge.js in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		41C393AC1C1875330094CF58 /* libReact-Native-Webview-Bridge.temp_caseinsensitive_rename.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libReact-Native-Webview-Bridge.temp_caseinsensitive_rename.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		41C393B81C1875C80094CF58 /* RCTWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTWebViewBridge.h; sourceTree = SOURCE_ROOT; };
-		41C393B91C1875C80094CF58 /* RCTWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridge.m; sourceTree = SOURCE_ROOT; };
-		41C393BA1C1875C80094CF58 /* RCTWebViewBridgeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTWebViewBridgeManager.h; sourceTree = SOURCE_ROOT; };
-		41C393BB1C1875C80094CF58 /* RCTWebViewBridgeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridgeManager.m; sourceTree = SOURCE_ROOT; };
-		41C393BE1C18761A0094CF58 /* webviewbridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = webviewbridge.js; path = ../scripts/webviewbridge.js; sourceTree = "<group>"; };
+		4114DC4C1C187C3A003CD988 /* libReact-Native-Webview-Bridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libReact-Native-Webview-Bridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4114DC581C187CCB003CD988 /* RCTWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTWebViewBridge.h; sourceTree = SOURCE_ROOT; };
+		4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridge.m; sourceTree = SOURCE_ROOT; };
+		4114DC5A1C187CCB003CD988 /* RCTWebViewBridgeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTWebViewBridgeManager.h; sourceTree = SOURCE_ROOT; };
+		4114DC5B1C187CCB003CD988 /* RCTWebViewBridgeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridgeManager.m; sourceTree = SOURCE_ROOT; };
+		4114DC5F1C187CE4003CD988 /* webviewbridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = webviewbridge.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		41C393A91C1875330094CF58 /* Frameworks */ = {
+		4114DC491C187C3A003CD988 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -45,108 +43,108 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		41C393A31C1875330094CF58 = {
+		4114DC431C187C3A003CD988 = {
 			isa = PBXGroup;
 			children = (
-				41C393AE1C1875330094CF58 /* React-Native-Webview-Bridge */,
-				41C393C01C18765D0094CF58 /* scripts */,
-				41C393AD1C1875330094CF58 /* Products */,
+				4114DC4E1C187C3A003CD988 /* React-Native-Webview-Bridge */,
+				4114DC5E1C187CE4003CD988 /* scripts */,
+				4114DC4D1C187C3A003CD988 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		41C393AD1C1875330094CF58 /* Products */ = {
+		4114DC4D1C187C3A003CD988 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				41C393AC1C1875330094CF58 /* libReact-Native-Webview-Bridge.temp_caseinsensitive_rename.a */,
+				4114DC4C1C187C3A003CD988 /* libReact-Native-Webview-Bridge.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		41C393AE1C1875330094CF58 /* React-Native-Webview-Bridge */ = {
+		4114DC4E1C187C3A003CD988 /* React-Native-Webview-Bridge */ = {
 			isa = PBXGroup;
 			children = (
-				41C393B81C1875C80094CF58 /* RCTWebViewBridge.h */,
-				41C393B91C1875C80094CF58 /* RCTWebViewBridge.m */,
-				41C393BA1C1875C80094CF58 /* RCTWebViewBridgeManager.h */,
-				41C393BB1C1875C80094CF58 /* RCTWebViewBridgeManager.m */,
+				4114DC581C187CCB003CD988 /* RCTWebViewBridge.h */,
+				4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */,
+				4114DC5A1C187CCB003CD988 /* RCTWebViewBridgeManager.h */,
+				4114DC5B1C187CCB003CD988 /* RCTWebViewBridgeManager.m */,
 			);
-			name = "React-Native-Webview-Bridge";
-			path = "react-native-webview-bridge";
+			path = "React-Native-Webview-Bridge";
 			sourceTree = "<group>";
 		};
-		41C393C01C18765D0094CF58 /* scripts */ = {
+		4114DC5E1C187CE4003CD988 /* scripts */ = {
 			isa = PBXGroup;
 			children = (
-				41C393BE1C18761A0094CF58 /* webviewbridge.js */,
+				4114DC5F1C187CE4003CD988 /* webviewbridge.js */,
 			);
 			name = scripts;
+			path = ../scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		41C393AB1C1875330094CF58 /* React-Native-Webview-Bridge.temp_caseinsensitive_rename */ = {
+		4114DC4B1C187C3A003CD988 /* React-Native-Webview-Bridge */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 41C393B51C1875330094CF58 /* Build configuration list for PBXNativeTarget "React-Native-Webview-Bridge.temp_caseinsensitive_rename" */;
+			buildConfigurationList = 4114DC551C187C3A003CD988 /* Build configuration list for PBXNativeTarget "React-Native-Webview-Bridge" */;
 			buildPhases = (
-				41C393A81C1875330094CF58 /* Sources */,
-				41C393A91C1875330094CF58 /* Frameworks */,
-				41C393AA1C1875330094CF58 /* CopyFiles */,
+				4114DC481C187C3A003CD988 /* Sources */,
+				4114DC491C187C3A003CD988 /* Frameworks */,
+				4114DC4A1C187C3A003CD988 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "React-Native-Webview-Bridge.temp_caseinsensitive_rename";
-			productName = "react-native-webview-bridge";
-			productReference = 41C393AC1C1875330094CF58 /* libReact-Native-Webview-Bridge.temp_caseinsensitive_rename.a */;
+			name = "React-Native-Webview-Bridge";
+			productName = "React-Native-Webview-Bridge";
+			productReference = 4114DC4C1C187C3A003CD988 /* libReact-Native-Webview-Bridge.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		41C393A41C1875330094CF58 /* Project object */ = {
+		4114DC441C187C3A003CD988 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = alinz;
 				TargetAttributes = {
-					41C393AB1C1875330094CF58 = {
+					4114DC4B1C187C3A003CD988 = {
 						CreatedOnToolsVersion = 7.1.1;
 					};
 				};
 			};
-			buildConfigurationList = 41C393A71C1875330094CF58 /* Build configuration list for PBXProject "React-Native-Webview-Bridge" */;
+			buildConfigurationList = 4114DC471C187C3A003CD988 /* Build configuration list for PBXProject "React-Native-Webview-Bridge" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 41C393A31C1875330094CF58;
-			productRefGroup = 41C393AD1C1875330094CF58 /* Products */;
+			mainGroup = 4114DC431C187C3A003CD988;
+			productRefGroup = 4114DC4D1C187C3A003CD988 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				41C393AB1C1875330094CF58 /* React-Native-Webview-Bridge.temp_caseinsensitive_rename */,
+				4114DC4B1C187C3A003CD988 /* React-Native-Webview-Bridge */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		41C393A81C1875330094CF58 /* Sources */ = {
+		4114DC481C187C3A003CD988 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41C393BD1C1875C80094CF58 /* RCTWebViewBridgeManager.m in Sources */,
-				41C393BC1C1875C80094CF58 /* RCTWebViewBridge.m in Sources */,
+				4114DC5D1C187CCB003CD988 /* RCTWebViewBridgeManager.m in Sources */,
+				4114DC5C1C187CCB003CD988 /* RCTWebViewBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		41C393B31C1875330094CF58 /* Debug */ = {
+		4114DC531C187C3A003CD988 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -189,7 +187,7 @@
 			};
 			name = Debug;
 		};
-		41C393B41C1875330094CF58 /* Release */ = {
+		4114DC541C187C3A003CD988 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -226,30 +224,30 @@
 			};
 			name = Release;
 		};
-		41C393B61C1875330094CF58 /* Debug */ = {
+		4114DC561C187C3A003CD988 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../../../node_modules/React/**",
+					"$(inhereted)",
+					"$(SRCROOT)/../../../node_module/React/**",
 					"$(SRCROOT)/../../../node_modules/react-native/React/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "React-Native-Webview-Bridge.temp_caseinsensitive_rename";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		41C393B71C1875330094CF58 /* Release */ = {
+		4114DC571C187C3A003CD988 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../../../node_modules/React/**",
+					"$(inhereted)",
+					"$(SRCROOT)/../../../node_module/React/**",
 					"$(SRCROOT)/../../../node_modules/react-native/React/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "React-Native-Webview-Bridge.temp_caseinsensitive_rename";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -257,25 +255,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		41C393A71C1875330094CF58 /* Build configuration list for PBXProject "React-Native-Webview-Bridge" */ = {
+		4114DC471C187C3A003CD988 /* Build configuration list for PBXProject "React-Native-Webview-Bridge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				41C393B31C1875330094CF58 /* Debug */,
-				41C393B41C1875330094CF58 /* Release */,
+				4114DC531C187C3A003CD988 /* Debug */,
+				4114DC541C187C3A003CD988 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		41C393B51C1875330094CF58 /* Build configuration list for PBXNativeTarget "React-Native-Webview-Bridge.temp_caseinsensitive_rename" */ = {
+		4114DC551C187C3A003CD988 /* Build configuration list for PBXNativeTarget "React-Native-Webview-Bridge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				41C393B61C1875330094CF58 /* Debug */,
-				41C393B71C1875330094CF58 /* Release */,
+				4114DC561C187C3A003CD988 /* Debug */,
+				4114DC571C187C3A003CD988 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 41C393A41C1875330094CF58 /* Project object */;
+	rootObject = 4114DC441C187C3A003CD988 /* Project object */;
 }

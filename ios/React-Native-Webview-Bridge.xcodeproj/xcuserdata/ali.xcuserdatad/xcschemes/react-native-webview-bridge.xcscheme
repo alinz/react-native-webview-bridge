@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "41C393AB1C1875330094CF58"
-               BuildableName = "libReact-Native-Webview-Bridge.temp_caseinsensitive_rename.a"
-               BlueprintName = "React-Native-Webview-Bridge.temp_caseinsensitive_rename"
+               BlueprintIdentifier = "4114DC4B1C187C3A003CD988"
+               BuildableName = "libReact-Native-Webview-Bridge.a"
+               BlueprintName = "React-Native-Webview-Bridge"
                ReferencedContainer = "container:React-Native-Webview-Bridge.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "41C393AB1C1875330094CF58"
-            BuildableName = "libReact-Native-Webview-Bridge.temp_caseinsensitive_rename.a"
-            BlueprintName = "React-Native-Webview-Bridge.temp_caseinsensitive_rename"
+            BlueprintIdentifier = "4114DC4B1C187C3A003CD988"
+            BuildableName = "libReact-Native-Webview-Bridge.a"
+            BlueprintName = "React-Native-Webview-Bridge"
             ReferencedContainer = "container:React-Native-Webview-Bridge.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -63,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "41C393AB1C1875330094CF58"
-            BuildableName = "libReact-Native-Webview-Bridge.temp_caseinsensitive_rename.a"
-            BlueprintName = "React-Native-Webview-Bridge.temp_caseinsensitive_rename"
+            BlueprintIdentifier = "4114DC4B1C187C3A003CD988"
+            BuildableName = "libReact-Native-Webview-Bridge.a"
+            BlueprintName = "React-Native-Webview-Bridge"
             ReferencedContainer = "container:React-Native-Webview-Bridge.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
