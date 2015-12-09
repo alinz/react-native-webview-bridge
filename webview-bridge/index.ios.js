@@ -14,19 +14,22 @@
  */
 'use strict';
 
-var ActivityIndicatorIOS = require('ActivityIndicatorIOS');
-var EdgeInsetsPropType = require('EdgeInsetsPropType');
-var React = require('React');
-var StyleSheet = require('StyleSheet');
-var Text = require('Text');
-var View = require('View');
-
+var React = require('react-native');
 var invariant = require('invariant');
-var keyMirror = require('keyMirror');
-var requireNativeComponent = require('requireNativeComponent');
+var keyMirror = require('keymirror');
 
-var PropTypes = React.PropTypes;
-var RCTWebViewBridgeManager = require('NativeModules').WebViewBridgeManager;
+var {
+  ActivityIndicatorIOS,
+  EdgeInsetsPropType,
+  StyleSheet,
+  Text,
+  View,
+  requireNativeComponent,
+  PropTypes,
+  NativeModules: {
+    WebViewBridgeManager
+  }
+} = React;
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEW_BRIDGE_REF = 'webviewbridge';
@@ -38,15 +41,15 @@ var WebViewBridgeState = keyMirror({
 });
 
 var NavigationType = {
-  click: RCTWebViewBridgeManager.NavigationType.LinkClicked,
-  formsubmit: RCTWebViewBridgeManager.NavigationType.FormSubmitted,
-  backforward: RCTWebViewBridgeManager.NavigationType.BackForward,
-  reload: RCTWebViewBridgeManager.NavigationType.Reload,
-  formresubmit: RCTWebViewBridgeManager.NavigationType.FormResubmitted,
-  other: RCTWebViewBridgeManager.NavigationType.Other,
+  click: WebViewBridgeManager.NavigationType.LinkClicked,
+  formsubmit: WebViewBridgeManager.NavigationType.FormSubmitted,
+  backforward: WebViewBridgeManager.NavigationType.BackForward,
+  reload: WebViewBridgeManager.NavigationType.Reload,
+  formresubmit: WebViewBridgeManager.NavigationType.FormResubmitted,
+  other: WebViewBridgeManager.NavigationType.Other,
 };
 
-var JSNavigationScheme = RCTWebViewBridgeManager.JSNavigationScheme;
+var JSNavigationScheme = WebViewBridgeManager.JSNavigationScheme;
 
 type ErrorEvent = {
   domain: any;
@@ -191,7 +194,7 @@ var WebViewBridge = React.createClass({
     var onShouldStartLoadWithRequest = this.props.onShouldStartLoadWithRequest && ((event: Event) => {
       var shouldStart = this.props.onShouldStartLoadWithRequest &&
         this.props.onShouldStartLoadWithRequest(event.nativeEvent);
-      RCTWebViewBridgeManager.startLoadWithResult(!!shouldStart, event.nativeEvent.lockIdentifier);
+      WebViewBridgeManager.startLoadWithResult(!!shouldStart, event.nativeEvent.lockIdentifier);
     });
 
     var onBridgeMessage = (event: Event) => {
@@ -234,19 +237,19 @@ var WebViewBridge = React.createClass({
   },
 
   goForward: function() {
-    RCTWebViewBridgeManager.goForward(this.getWebViewBridgeHandle());
+    WebViewBridgeManager.goForward(this.getWebViewBridgeHandle());
   },
 
   goBack: function() {
-    RCTWebViewBridgeManager.goBack(this.getWebViewBridgeHandle());
+    WebViewBridgeManager.goBack(this.getWebViewBridgeHandle());
   },
 
   reload: function() {
-    RCTWebViewBridgeManager.reload(this.getWebViewBridgeHandle());
+    WebViewBridgeManager.reload(this.getWebViewBridgeHandle());
   },
 
   sendToBridge: function (message) {
-    RCTWebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
+    WebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
   },
 
   /**
