@@ -114,9 +114,6 @@ var Sample2 = React.createClass({
         ref="webviewbridge"
         onBridgeMessage={this.onBridgeMessage}
         injectedJavaScript={injectScript}
-        onBridgeMessage={(message) => {
-          console.log(message);
-        }}
         url={"http://google.com"}/>
     );
   }
