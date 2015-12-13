@@ -111,16 +111,29 @@ if (React.StatusBarIOS) {
 
 } else {
 
-    var { requireNativeComponent, PropTypes, View } = React;
+    var { requireNativeComponent, PropTypes, View, DeviceEventEmitter } = React;
     var NativeWebView = requireNativeComponent('WebViewAndroid', WebViewBridge);
     var RCTUIManager = React.NativeModules.UIManager;
 
+    var _cbQueue = [];
+
     var WEBVIEW_REF = 'androidWebView';
+    var ID = (new Date()).getTime() + "";
 
     class WebViewBridge extends React.Component {
         constructor() {
             super();
             this.handlerId = 0;
+        }
+
+        componentWillMount() {
+            DeviceEventEmitter.addListener("webViewMessage", (message) => {
+                if (message.webView == ID) {
+                    for (var i = 0, j = _cbQueue.length; i < j; i++) {
+                        _cbQueue[i](message.message);
+                    }
+                }
+            });
         }
 
         _onChange(event) {
@@ -178,13 +191,14 @@ if (React.StatusBarIOS) {
         }
 
         onMessage(cb) {
-
+            _cbQueue.push(cb);
         }
 
         render() {
             return (
                 <NativeWebView
                     {...this.props}
+                    webViewId={ID}
                     ref={WEBVIEW_REF} />
             );
         }

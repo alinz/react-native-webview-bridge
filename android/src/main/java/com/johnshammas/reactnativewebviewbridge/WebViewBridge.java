@@ -6,12 +6,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 
@@ -54,9 +58,12 @@ public class WebViewBridge extends WebView {
     private final EventDispatcher mEventDispatcher;
     private final EventWebClient mWebViewClient;
     private String charset = "UTF-8";
+    private String id;
+    private ReactContext context;
 
     public WebViewBridge(ReactContext reactContext) {
         super(reactContext);
+        this.context = reactContext;
 
         mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         mWebViewClient = new EventWebClient();
@@ -87,6 +94,10 @@ public class WebViewBridge extends WebView {
         return this.charset;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public void setInjectedJavaScript(String injectedJavaScript) {
         mWebViewClient.setInjectedJavaScript(injectedJavaScript);
     }
@@ -100,13 +111,25 @@ public class WebViewBridge extends WebView {
     }
 
     protected class JavascriptBridge {
-        public void send(String message) {
+        private String id;
 
+        public JavascriptBridge(String id) {
+            this.id = id;
+        }
+
+        @JavascriptInterface
+        public void send(String message) {
+            WritableMap params = Arguments.createMap();
+            params.putString("message", message);
+            params.putString("webView", this.id);
+
+            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("webViewMessage", params);
         }
     }
 
     public void injectBridgeScript() {
-        this.addJavascriptInterface(new JavascriptBridge(), "WebViewBridgeAndroid");
+        this.addJavascriptInterface(new JavascriptBridge(this.id), "WebViewBridgeAndroid");
         this.reload();
 
         this.evaluateJavascript(""

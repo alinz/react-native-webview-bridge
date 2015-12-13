@@ -90,6 +90,11 @@ public class WebViewBridgeManager extends ViewGroupManager<WebViewBridge> {
         view.setInjectedJavaScript(injectedJavaScript);
     }
 
+    @ReactProp(name = "webViewId")
+    public void setWebViewId(WebViewBridge view, @Nullable String id) {
+        view.setId(id);
+    }
+
     @Override
     public @Nullable Map<String, Integer> getCommandsMap() {
         return MapBuilder.of(
