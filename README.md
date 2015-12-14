@@ -86,17 +86,33 @@ This example can be found in `examples` folder.
 
 ```js
 const injectScript = `
-  (function () {
-    if (WebViewBridge) {
-
-      WebViewBridge.onMessage = function (message) {
-        alert('got a message from Native: ' + message);
-
-        WebViewBridge.send("message from webview");
-      };
-
+  function webViewBridgeReady(cb) {
+    //checks whether WebViewBirdge exists in global scope.
+    if (window.WebViewBridge) {
+      cb(window.WebViewBridge);
+      return;
     }
-  }());
+
+    function handler() {
+      //remove the handler from listener since we don't need it anymore
+      document.removeEventListener('WebViewBridge', handler, false);
+      //pass the WebViewBridge object to the callback
+      cb(window.WebViewBridge);
+    }
+
+    //if WebViewBridge doesn't exist in global scope attach itself to document
+    //event system. Once the code is being injected by extension, the handler will
+    //be called.
+    document.addEventListener('WebViewBridge', handler, false);
+  }
+
+  webViewBridgeReady(function (webViewBridge) {
+    WebViewBridge.onMessage = function (message) {
+      alert('got a message from Native: ' + message);
+
+      WebViewBridge.send("message from webview");
+    };
+  });
 `;
 
 var Sample2 = React.createClass({

@@ -9,6 +9,8 @@
   var RNWBSchema = 'wvb';
   var sendQueue = [];
   var receiveQueue = [];
+  var doc = window.document;
+  var customEvent = doc.createEvent('Event');
 
   function callFunc(func, message) {
     if ('function' === typeof func) {
@@ -63,4 +65,8 @@
   };
 
   window.WebViewBridge = WebViewBridge;
+
+  //dispatch event
+  customEvent.initEvent('WebViewBridge', true, true);
+  doc.dispatchEvent(customEvent);
 }(window));
