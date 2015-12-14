@@ -286,6 +286,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       var RNWBSchema = 'wvb';
       var sendQueue = [];
       var receiveQueue = [];
+      var doc = window.document;
+      var customEvent = doc.createEvent('Event');
 
       function callFunc(func, message) {
         if ('function' === typeof func) {
@@ -340,6 +342,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       };
 
       window.WebViewBridge = WebViewBridge;
+
+      //dispatch event
+      customEvent.initEvent('WebViewBridge', true, true);
+      doc.dispatchEvent(customEvent);
     }(window));
   );
 }
