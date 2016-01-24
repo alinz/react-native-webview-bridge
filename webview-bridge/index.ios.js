@@ -198,7 +198,7 @@ var WebViewBridge = React.createClass({
     });
 
     var onBridgeMessage = (event: Event) => {
-      var onBridgeMessageCallback = this.props.onBridgeMessage;
+      const onBridgeMessageCallback = this.props.onBridgeMessage;
       if (onBridgeMessageCallback) {
         const messages = event.nativeEvent.messages;
         messages.forEach((message) => {
@@ -248,7 +248,7 @@ var WebViewBridge = React.createClass({
     WebViewBridgeManager.reload(this.getWebViewBridgeHandle());
   },
 
-  sendToBridge: function (message) {
+  sendToBridge: function (message: string) {
     WebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
   },
 
