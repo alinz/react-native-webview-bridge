@@ -107,10 +107,10 @@ const injectScript = `
   }
 
   webViewBridgeReady(function (webViewBridge) {
-    WebViewBridge.onMessage = function (message) {
+    webViewBridge.onMessage = function (message) {
       alert('got a message from Native: ' + message);
 
-      WebViewBridge.send("message from webview");
+      webViewBridge.send("message from webview");
     };
   });
 `;
