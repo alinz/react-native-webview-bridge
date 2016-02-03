@@ -84,6 +84,7 @@ public class WebViewBridge extends WebView {
 
         this.setWebViewClient(mWebViewClient);
         this.setWebChromeClient(new WebChromeClient());
+        this.addJavascriptInterface(new JavascriptBridge(this.id), "WebViewBridgeAndroid");
     }
 
     public void setCharset(String charset) {
@@ -129,9 +130,6 @@ public class WebViewBridge extends WebView {
     }
 
     public void injectBridgeScript() {
-        this.addJavascriptInterface(new JavascriptBridge(this.id), "WebViewBridgeAndroid");
-        this.reload();
-
         this.evaluateJavascript(""
 + "(function() {"
     + "var customEvent = document.createEvent('Event');"
@@ -143,7 +141,6 @@ public class WebViewBridge extends WebView {
     + "customEvent.initEvent('WebViewBridge', true, true);"
     + "document.dispatchEvent(customEvent);"
 +"}())", null);
-
     }
 
     public void send(String message) {
