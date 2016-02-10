@@ -11,7 +11,7 @@ import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import com.github.alinz.reactnativewebviewbridge;
+import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
