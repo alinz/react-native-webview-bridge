@@ -282,7 +282,7 @@ var WebViewBridge = React.createClass({
 
   goForward: function() {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewBridgeHandle(),
       UIManager.RCTWebViewBridge.Commands.goForward,
       null
     );
@@ -290,7 +290,7 @@ var WebViewBridge = React.createClass({
 
   goBack: function() {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewBridgeHandle(),
       UIManager.RCTWebViewBridge.Commands.goBack,
       null
     );
@@ -298,7 +298,7 @@ var WebViewBridge = React.createClass({
 
   reload: function() {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewHandle(),
+      this.getWebViewBridgeHandle(),
       UIManager.RCTWebViewBridge.Commands.reload,
       null
     );
@@ -318,7 +318,7 @@ var WebViewBridge = React.createClass({
     }
   },
 
-  getWebViewHandle: function(): any {
+  getWebViewBridgeHandle: function(): any {
     return React.findNodeHandle(this.refs[RCT_WEBVIEWBRIDGE_REF]);
   },
 
