@@ -1,5 +1,5 @@
 # React Native WebView Javascript Bridge
-I have been testing and reading a lot of way to safely create a bridge between react-native and webview. I'm happy to announced that the wait is over and from **React-Native 0.16 and above**, the bridge is fully functional.
+I have been testing and reading a lot of way to safely create a bridge between react-native and webview. I'm happy to announced that the wait is over and from **React-Native 0.19 and above**, the bridge is fully functional.
 
 
 
@@ -7,30 +7,67 @@ I have been testing and reading a lot of way to safely create a bridge between r
 
 In order to use this extension, you have to do the following steps:
 
-1. in your react-native project, run `npm install react-native-webview-bridge`
-2. go to xcode's `Project Navigator` tab
+in your react-native project, run `npm install react-native-webview-bridge`
+
+### iOS
+
+1. go to xcode's `Project Navigator` tab
 <p align="center">
     <img src ="https://raw.githubusercontent.com/alinz/react-native-webview-bridge/master/doc/assets/01.png" />
 </p>
-3. right click on `Libraries`
-4. select `Add Files to ...` option
+2. right click on `Libraries`
+3. select `Add Files to ...` option
 <p align="center">
     <img src ="https://raw.githubusercontent.com/alinz/react-native-webview-bridge/master/doc/assets/02.png" />
 </p>
-5. navigate to `node_modules/react-native-webview-bridge/ios` and add `React-Native-Webview-Bridge.xcodeproj` folder
+4. navigate to `node_modules/react-native-webview-bridge/ios` and add `React-Native-Webview-Bridge.xcodeproj` folder
 <p align="center">
     <img src ="https://raw.githubusercontent.com/alinz/react-native-webview-bridge/master/doc/assets/03.png" />
 </p>
-6. on project `Project Navigator` tab, click on your project's name and select Target's name and from there click on `Build Phases`
+5. on project `Project Navigator` tab, click on your project's name and select Target's name and from there click on `Build Phases`
 <p align="center">
     <img src ="https://raw.githubusercontent.com/alinz/react-native-webview-bridge/master/doc/assets/04.png" />
 </p>
-7. expand `Link Binary With Libraries` and click `+` sign to add a new one.
-8. select `libReact-Native-Webviwe-Bridge.a` and click `Add` button.
+6. expand `Link Binary With Libraries` and click `+` sign to add a new one.
+7. select `libReact-Native-Webviwe-Bridge.a` and click `Add` button.
 <p align="center">
     <img src ="https://raw.githubusercontent.com/alinz/react-native-webview-bridge/master/doc/assets/05.png" />
 </p>
-9. clean compile to make sure your project can compile and build.
+8. clean compile to make sure your project can compile and build.
+
+### Android (Beta)
+
+1. add the following import to `MainActivity.java` of your application
+
+```java
+import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
+```
+
+2. add the following code to add the package to `MainActivity.java`
+
+```java
+mReactInstanceManager = ReactInstanceManager.builder()
+        ...
+        .addPackage(new WebViewBridgePackage())
+        ...
+```
+
+3. add the following codes to your `android/setting.gradle`
+
+> you might have multiple 3rd party libraries, make sure that you don't create multiple include.
+
+```
+include ':app', ':react-native-webview-bridge'
+project(':react-native-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview-bridge/android')
+```
+
+4. edit `android/app/build.gradle` and add the following line inside `dependencies`
+
+```
+compile project(':react-native-webview-bridge')
+```
+
+5. run `react-native run-android` to see if everything is compilable.
 
 ## Usage
 
@@ -70,7 +107,7 @@ this method sends a message to native side. the message must be in string type o
 
 this method needs to be implemented. it will be called once a message arrives from native side. The type of message is in string.
 
-#### onError
+#### onError (iOS only)
 
 this is an error reporting method. It will be called if there is an error happens during sending a message. It receives a error message in string type.
 
