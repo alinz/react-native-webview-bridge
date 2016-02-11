@@ -9,6 +9,7 @@ var {
   StyleSheet,
   Text,
   View,
+  WebView
 } = React;
 
 var WebViewBridge = require('react-native-webview-bridge');
@@ -23,16 +24,13 @@ const injectScript = `
         WebViewBridge.send("message from webview");
       };
 
+    } else {
+      window.location.href = "yahoo.ca";
     }
   }());
 `;
 
 var Sample2 = React.createClass({
-  componentDidMount() {
-    setTimeout(() => {
-      this.refs.webviewbridge.sendToBridge("hahaha");
-    }, 5000);
-  },
   onBridgeMessage: function (message) {
     console.log(message);
   },
@@ -41,11 +39,9 @@ var Sample2 = React.createClass({
       <WebViewBridge
         ref="webviewbridge"
         onBridgeMessage={this.onBridgeMessage}
+        javaScriptEnabled={true}
         injectedJavaScript={injectScript}
-        onBridgeMessage={(message) => {
-          console.log(message);
-        }}
-        url={"http://google.com"}/>
+        url={"https://google.com"}/>
     );
   }
 });

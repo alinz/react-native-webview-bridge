@@ -27,6 +27,7 @@ var {
   View,
   requireNativeComponent,
   PropTypes,
+  DeviceEventEmitter,
   NativeModules: {
     WebViewBridgeManager
   }
@@ -104,6 +105,11 @@ var WebViewBridge = React.createClass({
   },
 
   componentWillMount: function() {
+    DeviceEventEmitter.addListener("webViewBridgeMessage", (message) => {
+      const { onBridgeMessage } = this.props;
+      onBridgeMessage && onBridgeMessage(message);
+    });
+
     if (this.props.startInLoadingState) {
       this.setState({viewState: WebViewBridgeState.LOADING});
     }
@@ -141,16 +147,6 @@ var WebViewBridge = React.createClass({
       domStorageEnabled = this.props.domStorageEnabledAndroid;
     }
 
-    var onBridgeMessage = (event: Event) => {
-      const onBridgeMessageCallback = this.props.onBridgeMessage;
-      if (onBridgeMessageCallback) {
-        const messages = event.nativeEvent.messages;
-        messages.forEach((message) => {
-          onBridgeMessageCallback(message);
-        });
-      }
-    };
-
     var webView =
       <RCTWebViewBridge
         ref={RCT_WEBVIEWBRIDGE_REF}
@@ -168,7 +164,6 @@ var WebViewBridge = React.createClass({
         onLoadingFinish={this.onLoadingFinish}
         onLoadingError={this.onLoadingError}
         testID={this.props.testID}
-        onBridgeMessage={onBridgeMessage}
       />;
 
     return (
@@ -204,7 +199,19 @@ var WebViewBridge = React.createClass({
   },
 
   sendToBridge: function (message: string) {
-    WebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
+    UIManager.dispatchViewManagerCommand(
+      this.getWebViewBridgeHandle(),
+      UIManager.RCTWebViewBridge.Commands.sendToBridge,
+      [message]
+    );
+  },
+
+  injectBridgeScript: function () {
+    UIManager.dispatchViewManagerCommand(
+      this.getWebViewBridgeHandle(),
+      UIManager.RCTWebViewBridge.Commands.injectBridgeScript,
+      null
+    );
   },
 
   /**
@@ -222,6 +229,7 @@ var WebViewBridge = React.createClass({
   },
 
   onLoadingStart: function(event) {
+    this.injectBridgeScript();
     var onLoadStart = this.props.onLoadStart;
     onLoadStart && onLoadStart(event);
     this.updateNavigationState(event);
