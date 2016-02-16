@@ -25,6 +25,7 @@ var {
   StyleSheet,
   Text,
   View,
+  WebView,
   requireNativeComponent,
   PropTypes,
   DeviceEventEmitter,
@@ -47,48 +48,7 @@ var WebViewBridgeState = keyMirror({
 var WebViewBridge = React.createClass({
 
   propTypes: {
-    ...View.propTypes,
-    renderError: PropTypes.func,
-    renderLoading: PropTypes.func,
-    onLoad: PropTypes.func,
-    onLoadEnd: PropTypes.func,
-    onLoadStart: PropTypes.func,
-    onError: PropTypes.func,
-    url: PropTypes.string,
-    html: PropTypes.string,
-    automaticallyAdjustContentInsets: PropTypes.bool,
-    contentInset: EdgeInsetsPropType,
-    onNavigationStateChange: PropTypes.func,
-    startInLoadingState: PropTypes.bool, // force WebView to show loadingView on first load
-    style: View.propTypes.style,
-
-    /**
-     * Used on Android only, JS is enabled by default for WebView on iOS
-     * @platform android
-     */
-    javaScriptEnabled: PropTypes.bool,
-
-    /**
-     * Used on Android only, controls whether DOM Storage is enabled or not
-     * @platform android
-     */
-    domStorageEnabled: PropTypes.bool,
-
-    /**
-     * Sets the JS to be injected when the webpage loads.
-     */
-    injectedJavaScript: PropTypes.string,
-
-    /**
-     * Sets the user-agent for this WebView. The user-agent can also be set in native using
-     * WebViewConfig. This prop will overwrite that config.
-     */
-    userAgent: PropTypes.string,
-
-    /**
-     * Used to locate this view in end-to-end tests.
-     */
-    testID: PropTypes.string,
+    ...WebView.propTypes,
 
     /**
      * Will be called once the message is being sent from webview
