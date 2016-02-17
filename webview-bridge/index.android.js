@@ -111,19 +111,11 @@ var WebViewBridge = React.createClass({
       <RCTWebViewBridge
         ref={RCT_WEBVIEWBRIDGE_REF}
         key="webViewKey"
+        {...this.props}
         style={webViewStyles}
-        url={this.props.url}
-        html={this.props.html}
-        injectedJavaScript={this.props.injectedJavaScript}
-        userAgent={this.props.userAgent}
-        javaScriptEnabled={javaScriptEnabled}
-        domStorageEnabled={domStorageEnabled}
-        contentInset={this.props.contentInset}
-        automaticallyAdjustContentInsets={this.props.automaticallyAdjustContentInsets}
         onLoadingStart={this.onLoadingStart}
         onLoadingFinish={this.onLoadingFinish}
         onLoadingError={this.onLoadingError}
-        testID={this.props.testID}
       />;
 
     return (
