@@ -101,6 +101,8 @@ var WebViewBridge = React.createClass({
      * Will be called once the message is being sent from webview
      */
     onBridgeMessage: PropTypes.func,
+
+    hideKeyboardAccessoryView: PropTypes.bool,
   },
 
   getInitialState: function() {
@@ -184,6 +186,7 @@ var WebViewBridge = React.createClass({
         scrollEnabled={this.props.scrollEnabled}
         contentInset={this.props.contentInset}
         automaticallyAdjustContentInsets={this.props.automaticallyAdjustContentInsets}
+        hideKeyboardAccessoryView={this.props.hideKeyboardAccessoryView}
         onLoadingStart={this.onLoadingStart}
         onLoadingFinish={this.onLoadingFinish}
         onLoadingError={this.onLoadingError}

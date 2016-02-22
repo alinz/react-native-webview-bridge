@@ -25,10 +25,19 @@
 //source: http://stackoverflow.com/a/23387659/828487
 #define NSStringMultiline(...) [[NSString alloc] initWithCString:#__VA_ARGS__ encoding:NSUTF8StringEncoding]
 
-
 //we don'e need this one since it has been defined in RCTWebView.m
 //NSString *const RCTJSNavigationScheme = @"react-js-navigation";
 NSString *const RCTWebViewBridgeSchema = @"wvb";
+
+// runtime trick to remove UIWebview keyboard default toolbar
+// see: http://stackoverflow.com/questions/19033292/ios-7-uiwebview-keyboard-issue/19042279#19042279
+@interface _SwizzleHelper : NSObject @end
+@implementation _SwizzleHelper
+-(id)inputAccessoryView
+{
+  return nil;
+}
+@end
 
 @interface RCTWebViewBridge () <UIWebViewDelegate, RCTAutoInsetsProtocol>
 
@@ -163,6 +172,37 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   [RCTView autoAdjustInsetsForView:self
                     withScrollView:_webView.scrollView
                       updateOffset:YES];
+}
+
+-(void)setHideKeyboardAccessoryView:(BOOL)hideKeyboardAccessoryView
+{
+  if (!hideKeyboardAccessoryView) {
+    return;
+  }
+    
+  UIView* subview;
+  for (UIView* view in _webView.scrollView.subviews) {
+    if([[view.class description] hasPrefix:@"UIWeb"])
+      subview = view;
+  }
+
+  if(subview == nil) return;
+
+  NSString* name = [NSString stringWithFormat:@"%@_SwizzleHelper", subview.class.superclass];
+  Class newClass = NSClassFromString(name);
+
+  if(newClass == nil)
+  {
+    newClass = objc_allocateClassPair(subview.class, [name cStringUsingEncoding:NSASCIIStringEncoding], 0);
+    if(!newClass) return;
+        
+    Method method = class_getInstanceMethod([_SwizzleHelper class], @selector(inputAccessoryView));
+      class_addMethod(newClass, @selector(inputAccessoryView), method_getImplementation(method), method_getTypeEncoding(method));
+        
+    objc_registerClassPair(newClass);
+  }
+
+  object_setClass(subview, newClass);
 }
 
 #pragma mark - UIWebViewDelegate methods
