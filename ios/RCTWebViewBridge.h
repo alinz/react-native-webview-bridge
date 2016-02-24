@@ -37,6 +37,7 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 @property (nonatomic, strong) NSURL *URL;
 @property (nonatomic, assign) UIEdgeInsets contentInset;
 @property (nonatomic, assign) BOOL automaticallyAdjustContentInsets;
+@property (nonatomic, assign) BOOL hideKeyboardAccessoryView;
 @property (nonatomic, copy) NSString *injectedJavaScript;
 
 - (void)goForward;

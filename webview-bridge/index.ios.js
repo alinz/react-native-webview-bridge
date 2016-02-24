@@ -101,6 +101,8 @@ var WebViewBridge = React.createClass({
      * Will be called once the message is being sent from webview
      */
     onBridgeMessage: PropTypes.func,
+
+    hideKeyboardAccessoryView: PropTypes.bool,
   },
 
   getInitialState: function() {
@@ -171,7 +173,7 @@ var WebViewBridge = React.createClass({
         });
       }
     };
-    
+
     const props = {...this.props};
     delete props.onBridgeMessage;
     delete props.onShouldStartLoadWithRequest;
