@@ -79,13 +79,13 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     + "(function() {"
         + "if (window.WebViewBridge) return;"
         + "var customEvent = document.createEvent('Event');"
-        + "WebViewBridge = {"
+        + "var WebViewBridge = {"
             + "send: function(message) { WebViewBridgeAndroid.send(message); },"
             + "onMessage: function() {}"
         + "};"
         + "window.WebViewBridge = WebViewBridge;"
         + "customEvent.initEvent('WebViewBridge', true, true);"
         + "document.dispatchEvent(customEvent);"
-    +"}())", null);
+    +"}());", null);
   }
 }
