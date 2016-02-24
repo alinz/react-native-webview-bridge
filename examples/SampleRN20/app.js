@@ -19,22 +19,27 @@ const injectScript = `
     if (WebViewBridge) {
 
       WebViewBridge.onMessage = function (message) {
-        alert(message);
+        if (message === "hello from react-native") {
+          WebViewBridge.send("got the message inside webview");
+        }
       };
 
       WebViewBridge.send("hello from webview");
-
-    } else {
-      window.location.href = "yahoo.ca";
     }
   }());
 `;
 
 var Sample2 = React.createClass({
   onBridgeMessage: function (message) {
-    if (message == "hello from webview") {
-      console.log(message);
-      this.refs.webviewbridge.sendToBridge("hello from react-native");
+    const { webviewbridge } = this.refs;
+
+    switch (message) {
+      case "hello from webview":
+        webviewbridge.sendToBridge("hello from react-native");
+        break;
+      case "got the message inside webview":
+        console.log("we have got a message from webview! yeah");
+        break;
     }
   },
   render: function() {
