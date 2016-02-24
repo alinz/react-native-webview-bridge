@@ -171,25 +171,21 @@ var WebViewBridge = React.createClass({
         });
       }
     };
+    
+    const props = {...this.props};
+    delete props.onBridgeMessage;
+    delete props.onShouldStartLoadWithRequest;
 
     var webView =
       <RCTWebViewBridge
         ref={RCT_WEBVIEWBRIDGE_REF}
         key="webViewKey"
+        {...props}
         style={webViewStyles}
-        url={this.props.url}
-        html={this.props.html}
-        injectedJavaScript={this.props.injectedJavaScript}
-        bounces={this.props.bounces}
-        scrollEnabled={this.props.scrollEnabled}
-        contentInset={this.props.contentInset}
-        automaticallyAdjustContentInsets={this.props.automaticallyAdjustContentInsets}
         onLoadingStart={this.onLoadingStart}
         onLoadingFinish={this.onLoadingFinish}
         onLoadingError={this.onLoadingError}
         onShouldStartLoadWithRequest={onShouldStartLoadWithRequest}
-        scalesPageToFit={this.props.scalesPageToFit}
-        allowsInlineMediaPlayback={this.props.allowsInlineMediaPlayback}
         onBridgeMessage={onBridgeMessage}
       />;
 
