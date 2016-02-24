@@ -34,7 +34,7 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 
 @property (nonatomic, weak) id<RCTWebViewBridgeDelegate> delegate;
 
-@property (nonatomic, strong) NSURL *URL;
+@property (nonatomic, copy) NSDictionary *source;
 @property (nonatomic, assign) UIEdgeInsets contentInset;
 @property (nonatomic, assign) BOOL automaticallyAdjustContentInsets;
 @property (nonatomic, assign) BOOL hideKeyboardAccessoryView;
