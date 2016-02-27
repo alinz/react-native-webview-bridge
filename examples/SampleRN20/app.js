@@ -52,7 +52,7 @@ var Sample2 = React.createClass({
         injectedJavaScript={injectScript}
         source={{uri: "https://google.com"}}/>
         <WebViewBridge
-        ref="webviewbridge"
+        ref="webviewbridge2"
         onBridgeMessage={this.onBridgeMessage}
         javaScriptEnabled={true}
         injectedJavaScript={injectScript}

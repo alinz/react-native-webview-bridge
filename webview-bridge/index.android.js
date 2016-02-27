@@ -113,13 +113,7 @@ var WebViewBridge = React.createClass({
     }
 
     let props = {...this.props};  
-    var source = props.source || {};
-    if(this.props.html) {
-      source.html = this.props.html;
-    } else if(this.props.url) {
-      source.uri = this.props.url;
-    }
-    props.source = resolveAssetSource(source);
+    props.source = resolveAssetSource(props.source);
 
     var webView =
       <RCTWebViewBridge
