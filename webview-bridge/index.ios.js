@@ -17,6 +17,7 @@
 var React = require('react-native');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
+var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource.js');
 
 var {
   ActivityIndicatorIOS,
@@ -174,9 +175,18 @@ var WebViewBridge = React.createClass({
       }
     };
 
-    const props = {...this.props};
+    let props = {...this.props};
     delete props.onBridgeMessage;
     delete props.onShouldStartLoadWithRequest;
+
+    var source = props.source || {};
+    if(this.props.html) {
+      source.html = this.props.html;
+    } else if(this.props.url) {
+      source.uri = this.props.url;
+    }
+    props.source = resolveAssetSource(source);
+
 
     var webView =
       <RCTWebViewBridge
