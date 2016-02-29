@@ -72,6 +72,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     if (!initializedBridge) {
       root.addJavascriptInterface(new JavascriptBridge((ReactContext)root.getContext()), "WebViewBridgeAndroid");
       initializedBridge = true;
+      root.reload();
     }
 
     //this code needs to be executed everytime a url changes.
