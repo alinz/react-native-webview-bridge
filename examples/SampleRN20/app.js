@@ -44,14 +44,29 @@ var Sample2 = React.createClass({
   },
   render: function() {
     return (
+      <View style={styles.container}>
       <WebViewBridge
         ref="webviewbridge"
         onBridgeMessage={this.onBridgeMessage}
         javaScriptEnabled={true}
         injectedJavaScript={injectScript}
         source={{uri: "https://google.com"}}/>
+        <WebViewBridge
+        ref="webviewbridge2"
+        onBridgeMessage={this.onBridgeMessage}
+        javaScriptEnabled={true}
+        injectedJavaScript={injectScript}
+        source={require('./test.html')}/>
+        </View>
     );
   }
 });
 
 module.exports = Sample2;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});
+

@@ -17,7 +17,7 @@ var React = require('react-native');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var merge = require('merge');
-import resolveAssetSource from 'resolveAssetSource';
+var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
 var {
   ReactNativeViewAttributes,
@@ -112,14 +112,14 @@ var WebViewBridge = React.createClass({
     }
 
     let props = {...this.props};
-    const source = resolveAssetSource(props.source);
-    delete props.source;
-
+    props.source = resolveAssetSource(props.source);
+    
     var webView =
       <RCTWebViewBridge
         ref={RCT_WEBVIEWBRIDGE_REF}
         key="webViewKey"
         {...props}
+        source={source}
         style={webViewStyles}
         onLoadingStart={this.onLoadingStart}
         onLoadingFinish={this.onLoadingFinish}
