@@ -175,19 +175,16 @@ var WebViewBridge = React.createClass({
       }
     };
 
-    let props = {...this.props};
+    let {source, ...props} = {...this.props};
     delete props.onBridgeMessage;
     delete props.onShouldStartLoadWithRequest;
-    delete props.source;
-
-    props.source = resolveAssetSource(props.source);
 
     var webView =
       <RCTWebViewBridge
         ref={RCT_WEBVIEWBRIDGE_REF}
         key="webViewKey"
         {...props}
-        source={source}
+        source={resolveAssetSource(source)}
         style={webViewStyles}
         onLoadingStart={this.onLoadingStart}
         onLoadingFinish={this.onLoadingFinish}

@@ -111,15 +111,14 @@ var WebViewBridge = React.createClass({
       domStorageEnabled = this.props.domStorageEnabledAndroid;
     }
 
-    let props = {...this.props};
-    props.source = resolveAssetSource(props.source);
-    
+    let {source, ...props} = {...this.props};
+
     var webView =
       <RCTWebViewBridge
         ref={RCT_WEBVIEWBRIDGE_REF}
         key="webViewKey"
         {...props}
-        source={source}
+        source={resolveAssetSource(source)}
         style={webViewStyles}
         onLoadingStart={this.onLoadingStart}
         onLoadingFinish={this.onLoadingFinish}
