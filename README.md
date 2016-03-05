@@ -1,5 +1,5 @@
 # React Native WebView Javascript Bridge
-I have been testing and reading a lot of way to safely create a bridge between react-native and webview. I'm happy to announced that the wait is over and from **React-Native 0.19 and above**, the bridge is fully functional.
+I have been testing and reading a lot of way to safely create a bridge between react-native and webview. I'm happy to announced that the wait is over and from **React-Native 0.20 and above**, the bridge is fully functional.
 
 
 
@@ -167,7 +167,7 @@ var Sample2 = React.createClass({
         ref="webviewbridge"
         onBridgeMessage={this.onBridgeMessage}
         injectedJavaScript={injectScript}
-        url={"http://google.com"}/>
+        source={{uri: "http://google.com"}}/>
     );
   }
 });
