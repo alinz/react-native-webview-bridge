@@ -46,10 +46,12 @@ import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 2. add the following code to add the package to `MainActivity.java`
 
 ```java
-mReactInstanceManager = ReactInstanceManager.builder()
-        ...
-        .addPackage(new WebViewBridgePackage())
-        ...
+protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+            new MainReactPackage(),
+                new WebViewBridgePackage() //<- this
+        );
+    }
 ```
 
 3. add the following codes to your `android/setting.gradle`
@@ -123,49 +125,39 @@ This example can be found in `examples` folder.
 
 ```js
 const injectScript = `
-  function webViewBridgeReady(cb) {
-    //checks whether WebViewBirdge exists in global scope.
-    if (window.WebViewBridge) {
-      cb(window.WebViewBridge);
-      return;
-    }
+  (function () {
+                    if (WebViewBridge) {
 
-    function handler() {
-      //remove the handler from listener since we don't need it anymore
-      document.removeEventListener('WebViewBridge', handler, false);
-      //pass the WebViewBridge object to the callback
-      cb(window.WebViewBridge);
-    }
-
-    //if WebViewBridge doesn't exist in global scope attach itself to document
-    //event system. Once the code is being injected by extension, the handler will
-    //be called.
-    document.addEventListener('WebViewBridge', handler, false);
-  }
-
-  webViewBridgeReady(function (webViewBridge) {
-    webViewBridge.onMessage = function (message) {
-      alert('got a message from Native: ' + message);
-
-      webViewBridge.send("message from webview");
-    };
-  });
+                      WebViewBridge.onMessage = function (message) {
+                        if (message === "hello from react-native") {
+                          WebViewBridge.send("got the message inside webview");
+                        }
+                      };
+                
+                      WebViewBridge.send("hello from webview");
+                    }
+                  }());
 `;
 
 var Sample2 = React.createClass({
-  componentDidMount() {
-    setTimeout(() => {
-      this.refs.webviewbridge.sendToBridge("hahaha");
-    }, 5000);
+  onBridgeMessage(message){
+    const { webviewbridge } = this.refs;
+
+    switch (message) {
+      case "hello from webview":
+        webviewbridge.sendToBridge("hello from react-native");
+        break;
+      case "got the message inside webview":
+        console.log("we have got a message from webview! yeah");
+        break;
+    }
   },
-  onBridgeMessage: function (message) {
-    console.log(message);
-  },
-  render: function() {
+  
+  render() {
     return (
       <WebViewBridge
         ref="webviewbridge"
-        onBridgeMessage={this.onBridgeMessage}
+        onBridgeMessage={this.onBridgeMessage.bind(this)}
         injectedJavaScript={injectScript}
         source={{uri: "http://google.com"}}/>
     );
