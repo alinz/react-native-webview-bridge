@@ -2,6 +2,7 @@ package com.github.alinz.reactnativewebviewbridge;
 
 import android.webkit.JavascriptInterface;
 
+import com.facebook.common.internal.DoNotStrip;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableMap;
@@ -14,6 +15,7 @@ class JavascriptBridge {
     this.context = context;
   }
 
+  @DoNotStrip
   @JavascriptInterface
   public void send(String message) {
     WritableMap params = Arguments.createMap();
