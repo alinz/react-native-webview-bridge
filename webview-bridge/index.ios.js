@@ -14,7 +14,8 @@
  */
 'use strict';
 
-var React = require('react-native');
+var React = require('react');
+var ReactNative = require('react-native');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
@@ -27,12 +28,12 @@ var {
   View,
   WebView,
   requireNativeComponent,
-  PropTypes,
   UIManager,
   NativeModules: {
     WebViewBridgeManager
   }
-} = React;
+} = ReactNative;
+var { PropTypes } = React;
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
@@ -240,7 +241,7 @@ var WebViewBridge = React.createClass({
   },
 
   getWebViewBridgeHandle: function(): any {
-    return React.findNodeHandle(this.refs[RCT_WEBVIEWBRIDGE_REF]);
+    return ReactNative.findNodeHandle(this.refs[RCT_WEBVIEWBRIDGE_REF]);
   },
 
   onLoadingStart: function(event: Event) {
