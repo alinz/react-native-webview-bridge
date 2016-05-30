@@ -12,12 +12,15 @@ in your react-native project, run `npm install https://github.com/alinz/react-na
 if you run `npm i react-native-webview-bridge`(React-Native 0.24 and under), maybe older version will be installed.
 
 
-## rnpm
-If you use [rnpm](https://github.com/rnpm/rnpm), run rnpm react-native-webview-bridge.
+## Link
 
-## Manual
+### rnpm
+If you use [rnpm](https://github.com/rnpm/rnpm), `run rnpm react-native-webview-bridge`.
 
-### iOS
+
+
+### Manual
+#### iOS
 
 1. go to xcode's `Project Navigator` tab
 <p align="center">
