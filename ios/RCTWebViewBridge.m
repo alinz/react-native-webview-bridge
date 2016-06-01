@@ -2,9 +2,6 @@
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
- * Copyright (c) 2015-present, Ali Najafizadeh (github.com/alinz)
- * All rights reserved
- *
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
@@ -31,23 +28,12 @@
 //NSString *const RCTJSNavigationScheme = @"react-js-navigation";
 NSString *const RCTWebViewBridgeSchema = @"wvb";
 
-// runtime trick to remove UIWebview keyboard default toolbar
-// see: http://stackoverflow.com/questions/19033292/ios-7-uiwebview-keyboard-issue/19042279#19042279
-@interface _SwizzleHelper : NSObject @end
-@implementation _SwizzleHelper
--(id)inputAccessoryView
-{
-  return nil;
-}
-@end
-
 @interface RCTWebViewBridge () <UIWebViewDelegate, RCTAutoInsetsProtocol>
 
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingStart;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingFinish;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingError;
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
-@property (nonatomic, copy) RCTDirectEventBlock onBridgeMessage;
 
 @end
 
@@ -55,6 +41,11 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 {
   UIWebView *_webView;
   NSString *_injectedJavaScript;
+}
+
+- (void)dealloc
+{
+  _webView.delegate = nil;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -84,7 +75,13 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)reload
 {
-  [_webView reload];
+  NSURLRequest *request = [RCTConvert NSURLRequest:self.source];
+  if (request.URL && !_webView.request.URL.absoluteString.length) {
+    [_webView loadRequest:request];
+  }
+  else {
+    [_webView reload];
+  }
 }
 
 - (void)sendToBridge:(NSString *)message
@@ -103,11 +100,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   [_webView stringByEvaluatingJavaScriptFromString:command];
 }
 
-- (NSURL *)URL
-{
-  return _webView.request.URL;
-}
-
 - (void)setSource:(NSDictionary *)source
 {
   if (![_source isEqualToDictionary:source]) {
@@ -117,6 +109,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     NSString *html = [RCTConvert NSString:source[@"html"]];
     if (html) {
       NSURL *baseURL = [RCTConvert NSURL:source[@"baseUrl"]];
+      if (!baseURL) {
+        baseURL = [NSURL URLWithString:@"about:blank"];
+      }
       [_webView loadHTMLString:html baseURL:baseURL];
       return;
     }
@@ -152,6 +147,19 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                       updateOffset:NO];
 }
 
+- (void)setScalesPageToFit:(BOOL)scalesPageToFit
+{
+  if (_webView.scalesPageToFit != scalesPageToFit) {
+    _webView.scalesPageToFit = scalesPageToFit;
+    [_webView reload];
+  }
+}
+
+- (BOOL)scalesPageToFit
+{
+  return _webView.scalesPageToFit;
+}
+
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
   CGFloat alpha = CGColorGetAlpha(backgroundColor.CGColor);
@@ -184,62 +192,32 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                       updateOffset:YES];
 }
 
--(void)setHideKeyboardAccessoryView:(BOOL)hideKeyboardAccessoryView
-{
-  if (!hideKeyboardAccessoryView) {
-    return;
-  }
-
-  UIView* subview;
-  for (UIView* view in _webView.scrollView.subviews) {
-    if([[view.class description] hasPrefix:@"UIWeb"])
-      subview = view;
-  }
-
-  if(subview == nil) return;
-
-  NSString* name = [NSString stringWithFormat:@"%@_SwizzleHelper", subview.class.superclass];
-  Class newClass = NSClassFromString(name);
-
-  if(newClass == nil)
-  {
-    newClass = objc_allocateClassPair(subview.class, [name cStringUsingEncoding:NSASCIIStringEncoding], 0);
-    if(!newClass) return;
-
-    Method method = class_getInstanceMethod([_SwizzleHelper class], @selector(inputAccessoryView));
-      class_addMethod(newClass, @selector(inputAccessoryView), method_getImplementation(method), method_getTypeEncoding(method));
-
-    objc_registerClassPair(newClass);
-  }
-
-  object_setClass(subview, newClass);
-}
-
 #pragma mark - UIWebViewDelegate methods
 
 - (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
  navigationType:(UIWebViewNavigationType)navigationType
 {
-  BOOL isJSNavigation = [request.URL.scheme isEqualToString:RCTJSNavigationScheme];
+  BOOL isJSNavigation = [request.URL.scheme isEqualToString:RCTWebViewBridgeBridgeSchema];
 
-  if (!isJSNavigation && [request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
-    NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge.__fetch__()"];
-
-    NSMutableDictionary<NSString *, id> *onBridgeMessageEvent = [[NSMutableDictionary alloc] initWithDictionary:@{
-      @"messages": [self stringArrayJsonToArray: message]
-    }];
-
-    _onBridgeMessage(onBridgeMessageEvent);
-
-    isJSNavigation = YES;
-  }
+  static NSDictionary<NSNumber *, NSString *> *navigationTypes;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    navigationTypes = @{
+      @(UIWebViewNavigationTypeLinkClicked): @"click",
+      @(UIWebViewNavigationTypeFormSubmitted): @"formsubmit",
+      @(UIWebViewNavigationTypeBackForward): @"backforward",
+      @(UIWebViewNavigationTypeReload): @"reload",
+      @(UIWebViewNavigationTypeFormResubmitted): @"formresubmit",
+      @(UIWebViewNavigationTypeOther): @"other",
+    };
+  });
 
   // skip this for the JS Navigation handler
   if (!isJSNavigation && _onShouldStartLoadWithRequest) {
     NSMutableDictionary<NSString *, id> *event = [self baseEvent];
     [event addEntriesFromDictionary: @{
       @"url": (request.URL).absoluteString,
-      @"navigationType": @(navigationType)
+      @"navigationType": navigationTypes[@(navigationType)]
     }];
     if (![self.delegate webView:self
       shouldStartLoadForRequest:event
@@ -255,7 +233,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       NSMutableDictionary<NSString *, id> *event = [self baseEvent];
       [event addEntriesFromDictionary: @{
         @"url": (request.URL).absoluteString,
-        @"navigationType": @(navigationType)
+        @"navigationType": navigationTypes[@(navigationType)]
       }];
       _onLoadingStart(event);
     }
@@ -305,13 +283,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   else if (_onLoadingFinish && !webView.loading && ![webView.request.URL.absoluteString isEqualToString:@"about:blank"]) {
     _onLoadingFinish([self baseEvent]);
   }
-}
-
-- (NSArray*)stringArrayJsonToArray:(NSString *)message
-{
-  return [NSJSONSerialization JSONObjectWithData:[message dataUsingEncoding:NSUTF8StringEncoding]
-                                         options:NSJSONReadingAllowFragments
-                                           error:nil];
 }
 
 //since there is no easy way to load the static lib resource in ios,
