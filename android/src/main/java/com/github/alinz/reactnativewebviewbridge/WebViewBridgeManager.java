@@ -4,8 +4,8 @@ import android.webkit.WebView;
 
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.views.webview.ReactWebViewManager;
-import com.facebook.react.views.webview.WebViewConfig;
 
 import java.util.Map;
 
@@ -16,18 +16,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
   public static final int COMMAND_INJECT_BRIDGE_SCRIPT = 100;
   public static final int COMMAND_SEND_TO_BRIDGE = 101;
-
-  private boolean initializedBridge;
-
-  public WebViewBridgeManager() {
-    super();
-    initializedBridge = false;
-  }
-
-  public WebViewBridgeManager(WebViewConfig webViewConfig) {
-    super(webViewConfig);
-    initializedBridge = false;
-  }
 
   @Override
   public String getName() {
@@ -66,14 +54,20 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     WebViewBridgeManager.evaluateJavascript(root, script);
   }
 
-  private void injectBridgeScript(WebView root) {
-    //this code needs to be called once per context
-    if (!initializedBridge) {
-      root.addJavascriptInterface(new JavascriptBridge((ReactContext) root.getContext()), "WebViewBridgeAndroid");
-      initializedBridge = true;
-      root.reload();
-    }
+  @Override
+  protected WebView createViewInstance(ThemedReactContext reactContext) {
+    WebView root = super.createViewInstance(reactContext);
+    root.addJavascriptInterface(new JavascriptBridge((ReactContext) root.getContext()), "WebViewBridgeAndroid");
+    return root;
+  }
 
+  @Override
+  public void onDropViewInstance(WebView root) {
+    root.removeJavascriptInterface("WebViewBridgeAndroid");
+    super.onDropViewInstance(root);
+  }
+
+  private void injectBridgeScript(WebView root) {
     // this code needs to be executed everytime a url changes.
     WebViewBridgeManager.evaluateJavascript(root, ""
             + "(function() {"
