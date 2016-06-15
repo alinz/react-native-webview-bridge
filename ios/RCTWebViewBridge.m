@@ -99,7 +99,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   );
 
   NSString *command = [NSString stringWithFormat: format, message];
-  [_webView stringByEvaluatingJavaScriptFromString:command];
+  [_webView stringByEvaluatingJavaScriptFromString:message];
+}
+
+- (NSString*) getEditorHTML {
+    return [_webView stringByEvaluatingJavaScriptFromString:@"document.getElementById(\"zss_editor_content\").innerHTML"];
 }
 
 - (NSURL *)URL

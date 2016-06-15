@@ -230,6 +230,11 @@ var WebViewBridge = React.createClass({
     WebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
   },
 
+  getEditorHTML: function (callback) {
+    var html = WebViewBridgeManager.getEditorHTML(this.getWebViewBridgeHandle(), callback);
+    console.log("html from editor is " + html);
+  },
+
   /**
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward

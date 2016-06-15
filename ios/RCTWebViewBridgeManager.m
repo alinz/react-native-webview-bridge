@@ -115,6 +115,20 @@ RCT_EXPORT_METHOD(sendToBridge:(nonnull NSNumber *)reactTag
   }];
 }
 
+RCT_EXPORT_METHOD(getEditorHTML:(nonnull NSNumber *)reactTag :(RCTResponseSenderBlock)callback)
+{
+    [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebViewBridge *> *viewRegistry) {
+        RCTWebViewBridge *view = viewRegistry[reactTag];
+        if (![view isKindOfClass:[RCTWebViewBridge class]]) {
+            RCTLogError(@"Invalid view returned from registry, expecting RCTWebViewBridge, got: %@", view);
+        } else {
+            NSString* html = [view getEditorHTML];
+            NSLog(@"Editor HTML is %@", html);
+            callback(@[[NSNull null], html]);
+        }
+    }];
+}
+
 #pragma mark - Exported synchronous methods
 
 - (BOOL)webView:(__unused RCTWebViewBridge *)webView
