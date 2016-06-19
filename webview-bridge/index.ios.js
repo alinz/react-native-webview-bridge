@@ -230,8 +230,8 @@ var WebViewBridge = React.createClass({
     WebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
   },
 
-  getEditorHTML: function (callback) {
-    var html = WebViewBridgeManager.getEditorHTML(this.getWebViewBridgeHandle(), callback);
+  getElementHTML: function (elementId: string, callback) {
+    var html = WebViewBridgeManager.getEditorHTML(this.getWebViewBridgeHandle(), elementId, callback);
     console.log("html from editor is " + html);
   },
 
