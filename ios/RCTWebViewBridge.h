@@ -44,6 +44,6 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 - (void)goBack;
 - (void)reload;
 - (void)sendToBridge:(NSString *)message;
-- (NSString*) getEditorHTML;
+- (NSString*) getElementHTML:(NSString*)elementId;
 
 @end
