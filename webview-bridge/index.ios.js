@@ -231,7 +231,7 @@ var WebViewBridge = React.createClass({
   },
 
   getElementHTML: function (elementId: string, callback) {
-    var html = WebViewBridgeManager.getEditorHTML(this.getWebViewBridgeHandle(), elementId, callback);
+    var html = WebViewBridgeManager.getElementHTML(this.getWebViewBridgeHandle(), elementId, callback);
     console.log("html from editor is " + html);
   },
 
