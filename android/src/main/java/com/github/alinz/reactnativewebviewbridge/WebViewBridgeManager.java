@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.views.webview.ReactWebViewManager;
 import com.facebook.react.views.webview.WebViewConfig;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -17,16 +18,14 @@ public class WebViewBridgeManager extends ReactWebViewManager {
   public static final int COMMAND_INJECT_BRIDGE_SCRIPT = 100;
   public static final int COMMAND_SEND_TO_BRIDGE = 101;
 
-  private boolean initializedBridge;
+  private Map<WebView, Boolean> initializedBridges = new HashMap<>();
 
   public WebViewBridgeManager() {
     super();
-    initializedBridge = false;
   }
 
   public WebViewBridgeManager(WebViewConfig webViewConfig) {
     super(webViewConfig);
-    initializedBridge = false;
   }
 
   @Override
@@ -37,6 +36,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
   @Override
   public @Nullable Map<String, Integer> getCommandsMap() {
     Map<String, Integer> commandsMap = super.getCommandsMap();
+    if (commandsMap == null) commandsMap = new HashMap<>();   // Fix potential NPE
 
     commandsMap.put("injectBridgeScript", COMMAND_INJECT_BRIDGE_SCRIPT);
     commandsMap.put("sendToBridge", COMMAND_SEND_TO_BRIDGE);
@@ -68,9 +68,9 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
   private void injectBridgeScript(WebView root) {
     //this code needs to be called once per context
-    if (!initializedBridge) {
+    if (initializedBridges.get(root) == null || !initializedBridges.get(root)) {
       root.addJavascriptInterface(new JavascriptBridge((ReactContext) root.getContext()), "WebViewBridgeAndroid");
-      initializedBridge = true;
+      initializedBridges.put(root, true);
       root.reload();
     }
 
