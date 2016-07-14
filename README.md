@@ -39,13 +39,13 @@ in your react-native project, run `npm install react-native-webview-bridge`
 
 ### Android (Beta)
 
-1. add the following import to `MainActivity.java` of your application
+1. add the following import to `MainApplication.java` (`MainActivity.java` if RN < 0.29) of your application
 
 ```java
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 ```
 
-2. add the following code to add the package to `MainActivity.java`
+2. add the following code to add the package to `MainApplication.java`` (`MainActivity.java` if RN < 0.29)
 
 ```java
 protected List<ReactPackage> getPackages() {
