@@ -17,16 +17,14 @@ public class WebViewBridgeManager extends ReactWebViewManager {
   public static final int COMMAND_INJECT_BRIDGE_SCRIPT = 100;
   public static final int COMMAND_SEND_TO_BRIDGE = 101;
 
-  private boolean initializedBridge;
-
   public WebViewBridgeManager() {
-    super();
-    initializedBridge = false;
-  }
-
-  public WebViewBridgeManager(WebViewConfig webViewConfig) {
-    super(webViewConfig);
-    initializedBridge = false;
+    super(new WebViewConfig() {
+      @Override
+      public void configWebView(WebView webView) {
+          JavascriptBridge jsInterface = new JavascriptBridge((ReactContext)webView.getContext());
+          webView.addJavascriptInterface(jsInterface, "WebViewBridgeAndroid");
+      }
+    });
   }
 
   @Override
@@ -67,13 +65,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
   }
 
   private void injectBridgeScript(WebView root) {
-    //this code needs to be called once per context
-    if (!initializedBridge) {
-      root.addJavascriptInterface(new JavascriptBridge((ReactContext) root.getContext()), "WebViewBridgeAndroid");
-      initializedBridge = true;
-      root.reload();
-    }
-
     // this code needs to be executed everytime a url changes.
     WebViewBridgeManager.evaluateJavascript(root, ""
             + "(function() {"
