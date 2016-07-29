@@ -86,6 +86,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   [_webView reload];
 }
 
+-(void)stopLoading {
+  [_webView stopLoading];
+}
+
 - (void)sendToBridge:(NSString *)message
 {
   //we are warpping the send message in a function to make sure that if
