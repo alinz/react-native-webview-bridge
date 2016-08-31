@@ -4,6 +4,10 @@
   "description": "React Native WebView Javascript Bridge - updated",
   "license": "MIT",
   "author": "Ali Najafizadeh",
+  "contributors": [
+    "Daniel Zlotin <zlotindaniel@gmail.com>",
+    "Yedidya Kennard <yedidyak@gmail.com>"
+  ],
   "directories": {
     "example": "examples",
     "lib": "webview-bridge"
