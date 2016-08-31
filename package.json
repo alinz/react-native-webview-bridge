@@ -1,16 +1,18 @@
 {
-  "name": "react-native-webview-bridge-updated",
-  "version": "1.0.2",
-  "description": "React Native WebView Javascript Bridge - updated",
-  "license": "MIT",
-  "author": "Ali Najafizadeh",
-  "contributors": [
-    "Daniel Zlotin <zlotindaniel@gmail.com>",
-    "Yedidya Kennard <yedidyak@gmail.com>"
-  ],
+  "name": "react-native-webview-bridge",
+  "version": "0.20.3",
+  "description": "React Native WebView Javascript Bridge",
+  "main": "webview-bridge",
   "directories": {
-    "example": "examples",
-    "lib": "webview-bridge"
+    "example": "example",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:alinz/react-native-webview-bridge.git"
   },
   "keywords": [
     "react-native",
@@ -18,20 +20,12 @@
     "ios",
     "webview-bridge"
   ],
-  "homepage": "https://github.com/DanielZlotin/react-native-webview-bridge",
+  "author": "Ali Najafizadeh",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DanielZlotin/react-native-webview-bridge/issues"
+    "url": "https://github.com/alinz/react-native-webview-bridge/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:DanielZlotin/react-native-webview-bridge.git"
-  },
-  "scripts": {
-    "build": ":",
-    "test": ":",
-    "release": "npm version patch && npm publish && git push"
-  },
-  "main": "webview-bridge",
+  "homepage": "https://github.com/alinz/react-native-webview-bridge",
   "dependencies": {
     "invariant": "2.2.0",
     "keymirror": "0.1.1"
