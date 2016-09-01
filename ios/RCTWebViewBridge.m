@@ -13,6 +13,7 @@
 #import "RCTWebViewBridge.h"
 
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 
 #import "RCTAutoInsetsProtocol.h"
 #import "RCTConvert.h"
