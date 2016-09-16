@@ -43,13 +43,15 @@ var WebViewBridgeState = keyMirror({
   ERROR: null,
 });
 
+var RCTWebViewBridge = requireNativeComponent('RCTWebViewBridge', WebViewBridge);
+
 /**
  * Renders a native WebView.
  */
 var WebViewBridge = React.createClass({
 
   propTypes: {
-    ...WebView.propTypes,
+    ...RCTWebViewBridge.propTypes,
 
     /**
      * Will be called once the message is being sent from webview
@@ -217,7 +219,6 @@ var WebViewBridge = React.createClass({
   },
 });
 
-var RCTWebViewBridge = requireNativeComponent('RCTWebViewBridge', WebViewBridge);
 
 var styles = StyleSheet.create({
   container: {

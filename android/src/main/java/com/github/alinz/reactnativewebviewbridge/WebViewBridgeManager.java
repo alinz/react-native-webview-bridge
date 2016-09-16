@@ -5,6 +5,7 @@ import android.webkit.WebView;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.views.webview.ReactWebViewManager;
+import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -37,8 +38,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     @Override
     protected WebView createViewInstance(ThemedReactContext reactContext) {
         WebView root = super.createViewInstance(reactContext);
-        root.getSettings().setAllowFileAccessFromFileURLs(true);
-        root.getSettings().setAllowUniversalAccessFromFileURLs(true);
         root.addJavascriptInterface(new JavascriptBridge(root), "WebViewBridge");
         return root;
     }
@@ -69,5 +68,15 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         } else {
             root.loadUrl("javascript:" + javascript);
         }
+    }
+
+    @ReactProp(name = "allowFileAccessFromFileURLs")
+    public void setAllowFileAccessFromFileURLs(WebView root, boolean allows) {
+        root.getSettings().setAllowFileAccessFromFileURLs(allows);
+    }
+
+    @ReactProp(name = "allowUniversalAccessFromFileURLs")
+    public void setAllowUniversalAccessFromFileURLs(WebView root, boolean allows) {
+        root.getSettings().setAllowUniversalAccessFromFileURLs(allows);
     }
 }
