@@ -174,14 +174,6 @@ var WebViewBridge = React.createClass({
     );
   },
 
-  injectBridgeScript: function () {
-    UIManager.dispatchViewManagerCommand(
-      this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.injectBridgeScript,
-      null
-    );
-  },
-
   /**
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward
@@ -197,7 +189,6 @@ var WebViewBridge = React.createClass({
   },
 
   onLoadingStart: function(event) {
-    this.injectBridgeScript();
     var onLoadStart = this.props.onLoadStart;
     onLoadStart && onLoadStart(event);
     this.updateNavigationState(event);
