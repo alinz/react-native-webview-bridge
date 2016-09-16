@@ -22,8 +22,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         return REACT_CLASS;
     }
 
-    private ArrayList<Integer> webViewsWithBridgeScript = new ArrayList<Integer>();
-
     @Override
     public
     @Nullable
@@ -45,7 +43,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     @Override
     public void receiveCommand(WebView root, int commandId, @Nullable ReadableArray args) {
         super.receiveCommand(root, commandId, args);
-        // if (true) return;
 
         switch (commandId) {
             case COMMAND_SEND_TO_BRIDGE:
@@ -57,7 +54,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     }
 
     private void sendToBridge(WebView root, String message) {
-        //root.loadUrl("javascript:(function() {\n" + script + ";\n})();");
         String script = "WebViewBridge.onMessage('" + message + "');";
         WebViewBridgeManager.evaluateJavascript(root, script);
     }
