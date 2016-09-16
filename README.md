@@ -98,6 +98,11 @@ the message must be in string. because this is the only way to send data back an
 #### onBridgeMessage
 this is a prop that needs to be a function. it will be called once a message is received from webview. The type of received message is also in string.
 
+#### allowFileAccessFromFileURLs (Android only)
+this is a prop that allows locally loaded pages via file:// to access other file:// resources.  Pass-thru to corresponding [setting](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccessFromFileURLs(boolean)) in WebView. Default is `false` for Android 4.1 and above.
+
+#### allowUniversalAccessFromFileURLs (Android only)
+this is a prop that allows locally loaded pages via file:// to access resources in any origin.  Pass-thru to corresponding [setting](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowUniversalAccessFromFileURLs(boolean)) in WebView.  Default is `false` for Android 4.1 and above.
 
 ## Bridge Script
 
