@@ -21,6 +21,9 @@
     "webview-bridge"
   ],
   "author": "Ali Najafizadeh",
+  "contributors": [
+    "Hunter Medney"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alinz/react-native-webview-bridge/issues"
