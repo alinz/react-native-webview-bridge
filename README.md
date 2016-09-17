@@ -37,7 +37,7 @@ in your react-native project, run `npm install react-native-webview-bridge`
 </p>
 8. clean compile to make sure your project can compile and build.
 
-### Android (Beta)
+### Android
 
 1. add the following import to `MainApplication.java` (`MainActivity.java` if RN < 0.29) of your application
 
