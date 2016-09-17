@@ -1,6 +1,6 @@
 {
   "name": "react-native-webview-bridge",
-  "version": "0.20.3",
+  "version": "0.33.0",
   "description": "React Native WebView Javascript Bridge",
   "main": "webview-bridge",
   "directories": {
