@@ -9,9 +9,20 @@ I have been testing and reading a lot of way to safely create a bridge between r
 
 In order to use this extension, you have to do the following steps:
 
-in your react-native project, run `npm install react-native-webview-bridge`
+in your react-native project, run `npm install https://github.com/alinz/react-native-webview-bridge.git` (React-Naive 0.25 and above)
 
-### iOS
+if you run `npm i react-native-webview-bridge`(React-Native 0.24 and under), maybe older version will be installed.
+
+
+## Link
+
+### rnpm
+If you use [rnpm](https://github.com/rnpm/rnpm), `run rnpm react-native-webview-bridge`.
+
+
+
+### Manual
+#### iOS
 
 1. go to xcode's `Project Navigator` tab
 <p align="center">
