@@ -9,7 +9,7 @@ I have been testing and reading a lot of way to safely create a bridge between r
 
 In order to use this extension, you have to do the following steps:
 
-in your react-native project, run `npm install react-native-webview-bridge`
+in your react-native project, run `npm install react-native-webview-bridge --save`
 
 ### iOS
 
