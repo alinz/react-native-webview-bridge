@@ -2,9 +2,6 @@
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
- * Copyright (c) 2015-present, Ali Najafizadeh (github.com/alinz)
- * All rights reserved
- *
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
@@ -21,25 +18,8 @@
 #import "RCTUtils.h"
 #import "RCTView.h"
 #import "UIView+React.h"
-#import <objc/runtime.h>
 
-//This is a very elegent way of defining multiline string in objective-c.
-//source: http://stackoverflow.com/a/23387659/828487
-#define NSStringMultiline(...) [[NSString alloc] initWithCString:#__VA_ARGS__ encoding:NSUTF8StringEncoding]
-
-//we don'e need this one since it has been defined in RCTWebView.m
-//NSString *const RCTJSNavigationScheme = @"react-js-navigation";
-NSString *const RCTWebViewBridgeSchema = @"wvb";
-
-// runtime trick to remove UIWebview keyboard default toolbar
-// see: http://stackoverflow.com/questions/19033292/ios-7-uiwebview-keyboard-issue/19042279#19042279
-@interface _SwizzleHelper : NSObject @end
-@implementation _SwizzleHelper
--(id)inputAccessoryView
-{
-  return nil;
-}
-@end
+NSString *const RCTJSNavigationScheme = @"react-js-navigation";
 
 @interface RCTWebViewBridge () <UIWebViewDelegate, RCTAutoInsetsProtocol>
 
@@ -47,7 +27,6 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingFinish;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingError;
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
-@property (nonatomic, copy) RCTDirectEventBlock onBridgeMessage;
 
 @end
 
@@ -55,6 +34,11 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 {
   UIWebView *_webView;
   NSString *_injectedJavaScript;
+}
+
+- (void)dealloc
+{
+  _webView.delegate = nil;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -84,28 +68,18 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)reload
 {
-  [_webView reload];
+  NSURLRequest *request = [RCTConvert NSURLRequest:self.source];
+  if (request.URL && !_webView.request.URL.absoluteString.length) {
+    [_webView loadRequest:request];
+  }
+  else {
+    [_webView reload];
+  }
 }
 
-- (void)sendToBridge:(NSString *)message
+- (void)stopLoading
 {
-  //we are warpping the send message in a function to make sure that if
-  //WebView is not injected, we don't crash the app.
-  NSString *format = NSStringMultiline(
-    (function(){
-      if (WebViewBridge && WebViewBridge.__push__) {
-        WebViewBridge.__push__('%@');
-      }
-    }());
-  );
-
-  NSString *command = [NSString stringWithFormat: format, message];
-  [_webView stringByEvaluatingJavaScriptFromString:command];
-}
-
-- (NSURL *)URL
-{
-  return _webView.request.URL;
+  [_webView stopLoading];
 }
 
 - (void)setSource:(NSDictionary *)source
@@ -117,6 +91,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     NSString *html = [RCTConvert NSString:source[@"html"]];
     if (html) {
       NSURL *baseURL = [RCTConvert NSURL:source[@"baseUrl"]];
+      if (!baseURL) {
+        baseURL = [NSURL URLWithString:@"about:blank"];
+      }
       [_webView loadHTMLString:html baseURL:baseURL];
       return;
     }
@@ -152,6 +129,19 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                       updateOffset:NO];
 }
 
+- (void)setScalesPageToFit:(BOOL)scalesPageToFit
+{
+  if (_webView.scalesPageToFit != scalesPageToFit) {
+    _webView.scalesPageToFit = scalesPageToFit;
+    [_webView reload];
+  }
+}
+
+- (BOOL)scalesPageToFit
+{
+  return _webView.scalesPageToFit;
+}
+
 - (void)setBackgroundColor:(UIColor *)backgroundColor
 {
   CGFloat alpha = CGColorGetAlpha(backgroundColor.CGColor);
@@ -184,37 +174,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                       updateOffset:YES];
 }
 
--(void)setHideKeyboardAccessoryView:(BOOL)hideKeyboardAccessoryView
-{
-  if (!hideKeyboardAccessoryView) {
-    return;
-  }
-
-  UIView* subview;
-  for (UIView* view in _webView.scrollView.subviews) {
-    if([[view.class description] hasPrefix:@"UIWeb"])
-      subview = view;
-  }
-
-  if(subview == nil) return;
-
-  NSString* name = [NSString stringWithFormat:@"%@_SwizzleHelper", subview.class.superclass];
-  Class newClass = NSClassFromString(name);
-
-  if(newClass == nil)
-  {
-    newClass = objc_allocateClassPair(subview.class, [name cStringUsingEncoding:NSASCIIStringEncoding], 0);
-    if(!newClass) return;
-
-    Method method = class_getInstanceMethod([_SwizzleHelper class], @selector(inputAccessoryView));
-      class_addMethod(newClass, @selector(inputAccessoryView), method_getImplementation(method), method_getTypeEncoding(method));
-
-    objc_registerClassPair(newClass);
-  }
-
-  object_setClass(subview, newClass);
-}
-
 #pragma mark - UIWebViewDelegate methods
 
 - (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
@@ -222,24 +181,25 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
   BOOL isJSNavigation = [request.URL.scheme isEqualToString:RCTJSNavigationScheme];
 
-  if (!isJSNavigation && [request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
-    NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge.__fetch__()"];
-
-    NSMutableDictionary<NSString *, id> *onBridgeMessageEvent = [[NSMutableDictionary alloc] initWithDictionary:@{
-      @"messages": [self stringArrayJsonToArray: message]
-    }];
-
-    _onBridgeMessage(onBridgeMessageEvent);
-
-    isJSNavigation = YES;
-  }
+  static NSDictionary<NSNumber *, NSString *> *navigationTypes;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    navigationTypes = @{
+      @(UIWebViewNavigationTypeLinkClicked): @"click",
+      @(UIWebViewNavigationTypeFormSubmitted): @"formsubmit",
+      @(UIWebViewNavigationTypeBackForward): @"backforward",
+      @(UIWebViewNavigationTypeReload): @"reload",
+      @(UIWebViewNavigationTypeFormResubmitted): @"formresubmit",
+      @(UIWebViewNavigationTypeOther): @"other",
+    };
+  });
 
   // skip this for the JS Navigation handler
   if (!isJSNavigation && _onShouldStartLoadWithRequest) {
     NSMutableDictionary<NSString *, id> *event = [self baseEvent];
     [event addEntriesFromDictionary: @{
       @"url": (request.URL).absoluteString,
-      @"navigationType": @(navigationType)
+      @"navigationType": navigationTypes[@(navigationType)]
     }];
     if (![self.delegate webView:self
       shouldStartLoadForRequest:event
@@ -255,7 +215,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       NSMutableDictionary<NSString *, id> *event = [self baseEvent];
       [event addEntriesFromDictionary: @{
         @"url": (request.URL).absoluteString,
-        @"navigationType": @(navigationType)
+        @"navigationType": navigationTypes[@(navigationType)]
       }];
       _onLoadingStart(event);
     }
@@ -288,10 +248,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-  //injecting WebViewBridge Script
-  NSString *webViewBridgeScriptContent = [self webViewBridgeScript];
-  [webView stringByEvaluatingJavaScriptFromString:webViewBridgeScriptContent];
-  //////////////////////////////////////////////////////////////////////////////
+  //injecting WebViewBridge bootstrap
+  [webView stringByEvaluatingJavaScriptFromString:[self webViewBridgeScript]];
 
   if (_injectedJavaScript != nil) {
     NSString *jsEvaluationValue = [webView stringByEvaluatingJavaScriptFromString:_injectedJavaScript];
@@ -307,97 +265,27 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   }
 }
 
-- (NSArray*)stringArrayJsonToArray:(NSString *)message
+- (void)sendToBridge:(NSString *)message
 {
-  return [NSJSONSerialization JSONObjectWithData:[message dataUsingEncoding:NSUTF8StringEncoding]
-                                         options:NSJSONReadingAllowFragments
-                                           error:nil];
+  //we are warpping the send message in a function to make sure that if
+  //WebView is not injected, we don't crash the app.
+  NSString *format = NSStringMultiline(
+    (function(){
+      if (WebViewBridge && WebViewBridge.__push__) {
+        WebViewBridge.__push__('%@');
+      }
+    }());
+  );
+
+  NSString *command = [NSString stringWithFormat: format, message];
+  [_webView stringByEvaluatingJavaScriptFromString:command];
 }
 
-//since there is no easy way to load the static lib resource in ios,
-//we are loading the script from this method.
-- (NSString *)webViewBridgeScript {
-  // NSBundle *bundle = [NSBundle mainBundle];
-  // NSString *webViewBridgeScriptFile = [bundle pathForResource:@"webviewbridge"
-  //                                                      ofType:@"js"];
-  // NSString *webViewBridgeScriptContent = [NSString stringWithContentsOfFile:webViewBridgeScriptFile
-  //                                                                  encoding:NSUTF8StringEncoding
-  //                                                                     error:nil];
-
-  return NSStringMultiline(
-    (function (window) {
-      'use strict';
-
-      //Make sure that if WebViewBridge already in scope we don't override it.
-      if (window.WebViewBridge) {
-        return;
-      }
-
-      var RNWBSchema = 'wvb';
-      var sendQueue = [];
-      var receiveQueue = [];
-      var doc = window.document;
-      var customEvent = doc.createEvent('Event');
-
-      function callFunc(func, message) {
-        if ('function' === typeof func) {
-          func(message);
-        }
-      }
-
-      function signalNative() {
-        window.location = RNWBSchema + '://message' + new Date().getTime();
-      }
-
-      //I made the private function ugly signiture so user doesn't called them accidently.
-      //if you do, then I have nothing to say. :(
-      var WebViewBridge = {
-        //this function will be called by native side to push a new message
-        //to webview.
-        __push__: function (message) {
-          receiveQueue.push(message);
-          //reason I need this setTmeout is to return this function as fast as
-          //possible to release the native side thread.
-          setTimeout(function () {
-            var message = receiveQueue.pop();
-            callFunc(WebViewBridge.onMessage, message);
-          }, 15); //this magic number is just a random small value. I don't like 0.
-        },
-        __fetch__: function () {
-          //since our sendQueue array only contains string, and our connection to native
-          //can only accept string, we need to convert array of strings into single string.
-          var messages = JSON.stringify(sendQueue);
-
-          //we make sure that sendQueue is resets
-          sendQueue = [];
-
-          //return the messages back to native side.
-          return messages;
-        },
-        //make sure message is string. because only string can be sent to native,
-        //if you don't pass it as string, onError function will be called.
-        send: function (message) {
-          if ('string' !== typeof message) {
-            callFunc(WebViewBridge.onError, "message is type '" + typeof message + "', and it needs to be string");
-            return;
-          }
-
-          //we queue the messages to make sure that native can collects all of them in one shot.
-          sendQueue.push(message);
-          //signal the objective-c that there is a message in the queue
-          signalNative();
-        },
-        onMessage: null,
-        onError: null
-      };
-
-      window.WebViewBridge = WebViewBridge;
-
-      //dispatch event
-      customEvent.initEvent('WebViewBridge', true, true);
-      doc.dispatchEvent(customEvent);
-    }(window));
-  );
+- (NSString *)webViewBridgeBootrstrap
+{
+  NSString* path = [[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"js"];
+  NSString* content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
+  return content;
 }
 
 @end
