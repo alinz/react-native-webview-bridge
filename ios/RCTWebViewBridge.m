@@ -23,12 +23,15 @@
 //source: http://stackoverflow.com/a/23387659/828487
 #define NSStringMultiline(...) [[NSString alloc] initWithCString:#__VA_ARGS__ encoding:NSUTF8StringEncoding]
 
+static const NSString* RCTWebViewBridgeSchema = @"rnwb";
+
 @interface RCTWebViewBridge () <UIWebViewDelegate, RCTAutoInsetsProtocol>
 
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingStart;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingFinish;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingError;
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
+@property (nonatomic, copy) RCTDirectEventBlock onBridgeMessage;
 
 @end
 
@@ -183,6 +186,18 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
   BOOL isJSNavigation = [request.URL.scheme isEqualToString:RCTJSNavigationScheme];
 
+  if (!isJSNavigation && [request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
+    NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge.__fetch__()"];
+
+    NSMutableDictionary<NSString *, id> *onBridgeMessageEvent = [[NSMutableDictionary alloc] initWithDictionary:@{
+      @"messages": [self stringArrayJsonToArray: message]
+    }];
+
+    _onBridgeMessage(onBridgeMessageEvent);
+
+    isJSNavigation = YES;
+  }
+
   static NSDictionary<NSNumber *, NSString *> *navigationTypes;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
@@ -274,13 +289,20 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   NSString *format = NSStringMultiline(
     (function(){
       if (WebViewBridge && WebViewBridge.__push__) {
-        WebViewBridge.__push__('%@');
+        WebViewBridge.__push__("%@");
       }
     }());
   );
 
   NSString *command = [NSString stringWithFormat: format, message];
   [_webView stringByEvaluatingJavaScriptFromString:command];
+}
+
+- (NSArray*)stringArrayJsonToArray:(NSString *)message
+{
+  return [NSJSONSerialization JSONObjectWithData:[message dataUsingEncoding:NSUTF8StringEncoding]
+                                         options:NSJSONReadingAllowFragments
+                                           error:nil];
 }
 
 - (NSString *)webViewBridgeBootrstrap
