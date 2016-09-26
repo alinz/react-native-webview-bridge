@@ -2,34 +2,39 @@
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
  *
+ * Copyright (c) 2016-present, Ali Najafizadeh
+ * All rights reserved.
+ *
  * This source code is licensed under the BSD-style license found in the
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * @providesModule WebView
+ * @providesModule WebViewBridge
  * @noflow
  */
 'use strict';
 
-var ActivityIndicator = require('ActivityIndicator');
-var EdgeInsetsPropType = require('EdgeInsetsPropType');
-var React = require('React');
-var ReactNative = require('react/lib/ReactNative');
-var StyleSheet = require('StyleSheet');
-var Text = require('Text');
-var UIManager = require('UIManager');
-var View = require('View');
-var ScrollView = require('ScrollView');
+import React, { PropTypes } from 'react'
+import {
+  ActivityIndicator,
+  EdgeInsetsPropType,
+  StyleSheet,
+  Text,
+  UIManager,
+  View,
+  ScrollView,
+  NativeModules,
+  requireNativeComponent
+} from 'react-native'
 
-var deprecatedPropType = require('deprecatedPropType');
-var invariant = require('fbjs/lib/invariant');
-var keyMirror = require('fbjs/lib/keyMirror');
-var processDecelerationRate = require('processDecelerationRate');
-var requireNativeComponent = require('requireNativeComponent');
-var resolveAssetSource = require('resolveAssetSource');
+import invariant from 'fbjs/lib/invariant'
+import keyMirror from 'fbjs/lib/keyMirror'
 
-var PropTypes = React.PropTypes;
-var RCTWebViewBridgeManager = require('NativeModules').WebViewManager;
+import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+import processDecelerationRate from 'react-native/Libraries/Components/ScrollView/processDecelerationRate'
+import deprecatedPropType from 'react-native/Libraries/Utilities/deprecatedPropType'
+
+const { WebViewBridgeManager } = NativeModules
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEW_REF = 'webview';
@@ -370,7 +375,7 @@ class WebView extends React.Component {
     var onShouldStartLoadWithRequest = this.props.onShouldStartLoadWithRequest && ((event: Event) => {
       var shouldStart = this.props.onShouldStartLoadWithRequest &&
         this.props.onShouldStartLoadWithRequest(event.nativeEvent);
-      RCTWebViewBridgeManager.startLoadWithResult(!!shouldStart, event.nativeEvent.lockIdentifier);
+      WebViewBridgeManager.startLoadWithResult(!!shouldStart, event.nativeEvent.lockIdentifier);
     });
 
     var decelerationRate = processDecelerationRate(this.props.decelerationRate);
