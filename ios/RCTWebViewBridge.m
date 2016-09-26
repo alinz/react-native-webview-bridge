@@ -285,7 +285,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (NSString *)webViewBridgeBootrstrap
 {
-  NSString* path = [[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"js"];
+  NSString *path = [[NSBundle mainBundle] pathForResource:@"bootstrap" ofType:@"js"];
   NSString* content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
   return content;
 }
