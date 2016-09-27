@@ -18,13 +18,11 @@ const injectScript = `
   (function () {
     if (window.WebViewBridge) {
 
-      WebViewBridge.onMessage = function (message) {
-        if (message === "hello from react-native") {
-          WebViewBridge.send("got the message inside webview");
-        }
-      };
+      WebViewBridge.addMessageListener(function (message) {
+        alert(message)
+      });
 
-      WebViewBridge.send({ message: 'nice to see you' });
+      WebViewBridge.send({ message: 'This is working' });
     }
   }());
 `;
