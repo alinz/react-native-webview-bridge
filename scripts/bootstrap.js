@@ -67,12 +67,21 @@
   }
 
   var queue = []
+  var onMessageListeners = {}
 
   window.WebViewBridge = {
+    __dispatch__: dispatch,
     __push__: function (encoded) {
-      decoded = decode(encoded)
-      //dispatch('webviewbridge:message', decoded);
-      window.WebViewBridge.message(decoded)
+      //we need to release native caller as soon as possible
+      //that's why we are wrap this on setTimeout
+      setTimeout(function () {
+        var fn = null
+        var decoded = decode(encoded)
+        Object.keys(onMessageListeners).forEach(function (onMessage) {
+          fn = onMessageListeners[onMessage]
+          fn(decoded)
+        })
+      }, 15)
     },
     __fetch__: function () {
       var val = JSON.stringify(queue)
@@ -83,7 +92,12 @@
       queue.push(encode(input))
       setTimeout(signalNative, 15)
     },
-    onMessage: function(msg) {}
+    addMessageListener: function(fn) {
+      onMessageListeners[fn] = fn
+    },
+    removeMessageListener: function (fn) {
+      delete onMessageListeners[fn]
+    }
   }
 
   dispatch('webviewbridge:init', window.WebViewBridge)
