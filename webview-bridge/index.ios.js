@@ -24,7 +24,8 @@ import {
   View,
   ScrollView,
   NativeModules,
-  requireNativeComponent
+  requireNativeComponent,
+  findNodeHandle
 } from 'react-native'
 
 import invariant from 'fbjs/lib/invariant'
@@ -495,7 +496,7 @@ class WebView extends React.Component {
    * Returns the native `WebView` node.
    */
   getWebViewHandle = (): any => {
-    return ReactNative.findNodeHandle(this.refs[RCT_WEBVIEW_REF]);
+    return findNodeHandle(this.refs[RCT_WEBVIEW_REF]);
   };
 
   _onLoadingStart = (event: Event) => {

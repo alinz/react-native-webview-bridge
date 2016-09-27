@@ -18,8 +18,8 @@ const injectScript = `
   (function () {
     if (window.WebViewBridge) {
 
-      WebViewBridge.addMessageListener(function (message) {
-        alert(message)
+      WebViewBridge.addMessageListener(function (payload) {
+        alert(payload.message)
       });
 
       WebViewBridge.send({ message: 'This is working' });
@@ -29,12 +29,16 @@ const injectScript = `
 
 class rpc extends Component {
   onMessage = (payload) => {
-    console.log(payload.message)
+    if (this.bridgeRef) {
+      console.log(payload.message)
+      this.bridgeRef.sendToBridge({ message: 'This is working too' })
+    }
   }
+
   render() {
-    console.log(injectScript)
     return (
       <WebView
+        ref={(ref) => this.bridgeRef = ref}
         source={{uri: 'https://github.com/facebook/react-native'}}
         style={{marginTop: 20}}
         javaScriptEnabled={true}
