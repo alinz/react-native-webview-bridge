@@ -43,7 +43,11 @@
   }
 
   function decode(input) {
-    return decodeURIComponent(escape(b64Decode(input)))
+    let result = decodeURIComponent(escape(b64Decode(input)))
+    try {
+      result = JSON.parse(result)
+    } catch(e){}
+    return result
   }
 
   // event section

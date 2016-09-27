@@ -34,6 +34,8 @@ import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
 import processDecelerationRate from 'react-native/Libraries/Components/ScrollView/processDecelerationRate'
 import deprecatedPropType from 'react-native/Libraries/Utilities/deprecatedPropType'
 
+import { encode, decode } from './base64'
+
 const { WebViewBridgeManager } = NativeModules
 
 var BGWASH = 'rgba(255,255,255,0.8)';
@@ -329,6 +331,8 @@ class WebView extends React.Component {
      * to tap them before they start playing. The default value is `true`.
      */
     mediaPlaybackRequiresUserAction: PropTypes.bool,
+
+    onBridgeMessage: PropTypes.func
   };
 
   state = {
@@ -407,6 +411,7 @@ class WebView extends React.Component {
         allowsInlineMediaPlayback={this.props.allowsInlineMediaPlayback}
         mediaPlaybackRequiresUserAction={this.props.mediaPlaybackRequiresUserAction}
         dataDetectorTypes={this.props.dataDetectorTypes}
+        onBridgeMessage={this.onBridgeMessage}
       />;
 
     return (
@@ -470,6 +475,20 @@ class WebView extends React.Component {
     if (this.props.onNavigationStateChange) {
       this.props.onNavigationStateChange(event.nativeEvent);
     }
+  };
+
+  onBridgeMessage = (event: Event) => {
+    const { onBridgeMessage } = this.props;
+    const messages = event.nativeEvent.messages;
+    if (onBridgeMessage) {
+      messages.forEach((message) => {
+        onBridgeMessage(decode(message));
+      });
+    }
+  };
+
+  sendToBridge = (message: any) => {
+    WebViewBridgeManager.sendToBridge(this.getWebViewHandle(), encode(message));
   };
 
   /**
