@@ -1,6 +1,4 @@
 (function () {
-  'use strict'
-
   //base64 encode and decode polyfil
   //modified version of https://github.com/davidchambers/Base64.js
   //you can replace the b64Encode and b64Decode for atob and btoa.
@@ -43,7 +41,7 @@
   }
 
   function decode(input) {
-    let result = decodeURIComponent(escape(b64Decode(input)))
+    var result = decodeURIComponent(escape(b64Decode(input)))
     try {
       result = JSON.parse(result)
     } catch(e){}

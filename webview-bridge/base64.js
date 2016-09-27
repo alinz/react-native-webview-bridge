@@ -40,14 +40,14 @@ function encode(input) {
 }
 
 function decode(input) {
-  let result = decodeURIComponent(escape(b64Decode(input)));
+  var result = decodeURIComponent(escape(b64Decode(input)));
   try {
     result = JSON.parse(result);
   } catch(e){}
   return result;
 }
 
-export default {
-  encode,
-  decode
-};
+module.exports = {
+  encode: encode,
+  decode: decode
+}
