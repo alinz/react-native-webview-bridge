@@ -14,16 +14,40 @@
       fn(args, function (result) {
         sender({
           id: id,
-          type: 'response',
+          type: 'resolve',
           result: result
+        })
+      }, function (err) {
+        sender({
+          id: id,
+          type: 'reject',
+          result: err
         })
       })
     }
   }
 
-  function invoke(sender, name, args, callback) {
+  function invoke(sender, name, args, opt, callback) {
     var id = ++ids
-    responseCallbacks[id] = callback
+    var target = {
+      callback: callback
+    }
+
+    if (opt) {
+      opt = {}
+    }
+
+    if (!opt.timeout) {
+      opt.timeout = 0
+    }
+
+    if (opt.timeout) {
+      target.timeoutHandler = setTimeout(function () {
+        onReject(id, 'timeout')
+      }, opt.timeout)
+    }
+
+    responseCallbacks[id] = target
 
     sender({
       id: id,
@@ -42,12 +66,24 @@
     }
   }
 
-  function onResponse(payload) {
-    var callback = responseCallbacks[payload.id]
-    if (callback) {
-      delete responseCallbacks[payload.id]
+  function onResolve(id, result) {
+    var target = responseCallbacks[id]
+    if (target) {
+      clearTimeout(target.timeoutHandler)
+      delete responseCallbacks[id]
       setTimeout(function () {
-        callback(payload.result)
+        target.callback(null, result)
+      }, 15)
+    }
+  }
+
+  function onReject(id, result) {
+    var target = responseCallbacks[id]
+    if (target) {
+      clearTimeout(target.timeoutHandler)
+      delete responseCallbacks[id]
+      setTimeout(function () {
+        target(result, null)
       }, 15)
     }
   }
@@ -57,17 +93,19 @@
       return
     }
 
-    //there are two types of payload
+    // there are two types of payload
     // invoke: { type: 'payload', id, name, args }
-    // response: { type: 'response', id, result }
-
+    // resolve: { type: 'resolve', id, result }
+    // reject: { type: 'reject', id, result }
     switch(payload.type) {
       case 'invoke':
         onInvoke(payload)
         break
-      case 'response':
-        onResponse(payload)
+      case 'resolve':
+        onResolve(payload.id, payload.result)
         break
+      case 'reject':
+        onReject(payload.id, payload.result)
       default:
         //ignore
     }
@@ -78,7 +116,7 @@
   //simply register to `webviewbridge:rpc` event.
   function init(WebViewBridge) {
     var rpc = {}
-    var sender = window.WebViewBridge.send
+    var sender = WebViewBridge.send
 
     window.removeEventListener('webviewbridge:init', init)
     WebViewBridge.addMessageListener(onMessage)
@@ -87,8 +125,8 @@
       register(sender, name, fn)
     }
 
-    rpc.invoke = function (name, args, callback) {
-      invoke(sender, name, args, callback)
+    rpc.invoke = function (name, args, opt, callback) {
+      invoke(sender, name, args, opt, callback)
     }
 
     WebViewBridge.rpc = rpc

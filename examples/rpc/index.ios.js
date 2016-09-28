@@ -16,13 +16,14 @@ import { WebViewBridge, WebViewBridgeRPC } from 'react-native-webview-bridge'
 
 const injectScript = `
   (function () {
-    if (window.WebViewBridge) {
+    if (window.WebViewBridge && window.WebViewBridge.rpc) {
+      var rpc = WebViewBridge.rpc
 
-      WebViewBridge.rpc.invoke('onNativeCall', null, function (resp) {
+      rpc.invoke('onNativeCall', null, { timeout: 0 }, function (err, resp) {
         alert(resp)
       })
 
-      WebViewBridge.rpc.register('onWebViewCall', function (args, resolve) {
+      rpc.register('onWebViewCall', function (args, resolve, reject) {
         resolve('this is web call')
       })
 
@@ -46,13 +47,12 @@ class rpc extends Component {
     this.bridgeRef.register('onNativeCall', this.onNativeCall)
   }
 
-  onNativeCall = (args, resolve) => {
+  onNativeCall = (args, resolve, reject) => {
     resolve('native call')
 
     setTimeout(() => {
-      console.log('invoking....')
-      this.bridgeRef.invoke('onWebViewCall', null, function (resp) {
-        console.log(resp)
+      this.bridgeRef.invoke('onWebViewCall', null, { timeout: 0 }, function (err, resp) {
+        console.log(err, resp)
       })
     }, 3000)
   }
