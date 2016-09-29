@@ -33,7 +33,7 @@
       callback: callback
     }
 
-    if (opt) {
+    if (!opt) {
       opt = {}
     }
 
