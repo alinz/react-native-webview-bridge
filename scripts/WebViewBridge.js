@@ -1,4 +1,8 @@
 (function () {
+  var WebViewBridge = window.WebViewBridge ? window.WebViewBridge : {}
+  var queue = []
+  var onMessageListeners = {}
+
   //base64 encode and decode polyfil
   //modified version of https://github.com/davidchambers/Base64.js
   //you can replace the b64Encode and b64Decode for atob and btoa.
@@ -48,11 +52,12 @@
     return result
   }
 
-  // event section
-  var doc = window.document
-
   function signalNative() {
-    window.location = 'rnwb://message' + new Date().getTime()
+    if (WebViewBridge.nativeAndroidSend) {
+      WebViewBridge.nativeAndroidSend(WebViewBridge.__fetch__())
+    } else {
+      window.location = 'rnwb://message' + new Date().getTime()
+    }
   }
 
   function dispatch(name, value) {
@@ -62,43 +67,39 @@
     });
 
     setTimeout(function () {
-      doc.dispatchEvent(event)
+      window.document.dispatchEvent(event)
     }, 15)
   }
 
-  var queue = []
-  var onMessageListeners = {}
-
-  window.WebViewBridge = {
-    __dispatch__: dispatch,
-    __push__: function (encoded) {
-      //we need to release native caller as soon as possible
-      //that's why we are wrap this on setTimeout
-      setTimeout(function () {
-        var fn = null
-        var decoded = decode(encoded)
-        Object.keys(onMessageListeners).forEach(function (onMessage) {
-          fn = onMessageListeners[onMessage]
-          fn(decoded)
-        })
-      }, 15)
-    },
-    __fetch__: function () {
-      var val = JSON.stringify(queue)
-      queue = []
-      return val
-    },
-    send: function (input) {
-      queue.push(encode(input))
-      setTimeout(signalNative, 15)
-    },
-    addMessageListener: function(fn) {
-      onMessageListeners[fn] = fn
-    },
-    removeMessageListener: function (fn) {
-      delete onMessageListeners[fn]
-    }
+  WebViewBridge.__dispatch__ = dispatch
+  WebViewBridge.__push__ = function (encoded) {
+    //we need to release native caller as soon as possible
+    //that's why we are wrap this on setTimeout
+    setTimeout(function () {
+      var fn = null
+      var decoded = decode(encoded)
+      Object.keys(onMessageListeners).forEach(function (onMessage) {
+        fn = onMessageListeners[onMessage]
+        fn(decoded)
+      })
+    }, 15)
+  }
+  WebViewBridge.__fetch__ = function () {
+    var val = JSON.stringify(queue)
+    queue = []
+    return val
+  }
+  WebViewBridge.send = function (input) {
+    queue.push(encode(input))
+    setTimeout(signalNative, 15)
+  }
+  WebViewBridge.addMessageListener = function(fn) {
+    onMessageListeners[fn] = fn
+  }
+  WebViewBridge.removeMessageListener = function (fn) {
+    delete onMessageListeners[fn]
   }
 
-  dispatch('webviewbridge:init', window.WebViewBridge)
+  window.WebViewBridge = WebViewBridge
+  dispatch('webviewbridge:init', WebViewBridge)
 }())

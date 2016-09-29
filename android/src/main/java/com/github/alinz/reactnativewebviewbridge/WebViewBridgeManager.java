@@ -16,6 +16,8 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     private static final String REACT_CLASS = "RCTWebViewBridge";
 
     public static final int COMMAND_SEND_TO_BRIDGE = 101;
+    public static final int COMMAND_INJECT_WEBVIEW_BRIDGE = 102;
+    public static final int COMMAND_INJECT_RPC = 103;
 
     @Override
     public String getName() {
@@ -48,13 +50,27 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             case COMMAND_SEND_TO_BRIDGE:
                 sendToBridge(root, args.getString(0));
                 break;
+            case COMMAND_INJECT_WEBVIEW_BRIDGE:
+                injectWebViewBridgeScript(root);
+                break;
+            case COMMAND_INJECT_RPC:
+                injectWebViewBridgeRPCScript(root);
+                break;
             default:
                 //do nothing!!!!
         }
     }
 
+    private void injectWebViewBridgeScript(WebView root) {
+
+    }
+
+    private void injectWebViewBridgeRPCScript(WebView root) {
+
+    }
+
     private void sendToBridge(WebView root, String message) {
-        String script = "WebViewBridge.onMessage('" + message + "');";
+        String script = "(function(){ if (WebViewBridge && WebViewBridge.__push__) { WebViewBridge.__push__(\"" + message + "\"); } }());";
         WebViewBridgeManager.evaluateJavascript(root, script);
     }
 
