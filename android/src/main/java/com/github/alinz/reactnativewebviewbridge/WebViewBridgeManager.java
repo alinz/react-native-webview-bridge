@@ -125,6 +125,11 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         }
     }
 
+    @ReactProp(name = "injectedJavaScript")
+    public void setInjectedJavaScript(WebView root, @Nullable String injectedJavaScript) {
+        evaluateJavascript(root, injectedJavaScript);
+    }
+
     @ReactProp(name = "allowFileAccessFromFileURLs")
     public void setAllowFileAccessFromFileURLs(WebView root, boolean allows) {
         root.getSettings().setAllowFileAccessFromFileURLs(allows);
