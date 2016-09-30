@@ -15,7 +15,8 @@ import { WebViewBridge, WebViewBridgeRPC } from 'react-native-webview-bridge'
 
 const injectScript = `
   (function () {
-    if (window.WebViewBridge && window.WebViewBridge.rpc) {
+
+    function test() {
       var rpc = WebViewBridge.rpc
 
       rpc.invoke('onNativeCall', null, { timeout: 0 }, function (err, resp) {
@@ -25,12 +26,14 @@ const injectScript = `
       rpc.register('onWebViewCall', function (args, resolve, reject) {
         resolve('this is web call')
       })
+    }
 
-      // WebViewBridge.addMessageListener(function (payload) {
-      //   alert(payload.message)
-      // });
-      //
-      // WebViewBridge.send({ message: 'This is working' });
+    if (window.WebViewBridge && window.WebViewBridge.rpc) {
+      test()
+    } else {
+      window.addEventListener('webviewbridge:rpc', function () {
+        test()
+      })
     }
   }());
 `;
