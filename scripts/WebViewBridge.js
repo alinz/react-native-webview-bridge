@@ -1,105 +1,72 @@
-(function () {
-  var WebViewBridge = window.WebViewBridge ? window.WebViewBridge : {}
-  var queue = []
-  var onMessageListeners = {}
+(function (window) {
+  'use strict';
 
-  //base64 encode and decode polyfil
-  //modified version of https://github.com/davidchambers/Base64.js
-  //you can replace the b64Encode and b64Decode for atob and btoa.
-  var b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
-  function b64Encode(input) {
-    var output = ''
-    for (
-      var block, charCode, idx = 0, map = b64ch;
-      input.charAt(idx | 0) || (map = '=', idx % 1);
-      output += map.charAt(63 & block >> 8 - idx % 1 * 8)
-    ) {
-      charCode = input.charCodeAt(idx += 3/4)
-      block = block << 8 | charCode
-    }
-    return output
+  //Make sure that if WebViewBridge already in scope we don't override it.
+  if (window.WebViewBridge) {
+    return;
   }
 
-  function b64Decode(input) {
-    var str = input.replace(/=+$/, '')
-    var output = ''
-    for (
-      var bc = 0, bs, buffer, idx = 0;
-      buffer = str.charAt(idx++);
-      ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
-        bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
-    ) {
-      buffer = b64ch.indexOf(buffer)
-    }
-    return output
-  }
+  var RNWBSchema = 'wvb';
+  var sendQueue = [];
+  var receiveQueue = [];
+  var doc = window.document;
+  var customEvent = doc.createEvent('Event');
 
-  function encode(input) {
-    if (typeof input !== 'string') {
-      try {
-        input = JSON.stringify(input)
-      } catch(e) {}
+  function callFunc(func, message) {
+    if ('function' === typeof func) {
+      func(message);
     }
-    input = unescape(encodeURIComponent(input))
-    return b64Encode(input)
-  }
-
-  function decode(input) {
-    var result = decodeURIComponent(escape(b64Decode(input)))
-    try {
-      result = JSON.parse(result)
-    } catch(e){}
-    return result
   }
 
   function signalNative() {
-    if (WebViewBridge.nativeAndroidSend) {
-      WebViewBridge.nativeAndroidSend(WebViewBridge.__fetch__())
-    } else {
-      window.location = 'rnwb://message' + new Date().getTime()
-    }
+    window.location = RNWBSchema + '://message' + new Date().getTime();
   }
 
-  function dispatch(name, value) {
-    var event = new CustomEvent(name, {
-      detail: value,
-      bubbles: true
-    });
+  //I made the private function ugly signiture so user doesn't called them accidently.
+  //if you do, then I have nothing to say. :(
+  var WebViewBridge = {
+    //this function will be called by native side to push a new message
+    //to webview.
+    __push__: function (message) {
+      receiveQueue.push(message);
+      //reason I need this setTmeout is to return this function as fast as
+      //possible to release the native side thread.
+      setTimeout(function () {
+        var message = receiveQueue.pop();
+        callFunc(WebViewBridge.onMessage, message);
+      }, 15); //this magic number is just a random small value. I don't like 0.
+    },
+    __fetch__: function () {
+      //since our sendQueue array only contains string, and our connection to native
+      //can only accept string, we need to convert array of strings into single string.
+      var messages = JSON.stringify(sendQueue);
 
-    setTimeout(function () {
-      window.document.dispatchEvent(event)
-    }, 15)
-  }
+      //we make sure that sendQueue is resets
+      sendQueue = [];
 
-  WebViewBridge.__dispatch__ = dispatch
-  WebViewBridge.__push__ = function (encoded) {
-    //we need to release native caller as soon as possible
-    //that's why we are wrap this on setTimeout
-    setTimeout(function () {
-      var fn = null
-      var decoded = decode(encoded)
-      Object.keys(onMessageListeners).forEach(function (onMessage) {
-        fn = onMessageListeners[onMessage]
-        fn(decoded)
-      })
-    }, 15)
-  }
-  WebViewBridge.__fetch__ = function () {
-    var val = JSON.stringify(queue)
-    queue = []
-    return val
-  }
-  WebViewBridge.send = function (input) {
-    queue.push(encode(input))
-    setTimeout(signalNative, 15)
-  }
-  WebViewBridge.addMessageListener = function(fn) {
-    onMessageListeners[fn] = fn
-  }
-  WebViewBridge.removeMessageListener = function (fn) {
-    delete onMessageListeners[fn]
-  }
+      //return the messages back to native side.
+      return messages;
+    },
+    //make sure message is string. because only string can be sent to native,
+    //if you don't pass it as string, onError function will be called.
+    send: function (message) {
+      if ('string' !== typeof message) {
+        callFunc(WebViewBridge.onError, "message is type '" + typeof message + "', and it needs to be string");
+        return;
+      }
 
-  window.WebViewBridge = WebViewBridge
-  dispatch('webviewbridge:init', WebViewBridge)
-}())
+      //we queue the messages to make sure that native can collects all of them in one shot.
+      sendQueue.push(message);
+      //signal the objective-c that there is a message in the queue
+      signalNative();
+    },
+    onMessage: null,
+    onError: null
+  };
+
+  window.WebViewBridge = WebViewBridge;
+
+  //dispatch event
+  customEvent.initEvent('WebViewBridge', true, true);
+  doc.dispatchEvent(customEvent);
+}(window));
