@@ -2,69 +2,58 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a99f636-e6ea-40cc-b817-1abe514f2adc" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/mipmap-hdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/mipmap-mdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/gradle/wrapper/gradle-wrapper.jar" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/.buckconfig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/.flowconfig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/.watchmanconfig" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/BUCK" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/build.gradle" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/proguard-rules.pro" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/AndroidManifest.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/assets/WebViewBridge.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/assets/WebViewBridgeRPC.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/java/com/rpc/MainActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/java/com/rpc/MainApplication.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/values/strings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/values/styles.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/build.gradle" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/gradle.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/gradle/wrapper/gradle-wrapper.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/gradlew" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/gradlew.bat" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/keystores/BUCK" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/keystores/debug.keystore.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/android/settings.gradle" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/app.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/index.android.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/index.ios.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpc.xcodeproj/project.pbxproj" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpc.xcodeproj/xcshareddata/xcschemes/rpc.xcscheme" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpc/AppDelegate.h" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpc/AppDelegate.m" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpc/Base.lproj/LaunchScreen.xib" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpc/Images.xcassets/AppIcon.appiconset/Contents.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpc/Info.plist" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpc/main.m" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpcTests/Info.plist" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/ios/rpcTests/rpcTests.m" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/examples/rpc/package.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/WebViewBridge/index.android.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/WebViewBridge/index.ios.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/WebViewBridgeRPC/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/core/base64.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/core/rpc.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scripts/WebViewBridge.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scripts/WebViewBridgeRPC.js" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/scripts/webviewbridge.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/.buckconfig" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/.flowconfig" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/.gitignore" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/.watchmanconfig" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/BUCK" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/build.gradle" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/proguard-rules.pro" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/AndroidManifest.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/assets/WebViewBridge.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/assets/WebViewBridgeRPC.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/java/com/rpc/MainActivity.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/java/com/rpc/MainApplication.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/values/strings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/app/src/main/res/values/styles.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/build.gradle" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/gradle.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/gradle/wrapper/gradle-wrapper.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/gradle/wrapper/gradle-wrapper.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/gradlew" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/gradlew.bat" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/keystores/BUCK" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/keystores/debug.keystore.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/android/settings.gradle" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/app.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/index.android.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/index.ios.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpc.xcodeproj/project.pbxproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpc.xcodeproj/xcshareddata/xcschemes/rpc.xcscheme" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpc/AppDelegate.h" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpc/AppDelegate.m" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpc/Base.lproj/LaunchScreen.xib" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpc/Images.xcassets/AppIcon.appiconset/Contents.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpc/Info.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpc/main.m" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpcTests/Info.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/ios/rpcTests/rpcTests.m" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/examples/rpc/package.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/WebViewBridge/index.android.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/WebViewBridge/index.ios.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/WebViewBridgeRPC/index.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/base64.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/rpc.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/index.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/src/main/java/com/github/alinz/reactnativewebviewbridge/JavascriptBridge.java" afterPath="$PROJECT_DIR$/android/src/main/java/com/github/alinz/reactnativewebviewbridge/JavascriptBridge.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/src/main/java/com/github/alinz/reactnativewebviewbridge/WebViewBridgeManager.java" afterPath="$PROJECT_DIR$/android/src/main/java/com/github/alinz/reactnativewebviewbridge/WebViewBridgeManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/src/main/java/com/github/alinz/reactnativewebviewbridge/WebViewBridgePackage.java" afterPath="$PROJECT_DIR$/android/src/main/java/com/github/alinz/reactnativewebviewbridge/WebViewBridgePackage.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ios/RCTWebViewBridge.h" afterPath="$PROJECT_DIR$/ios/RCTWebViewBridge.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ios/RCTWebViewBridge.m" afterPath="$PROJECT_DIR$/ios/RCTWebViewBridge.m" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ios/RCTWebViewBridgeManager.h" afterPath="$PROJECT_DIR$/ios/RCTWebViewBridgeManager.h" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ios/RCTWebViewBridgeManager.m" afterPath="$PROJECT_DIR$/ios/RCTWebViewBridgeManager.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ios/React-Native-Webview-Bridge.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/ios/React-Native-Webview-Bridge.xcodeproj/project.pbxproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ios/React-Native-Webview-Bridge.xcodeproj/xcuserdata/ali.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="$PROJECT_DIR$/ios/React-Native-Webview-Bridge.xcodeproj/xcuserdata/ali.xcuserdatad/xcschemes/xcschememanagement.plist" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="react-native-webview-bridge.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -85,7 +74,18 @@
     <favorites_list name="react-native-webview-bridge" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="RCTWebViewBridge.m" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ios/RCTWebViewBridge.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6228501">
+              <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -104,7 +104,7 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="2478" />
+    <option name="width" value="2487" />
     <option name="height" value="1417" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -132,7 +132,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -141,9 +141,33 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="react-native-webview-bridge" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="react-native-webview-bridge" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="react-native-webview-bridge" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="react-native-webview-bridge" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -163,14 +187,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="2478" height="1417" extended-state="6" />
-    <editor active="false" />
+    <frame x="0" y="23" width="2487" height="1417" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2541051" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25521472" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33050847" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -193,18 +217,26 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ios/RCTWebViewBridge.m">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5208333">
-          <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/webviewbridge.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5659929">
+          <caret line="28" column="17" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ios/RCTWebViewBridge.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6228501">
+          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
