@@ -1,3 +1,5 @@
+## Please take a look at this [issue](https://github.com/alinz/react-native-webview-bridge/issues/109) first
+
 # React Native WebView Javascript Bridge
 I have been testing and reading a lot of way to safely create a bridge between react-native and webview. I'm happy to announced that the wait is over and from **React-Native 0.20 and above**, the bridge is fully functional.
 
@@ -7,7 +9,7 @@ I have been testing and reading a lot of way to safely create a bridge between r
 
 In order to use this extension, you have to do the following steps:
 
-in your react-native project, run `npm install react-native-webview-bridge`
+in your react-native project, run `npm install react-native-webview-bridge --save`
 
 ### iOS
 
@@ -35,15 +37,15 @@ in your react-native project, run `npm install react-native-webview-bridge`
 </p>
 8. clean compile to make sure your project can compile and build.
 
-### Android (Beta)
+### Android
 
-1. add the following import to `MainActivity.java` of your application
+1. add the following import to `MainApplication.java` (`MainActivity.java` if RN < 0.29) of your application
 
 ```java
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 ```
 
-2. add the following code to add the package to `MainActivity.java`
+2. add the following code to add the package to `MainApplication.java`` (`MainActivity.java` if RN < 0.29)
 
 ```java
 protected List<ReactPackage> getPackages() {
@@ -96,6 +98,11 @@ the message must be in string. because this is the only way to send data back an
 #### onBridgeMessage
 this is a prop that needs to be a function. it will be called once a message is received from webview. The type of received message is also in string.
 
+#### allowFileAccessFromFileURLs (Android only)
+this is a prop that allows locally loaded pages via file:// to access other file:// resources.  Pass-thru to corresponding [setting](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowFileAccessFromFileURLs(boolean)) in WebView. Default is `false` for Android 4.1 and above.
+
+#### allowUniversalAccessFromFileURLs (Android only)
+this is a prop that allows locally loaded pages via file:// to access resources in any origin.  Pass-thru to corresponding [setting](https://developer.android.com/reference/android/webkit/WebSettings.html#setAllowUniversalAccessFromFileURLs(boolean)) in WebView.  Default is `false` for Android 4.1 and above.
 
 ## Bridge Script
 

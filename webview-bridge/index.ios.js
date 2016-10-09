@@ -21,7 +21,7 @@ var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
 var {
-  ActivityIndicatorIOS,
+  ActivityIndicator,
   EdgeInsetsPropType,
   StyleSheet,
   Text,
@@ -67,7 +67,7 @@ type Event = Object;
 
 var defaultRenderLoading = () => (
   <View style={styles.loadingView}>
-    <ActivityIndicatorIOS />
+    <ActivityIndicator/>
   </View>
 );
 var defaultRenderError = (errorDomain, errorCode, errorDesc) => (
@@ -105,6 +105,8 @@ var WebViewBridge = React.createClass({
     onBridgeMessage: PropTypes.func,
 
     hideKeyboardAccessoryView: PropTypes.bool,
+
+    keyboardDisplayRequiresUserAction: PropTypes.bool,
   },
 
   getInitialState: function() {
