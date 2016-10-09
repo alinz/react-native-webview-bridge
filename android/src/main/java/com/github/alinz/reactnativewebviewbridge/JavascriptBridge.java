@@ -17,13 +17,13 @@ class JavascriptBridge {
     }
 
     @JavascriptInterface
-    public void send(String message) {
+    public void nativeAndroidSend(String message) {
         WritableMap event = Arguments.createMap();
         event.putString("message", message);
         ReactContext reactContext = (ReactContext) this.webView.getContext();
-        reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
-                this.webView.getId(),
-                "topChange",
-                event);
+        reactContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("WebViewBridgeMessageEvent", event);
+
     }
 }

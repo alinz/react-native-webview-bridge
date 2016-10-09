@@ -2,11 +2,7 @@
   "name": "react-native-webview-bridge",
   "version": "0.33.0",
   "description": "React Native WebView Javascript Bridge",
-  "main": "webview-bridge",
-  "directories": {
-    "example": "example",
-    "lib": "lib"
-  },
+  "main": "lib",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +14,9 @@
     "react-native",
     "react-component",
     "ios",
-    "webview-bridge"
+    "android",
+    "webview-bridge",
+    "rpc"
   ],
   "author": "Ali Najafizadeh",
   "contributors": [
@@ -28,9 +26,5 @@
   "bugs": {
     "url": "https://github.com/alinz/react-native-webview-bridge/issues"
   },
-  "homepage": "https://github.com/alinz/react-native-webview-bridge",
-  "dependencies": {
-    "invariant": "2.2.0",
-    "keymirror": "0.1.1"
-  }
+  "homepage": "https://github.com/alinz/react-native-webview-bridge"
 }
