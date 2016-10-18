@@ -108,7 +108,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   );
 
   NSString *command = [NSString stringWithFormat: format, message];
-  [_webView stringByEvaluatingJavaScriptFromString:command];
+  [_webView stringByEvaluatingJavaScriptFromString:message];
 }
 
 - (NSURL *)URL
