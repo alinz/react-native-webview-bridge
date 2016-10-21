@@ -25,13 +25,14 @@
 
 static const NSString* RCTWebViewBridgeSchema = @"rnwb";
 
-@interface RCTWebViewBridge () <UIWebViewDelegate, RCTAutoInsetsProtocol>
+@interface RCTWebViewBridge () <UIWebViewDelegate, UIScrollViewDelegate, RCTAutoInsetsProtocol>
 
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingStart;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingFinish;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingError;
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onBridgeMessage;
+@property (nonatomic, copy) RCTDirectEventBlock onStatusBarTap;
 
 @end
 
@@ -55,8 +56,26 @@ static const NSString* RCTWebViewBridgeSchema = @"rnwb";
     _webView = [[UIWebView alloc] initWithFrame:self.bounds];
     _webView.delegate = self;
     [self addSubview:_webView];
+    
+    UIScrollView *_fakeScrollView = [[UIScrollView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    _fakeScrollView.delegate = self;
+    _fakeScrollView.scrollsToTop = YES;
+    [self addSubview:_fakeScrollView];
+    [self sendSubviewToBack:_fakeScrollView];
+    _fakeScrollView.contentSize = CGSizeMake(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height + 1.0f);
+    _fakeScrollView.contentOffset = CGPointMake(0.0f, UIScreen.mainScreen.bounds.size.height);
   }
   return self;
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+  if (_onStatusBarTap) {
+    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+    _onStatusBarTap(event);
+    return NO;
+  }
+  return YES;
 }
 
 RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
