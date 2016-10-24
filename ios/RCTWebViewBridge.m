@@ -10,6 +10,7 @@
 #import "RCTWebViewBridge.h"
 
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 
 #import "RCTAutoInsetsProtocol.h"
 #import "RCTConvert.h"
@@ -23,15 +24,26 @@
 //source: http://stackoverflow.com/a/23387659/828487
 #define NSStringMultiline(...) [[NSString alloc] initWithCString:#__VA_ARGS__ encoding:NSUTF8StringEncoding]
 
+// runtime trick to remove UIWebview keyboard default toolbar
+// see: http://stackoverflow.com/questions/19033292/ios-7-uiwebview-keyboard-issue/19042279#19042279
+@interface _SwizzleHelper : NSObject @end
+@implementation _SwizzleHelper
+-(id)inputAccessoryView
+{
+  return nil;
+}
+@end
+
 static const NSString* RCTWebViewBridgeSchema = @"rnwb";
 
-@interface RCTWebViewBridge () <UIWebViewDelegate, RCTAutoInsetsProtocol>
+@interface RCTWebViewBridge () <UIWebViewDelegate, UIScrollViewDelegate, RCTAutoInsetsProtocol>
 
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingStart;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingFinish;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingError;
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onBridgeMessage;
+@property (nonatomic, copy) RCTDirectEventBlock onStatusBarTap;
 
 @end
 
@@ -55,8 +67,26 @@ static const NSString* RCTWebViewBridgeSchema = @"rnwb";
     _webView = [[UIWebView alloc] initWithFrame:self.bounds];
     _webView.delegate = self;
     [self addSubview:_webView];
+    
+    UIScrollView *_fakeScrollView = [[UIScrollView alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    _fakeScrollView.delegate = self;
+    _fakeScrollView.scrollsToTop = YES;
+    [self addSubview:_fakeScrollView];
+    [self sendSubviewToBack:_fakeScrollView];
+    _fakeScrollView.contentSize = CGSizeMake(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height + 1.0f);
+    _fakeScrollView.contentOffset = CGPointMake(0.0f, UIScreen.mainScreen.bounds.size.height);
   }
   return self;
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+  if (_onStatusBarTap) {
+    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+    _onStatusBarTap(event);
+    return NO;
+  }
+  return YES;
 }
 
 RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
@@ -85,6 +115,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)stopLoading
 {
   [_webView stopLoading];
+}
+
+- (void)closeKeyboard
+{
+  [_webView endEditing:YES];
 }
 
 - (void)setSource:(NSDictionary *)source
@@ -285,6 +320,37 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   else if (_onLoadingFinish && !webView.loading && ![webView.request.URL.absoluteString isEqualToString:@"about:blank"]) {
     _onLoadingFinish([self baseEvent]);
   }
+}
+
+- (void)setHideKeyboardAccessoryView:(BOOL)hideKeyboardAccessoryView
+{
+  if (!hideKeyboardAccessoryView) {
+    return;
+  }
+  
+  UIView* subview;
+  for (UIView* view in _webView.scrollView.subviews) {
+    if([[view.class description] hasPrefix:@"UIWeb"])
+      subview = view;
+  }
+  
+  if(subview == nil) return;
+  
+  NSString* name = [NSString stringWithFormat:@"%@_SwizzleHelper", subview.class.superclass];
+  Class newClass = NSClassFromString(name);
+  
+  if(newClass == nil)
+  {
+    newClass = objc_allocateClassPair(subview.class, [name cStringUsingEncoding:NSASCIIStringEncoding], 0);
+    if(!newClass) return;
+    
+    Method method = class_getInstanceMethod([_SwizzleHelper class], @selector(inputAccessoryView));
+    class_addMethod(newClass, @selector(inputAccessoryView), method_getImplementation(method), method_getTypeEncoding(method));
+    
+    objc_registerClassPair(newClass);
+  }
+  
+  object_setClass(subview, newClass);
 }
 
 - (void)sendToBridge:(NSString *)message
