@@ -18,13 +18,13 @@
     "ios",
     "webview-bridge"
   ],
-  "homepage": "https://github.com/DanielZlotin/react-native-webview-bridge",
+  "homepage": "https://github.com/wix/react-native-webview-bridge",
   "bugs": {
-    "url": "https://github.com/DanielZlotin/react-native-webview-bridge/issues"
+    "url": "https://github.com/wix/react-native-webview-bridge/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:DanielZlotin/react-native-webview-bridge.git"
+    "url": "git@github.com:wix/react-native-webview-bridge.git"
   },
   "scripts": {
     "build": ":",
