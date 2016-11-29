@@ -45,5 +45,6 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 - (void)reload;
 - (void)sendToBridge:(NSString *)message;
 - (NSString*) getElementHTML:(NSString*)elementId;
+- (NSString*) getSelectedHTML;
 
 @end

@@ -117,6 +117,19 @@ RCT_EXPORT_METHOD(getElementHTML:(nonnull NSNumber *)reactTag :(NSString*)elemen
     }];
 }
 
+RCT_EXPORT_METHOD(getSelectedHTML:(nonnull NSNumber *)reactTag :(NSString*)elementId :(RCTResponseSenderBlock)callback)
+{
+    [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebViewBridge *> *viewRegistry) {
+        RCTWebViewBridge *view = viewRegistry[reactTag];
+        if (![view isKindOfClass:[RCTWebViewBridge class]]) {
+            RCTLogError(@"Invalid view returned from registry, expecting RCTWebViewBridge, got: %@", view);
+        } else {
+            NSString* html = [view getSelectedHTML];
+            NSLog(@"Selected HTML is %@", html);
+            callback(@[[NSNull null], html]);
+        }
+    }];
+}
 
 RCT_EXPORT_METHOD(sendToBridge:(nonnull NSNumber *)reactTag
                   value:(NSString*)message)

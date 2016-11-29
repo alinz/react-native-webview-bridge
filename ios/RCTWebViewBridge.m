@@ -93,7 +93,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     return [_webView stringByEvaluatingJavaScriptFromString:JSString];
 }
 
-
+- (NSString*) getSelectedHTML {
+    NSString* JSString = [NSString stringWithFormat:@"document.getSelection()"];
+    NSLog(@"selectedHTML is: %@",JSString);
+    return [_webView stringByEvaluatingJavaScriptFromString:JSString];
+}
 
 - (void)sendToBridge:(NSString *)message
 {
