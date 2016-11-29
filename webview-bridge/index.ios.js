@@ -237,6 +237,11 @@ var WebViewBridge = React.createClass({
     console.log("html from editor is " + html);
   },
 
+  getSelectedHTML: function (elementId: string, callback) {
+    var html = WebViewBridgeManager.getSelectedHTML(this.getWebViewBridgeHandle(), elementId, callback);
+    console.log("html from editor is " + html);
+  },
+
   /**
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward
