@@ -91,7 +91,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)commentAction:(id)sender {
     NSLog(@"inside self");
-    NSLog(self, _onLoadingError);
+    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+    if (self.onSelection) {
+        self.onSelection(event);
+    }
+    
 }
 
 - (void)highlightAction:(id)sender {
