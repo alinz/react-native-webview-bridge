@@ -282,7 +282,8 @@ var RCTWebViewBridge = requireNativeComponent('RCTWebViewBridge', WebViewBridge,
   nativeOnly: {
     onLoadingStart: true,
     onLoadingError: true,
-    onLoadingFinish: true
+    onLoadingFinish: true,
+    onChange: true
   }
 })
 
