@@ -108,7 +108,7 @@ var WebViewBridge = React.createClass({
 
     keyboardDisplayRequiresUserAction: PropTypes.bool,
 
-    onChange: PropTypes.func
+    onSelection: PropTypes.func
   },
 
   getInitialState: function() {

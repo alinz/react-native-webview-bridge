@@ -48,7 +48,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingError;
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onBridgeMessage;
-@property (nonatomic, copy) RCTBubblingEventBlock onChange;
+@property (nonatomic, copy) RCTBubblingEventBlock onSelection;
 
 
 @end
