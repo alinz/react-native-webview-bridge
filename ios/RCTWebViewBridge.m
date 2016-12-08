@@ -302,7 +302,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
   //injecting WebViewBridge bootstrap
   [webView stringByEvaluatingJavaScriptFromString:[self webViewBridgeBootrstrap]];
-  
+
   //injecting WebViewBridgeRPC bootstrap
   if (self.rpc) {
     [webView stringByEvaluatingJavaScriptFromString:[self webViewBridgeRPCBootstrap]];
@@ -379,6 +379,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (NSString *)webViewBridgeBootrstrap
 {
   NSString *path = [[NSBundle mainBundle] pathForResource:@"WebViewBridge" ofType:@"js"];
+  assert(path != nil);
   NSString* content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
   return content;
 }
@@ -386,6 +387,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (NSString *)webViewBridgeRPCBootstrap
 {
   NSString *path = [[NSBundle mainBundle] pathForResource:@"WebViewBridgeRPC" ofType:@"js"];
+  assert(path != nil);
   NSString* content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL];
   return content;
 }

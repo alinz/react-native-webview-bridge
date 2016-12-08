@@ -19,7 +19,7 @@ public class WebViewBridgePackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
         return Arrays.<ViewManager>asList(
-                new WebViewBridgeManager()
+                new WebViewBridgeManager(reactApplicationContext)
         );
     }
 
