@@ -55,6 +55,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 {
   UIWebView *_webView;
   NSString *_injectedJavaScript;
+  NSString *_injectedOnStartLoadingJavaScript;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -284,6 +285,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     }];
     _onLoadingError(event);
   }
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    if (_injectedOnStartLoadingJavaScript != nil) {
+        NSString *jsEvaluationValue = [webView stringByEvaluatingJavaScriptFromString:_injectedOnStartLoadingJavaScript];
+
+    }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView

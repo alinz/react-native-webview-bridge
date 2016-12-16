@@ -39,6 +39,7 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 @property (nonatomic, assign) BOOL automaticallyAdjustContentInsets;
 @property (nonatomic, assign) BOOL hideKeyboardAccessoryView;
 @property (nonatomic, copy) NSString *injectedJavaScript;
+@property (nonatomic, copy) NSString *injectedOnStartLoadingJavaScript;
 
 - (void)goForward;
 - (void)goBack;

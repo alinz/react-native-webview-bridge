@@ -107,6 +107,8 @@ var WebViewBridge = React.createClass({
     hideKeyboardAccessoryView: PropTypes.bool,
 
     keyboardDisplayRequiresUserAction: PropTypes.bool,
+
+    injectedOnStartLoadingJavaScript: PropTypes.string,
   },
 
   getInitialState: function() {
