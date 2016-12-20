@@ -33,7 +33,6 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 {
     WKWebView *_webView;
     NSString *_injectedJavaScript;
-    NSString *_injectedOnStartLoadingJavaScript;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -130,6 +129,16 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     NSString *command = [NSString stringWithFormat: format, message];
     NSLog(command);
     [_webView evaluateJavaScript:command completionHandler:nil];
+}
+
+- (void)setInjectedOnStartLoadingJavaScript:(NSString *)js
+{
+    WKUserScript* script = [[WKUserScript alloc]
+                            initWithSource:js
+                            injectionTime:WKUserScriptInjectionTimeAtDocumentStart
+                            forMainFrameOnly:NO];
+
+    [_webView.configuration.userContentController addUserScript:script];
 }
 
 - (void)setSource:(NSDictionary *)source
@@ -233,17 +242,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 }
 
 #pragma mark - WKNavigationDelegate methods
-
-- (void)webView:(__unused WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
-    if(_injectedOnStartLoadingJavaScript != nil){
-        WKUserScript* script = [[WKUserScript alloc]
-                                initWithSource:_injectedOnStartLoadingJavaScript
-                                injectionTime:WKUserScriptInjectionTimeAtDocumentStart
-                                forMainFrameOnly:NO];
-        
-        [_webView.configuration.userContentController addUserScript:script];
-    }
-}
 
 - (void)webView:(__unused WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
