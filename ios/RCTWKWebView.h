@@ -1,18 +1,6 @@
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
- *
- * Copyright (c) 2015-present, Ali Najafizadeh (github.com/alinz)
- * All rights reserved
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
 #import "RCTView.h"
 
-@class RCTWebViewBridge;
+@class RCTWKWebView;
 
 /**
  * Special scheme used to pass messages to the injectedJavaScript
@@ -22,27 +10,29 @@
  */
 extern NSString *const RCTJSNavigationScheme;
 
-@protocol RCTWebViewBridgeDelegate <NSObject>
+@protocol RCTWKWebViewDelegate <NSObject>
 
-- (BOOL)webView:(RCTWebViewBridge *)webView
+- (BOOL)webView:(RCTWKWebView *)webView
 shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
    withCallback:(RCTDirectEventBlock)callback;
 
 @end
 
-@interface RCTWebViewBridge : RCTView
+@interface RCTWKWebView : RCTView
 
-@property (nonatomic, weak) id<RCTWebViewBridgeDelegate> delegate;
+@property (nonatomic, weak) id<RCTWKWebViewDelegate> delegate;
 
 @property (nonatomic, copy) NSDictionary *source;
 @property (nonatomic, assign) UIEdgeInsets contentInset;
 @property (nonatomic, assign) BOOL automaticallyAdjustContentInsets;
+@property (nonatomic, assign) BOOL sendCookies;
 @property (nonatomic, copy) NSString *injectedJavaScript;
 @property (nonatomic, copy) NSString *injectedOnStartLoadingJavaScript;
 
 - (void)goForward;
 - (void)goBack;
 - (void)reload;
+- (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *error))completionHandler;
 - (void)sendToBridge:(NSString *)message;
 
 @end

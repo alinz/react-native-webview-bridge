@@ -232,4 +232,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = WebViewBridge;
+module.exports = {default: WebViewBridge};
