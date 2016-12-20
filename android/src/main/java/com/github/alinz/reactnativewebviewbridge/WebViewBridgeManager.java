@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Picture;
 import android.net.Uri;
+import android.util.Log;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.ViewGroup.LayoutParams;
@@ -89,22 +90,11 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
     protected static class ReactWebChromeClient extends WebChromeClient {
 
-        private boolean was = false;
-        private int last = 100;
-
         public void onProgressChanged(WebView view, int newProgress) {
-            if (newProgress < 90) {
-                if(was == false || last < newProgress){
-                    was = true;
-                    last = newProgress;
-                    ((ReactWebView) view).callInjectedOnStartLoadingJavaScript();
-                }
-            } else {
-                was = false;
-                last = 100;
+            if (newProgress < 80) {
+                ((ReactWebView) view).callInjectedOnStartLoadingJavaScript();
             }
         }
-
     }
 
     @Override
