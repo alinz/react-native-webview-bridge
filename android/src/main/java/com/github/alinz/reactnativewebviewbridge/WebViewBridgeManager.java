@@ -178,6 +178,17 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         ((ReactWebView) view).setInjectedOnStartLoadingJavaScript(injectedJavaScript);
     }
 
+    @ReactProp(name = "localStorageEnabled")
+    public void setLocalStorageEnabled(WebView view, boolean enabled) {
+        if (enabled) {
+            view.getSettings().setDomStorageEnabled(true);
+            view.getSettings().setDatabaseEnabled(true);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                view.getSettings().setDatabasePath("/data/data/" + view.getContext().getPackageName() + "/databases/");
+            }
+        }
+    }
+
     @Override
     protected void addEventEmitters(ThemedReactContext reactContext, WebView view) {
         // Do not register default touch emitter and let WebView implementation handle touches

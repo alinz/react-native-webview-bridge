@@ -59,6 +59,8 @@ var WebViewBridge = React.createClass({
     onBridgeMessage: PropTypes.func,
 
     injectedOnStartLoadingJavaScript: PropTypes.string,
+
+    localStorageEnabled: PropTypes.bool,
   },
 
   getInitialState: function() {
