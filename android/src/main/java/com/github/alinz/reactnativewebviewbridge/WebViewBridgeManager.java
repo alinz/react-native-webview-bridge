@@ -1,6 +1,7 @@
 package com.github.alinz.reactnativewebviewbridge;
 
 import android.webkit.WebView;
+import android.os.Build;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -74,5 +75,16 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     @ReactProp(name = "allowUniversalAccessFromFileURLs")
     public void setAllowUniversalAccessFromFileURLs(WebView root, boolean allows) {
         root.getSettings().setAllowUniversalAccessFromFileURLs(allows);
+    }
+
+    @ReactProp(name = "localStorageEnabled")
+    public void setLocalStorageEnabled(WebView view, boolean enabled) {
+        if (enabled) {
+            view.getSettings().setDomStorageEnabled(true);
+            view.getSettings().setDatabaseEnabled(true);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+                view.getSettings().setDatabasePath("/data/data/" + view.getContext().getPackageName() + "/databases/");
+            }
+        }
     }
 }
