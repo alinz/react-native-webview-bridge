@@ -8,12 +8,8 @@ import android.util.Log;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.ViewGroup.LayoutParams;
-import android.webkit.GeolocationPermissions;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
+import android.webkit.*;
+import android.net.http.SslError;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.common.ReactConstants;
@@ -43,6 +39,8 @@ import android.text.TextUtils;
 import android.graphics.Bitmap;
 
 import java.util.Map;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import javax.annotation.Nullable;
 import com.facebook.react.common.build.ReactBuildConfig;
@@ -412,6 +410,23 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             event.putBoolean("canGoBack", webView.canGoBack());
             event.putBoolean("canGoForward", webView.canGoForward());
             return event;
+        }
+
+        String gethHost1 = "localhost";
+        String gethHost2 = "127.0.0.1";
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+
+            try {
+                URL url = new URL(error.getUrl());
+                String host = url.getHost();
+                if(url.getPort() == 8545 && (host.equals(gethHost1) || host.equals(gethHost2))) {
+                    handler.proceed();
+                }
+            } catch (MalformedURLException e) {
+
+            }
         }
     }
 
