@@ -83,7 +83,7 @@
       clearTimeout(target.timeoutHandler)
       delete responseCallbacks[id]
       setTimeout(function () {
-        target(result, null)
+        target.callback(result, null)
       }, 15)
     }
   }
