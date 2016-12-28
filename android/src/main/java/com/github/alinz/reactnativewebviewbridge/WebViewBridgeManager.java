@@ -1,6 +1,7 @@
 package com.github.alinz.reactnativewebviewbridge;
 
 import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
 import com.facebook.react.bridge.ReadableArray;
@@ -22,6 +23,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     public static final int COMMAND_INJECT_WEBVIEW_BRIDGE = 101;
     public static final int COMMAND_INJECT_RPC = 102;
     public static final int COMMAND_SEND_TO_BRIDGE = 103;
+    public static final int COMMAND_CLOSE_KEYBOARD = 104;
 
     private ReactApplicationContext reactApplicationContext;
 
@@ -45,6 +47,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         commandsMap.put("sendToBridge", COMMAND_SEND_TO_BRIDGE);
         commandsMap.put("injectWebViewBridge", COMMAND_INJECT_WEBVIEW_BRIDGE);
         commandsMap.put("injectRPC", COMMAND_INJECT_RPC);
+        commandsMap.put("closeKeyboard", COMMAND_CLOSE_KEYBOARD);
 
         return commandsMap;
     }
@@ -69,6 +72,9 @@ public class WebViewBridgeManager extends ReactWebViewManager {
                 break;
             case COMMAND_INJECT_RPC:
                 injectWebViewBridgeRPCScript(root);
+                break;
+            case COMMAND_CLOSE_KEYBOARD:
+                closeKeyboard(root);
                 break;
             default:
                 //do nothing!!!!
@@ -115,6 +121,11 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     private void sendToBridge(WebView root, String message) {
         String script = "(function(){ if (WebViewBridge && WebViewBridge.__push__) { WebViewBridge.__push__(\"" + message + "\"); } }());";
         WebViewBridgeManager.evaluateJavascript(root, script);
+    }
+
+    private void closeKeyboard(WebView root) {
+        InputMethodManager inputManager = (InputMethodManager)this.reactApplicationContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(root.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     static private void evaluateJavascript(WebView root, String javascript) {
