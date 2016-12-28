@@ -61,10 +61,20 @@
   }
 
   function dispatch(name, value) {
-    var event = new CustomEvent(name, {
-      detail: value,
-      bubbles: true
-    });
+    var event
+    try {
+      event = new CustomEvent(name, {
+        detail: value,
+        bubbles: true
+      });
+    } catch (e) {
+      event = document.createEvent("CustomEvent");
+      event.initCustomEvent(name, true, true, {
+        detail: value,
+        bubbles: true
+      });
+    }
+
 
     setTimeout(function () {
       window.document.dispatchEvent(event)
