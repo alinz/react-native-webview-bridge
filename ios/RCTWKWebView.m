@@ -10,6 +10,7 @@
 #import "RCTUtils.h"
 #import "RCTView.h"
 #import "UIView+React.h"
+#import "WVURLConnection.h"
 
 //This is a very elegent way of defining multiline string in objective-c.
 //source: http://stackoverflow.com/a/23387659/828487
@@ -46,6 +47,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
         WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
         WKUserContentController* userController = [[WKUserContentController alloc]init];
         [userController addScriptMessageHandler:self name:@"reactNative"];
+        [userController addScriptMessageHandler:self name:@"sendRequest"];
         config.userContentController = userController;
         
         WKUserScript* bridgeScript = [[WKUserScript alloc]
@@ -81,7 +83,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
 {
-    if (_onMessage) {
+    if ([message.name isEqualToString:@"sendRequest"]) {
+        [self sendIt:message.body];
+    } else if (_onMessage) {
         _onMessage(@{@"name":message.name, @"body": message.body});
     }
 }
@@ -113,9 +117,32 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     }
 }
 
+- (void)sendIt:(NSString *)body
+{
+    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    NSString *callbackId = [responseDic objectForKey:@"callbackId"];
+    NSString *payload = [responseDic objectForKey:@"payload"];
+    
+    NSData *postData = [payload dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:@"http://localhost:8545"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    WVURLConnection *urlConn = [WVURLConnection alloc];
+    [urlConn setWebView:_webView];
+    [urlConn setCallbackId:callbackId];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:urlConn];
+}
+
 - (void)sendToBridge:(NSString *)message
 {
-    NSLog(@"WWW sendToBridge");
     //we are warpping the send message in a function to make sure that if
     //WebView is not injected, we don't crash the app.
     NSString *format = NSStringMultiline(
@@ -127,7 +154,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                                          );
     
     NSString *command = [NSString stringWithFormat: format, message];
-    NSLog(command);
     [_webView evaluateJavaScript:command completionHandler:nil];
 }
 
@@ -137,7 +163,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                             initWithSource:js
                             injectionTime:WKUserScriptInjectionTimeAtDocumentStart
                             forMainFrameOnly:NO];
-
+    
     [_webView.configuration.userContentController addUserScript:script];
 }
 
@@ -339,18 +365,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     // we only need the final 'finishLoad' call so only fire the event when we're actually done loading.
     else if (_onLoadingFinish && !webView.loading && ![webView.URL.absoluteString isEqualToString:@"about:blank"]) {
         _onLoadingFinish([self baseEvent]);
-    }
-}
-
-- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable))completionHandler
-{
-    NSURLProtectionSpace *sp = challenge.protectionSpace;
-
-    if(sp.port == 8545 && ([sp.host isEqualToString:@"localhost"] || [sp.host isEqualToString:@"127.0.0.1"])){
-        NSURLCredential * credential = [[NSURLCredential alloc] initWithTrust:[challenge protectionSpace].serverTrust];
-        completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
-    } else {
-        completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
     }
 }
 
