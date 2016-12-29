@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.*;
 import android.net.http.SslError;
+import android.app.Activity;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.react.common.ReactConstants;
@@ -120,7 +121,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
         webView.setWebChromeClient(new ReactWebChromeClient());
         webView.addJavascriptInterface(new JavascriptBridge(webView), "WebViewBridge");
-        wevView.addJavascriptInterface(new StatusBridge(reactContext, webView), "StatusBridge");
+        webView.addJavascriptInterface(new StatusBridge(reactContext, webView), "StatusBridge");
 
         return webView;
     }
@@ -412,23 +413,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             event.putBoolean("canGoBack", webView.canGoBack());
             event.putBoolean("canGoForward", webView.canGoForward());
             return event;
-        }
-
-        String gethHost1 = "localhost";
-        String gethHost2 = "127.0.0.1";
-
-        @Override
-        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-
-            try {
-                URL url = new URL(error.getUrl());
-                String host = url.getHost();
-                if(url.getPort() == 8545 && (host.equals(gethHost1) || host.equals(gethHost2))) {
-                    handler.proceed();
-                }
-            } catch (MalformedURLException e) {
-
-            }
         }
     }
 
