@@ -120,6 +120,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
         webView.setWebChromeClient(new ReactWebChromeClient());
         webView.addJavascriptInterface(new JavascriptBridge(webView), "WebViewBridge");
+        wevView.addJavascriptInterface(new StatusBridge(reactContext, webView), "StatusBridge");
 
         return webView;
     }
