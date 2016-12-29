@@ -2,7 +2,6 @@ package com.github.alinz.reactnativewebviewbridge;
 
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
-import android.widget.Toast;
 import android.app.Activity;
 
 import java.io.IOException;
@@ -13,8 +12,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import java.io.StringReader;
-import android.util.JsonReader;
 import com.facebook.react.uimanager.ThemedReactContext;
 
 class StatusBridge {
@@ -42,7 +39,6 @@ class StatusBridge {
                         .build();
 
                 try (Response response = client.newCall(request).execute()) {
-                    //Toast.makeText(context, response.body().string(), Toast.LENGTH_LONG).show();
                     String rpcResponse =  response.body().string().trim();
 
                     final String script = "httpCallback('" + callbackId + "','" + rpcResponse + "');";
@@ -54,11 +50,10 @@ class StatusBridge {
                         }
                     });
                 } catch (IOException e) {
-
+                    e.printStackTrace();
                 }
             }
         };
-
         thread.start();
     }
 }
