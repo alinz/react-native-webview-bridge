@@ -56,4 +56,24 @@ class StatusBridge {
         };
         thread.start();
     }
+
+    @JavascriptInterface
+    public String sendRequestSync(final String json) {
+
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(URL)
+                .post(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            String rpcResponse = response.body().string().trim();
+
+            return rpcResponse;
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return "";
+        }
+    }
 }
