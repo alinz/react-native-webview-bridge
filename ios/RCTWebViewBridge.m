@@ -82,10 +82,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         [self becomeFirstResponder];
         UIMenuItem *commentMenuItem = [[UIMenuItem alloc] initWithTitle:@"Comment" action:@selector(commentAction:)];
-        UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
+        // Hiding highlight button for now
+//        UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
         UIMenuItem *shareMenuItem = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(shareAction:)];
         
-        [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem, highlightMenuItem, shareMenuItem, nil]];
+        [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem, /*highlightMenuItem,*/ shareMenuItem, nil]];
     }
 }
 
@@ -98,9 +99,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     
 }
 
+/*
 - (void)highlightAction:(id)sender {
     NSLog(@"inside highlight action");
 }
+*/
 
 - (void)shareAction:(id)sender {
     NSLog(@"inside share action");
