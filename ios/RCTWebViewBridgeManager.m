@@ -162,8 +162,8 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
     _shouldStartLoadLock = nil;
     return returnValue;
   } else {
-    RCTLogWarn(@"Did not receive response to shouldStartLoad in time, defaulting to YES");
-    return YES;
+    RCTLogWarn(@"Did not receive response to shouldStartLoad in time, defaulting to NO");
+    return NO;
   }
 }
 
