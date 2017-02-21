@@ -134,6 +134,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
+    [request setTimeoutInterval:310];
     
     WVURLConnection *urlConn = [WVURLConnection alloc];
     [urlConn setWebView:_webView];

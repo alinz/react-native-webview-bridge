@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient.Builder;
+import java.util.concurrent.TimeUnit;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -20,11 +22,14 @@ class StatusBridge {
 
     private WebView webView;
     private ThemedReactContext context;
-    private OkHttpClient client = new OkHttpClient();
+    private OkHttpClient client;
 
     public StatusBridge(ThemedReactContext context, WebView webView) {
         this.context = context;
         this.webView = webView;
+        Builder b = new Builder();
+        b.readTimeout(310, TimeUnit.SECONDS);
+        client = b.build();
     }
 
     @JavascriptInterface
