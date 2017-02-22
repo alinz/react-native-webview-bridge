@@ -338,9 +338,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             super.onPageStarted(webView, url, favicon);
             mLastLoadFailed = false;
 
-            ReactWebView reactWebView = (ReactWebView) webView;
-            reactWebView.callInjectedOnStartLoadingJavaScript();
-
             dispatchEvent(
                     webView,
                     new TopLoadingStartEvent(
