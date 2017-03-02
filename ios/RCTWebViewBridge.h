@@ -10,7 +10,16 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import "RCTView.h"
+ /**
+  * Fix compile error for RN version > 0.40
+  */
+ #if __has_include(<React/RCTView.h>)
+ #import <React/RCTView.h>
+ #elif __has_include("RCTView.h")
+ #import "RCTView.h"
+ #else
+ #import "React/RCTView.h"
+ #endif
 
 @class RCTWebViewBridge;
 
