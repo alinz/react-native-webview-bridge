@@ -18,7 +18,6 @@ import com.facebook.react.uimanager.ThemedReactContext;
 
 class StatusBridge {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public static final String URL = "http://localhost:8545";
 
     private WebView webView;
     private ThemedReactContext context;
@@ -33,13 +32,13 @@ class StatusBridge {
     }
 
     @JavascriptInterface
-    public void sendRequest(final String callbackId, final String json) {
+    public void sendRequest(final String host, final String callbackId, final String json) {
         Thread thread = new Thread() {
             @Override
             public void run() {
                 RequestBody body = RequestBody.create(JSON, json);
                 Request request = new Request.Builder()
-                        .url(URL)
+                        .url(host)
                         .post(body)
                         .build();
 
@@ -63,11 +62,11 @@ class StatusBridge {
     }
 
     @JavascriptInterface
-    public String sendRequestSync(final String json) {
+    public String sendRequestSync(final String host, final String json) {
 
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url(URL)
+                .url(host)
                 .post(body)
                 .build();
 
