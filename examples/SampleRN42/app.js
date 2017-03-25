@@ -90,6 +90,7 @@ export default class Sample2 extends Component {
           onLoadStart={(event) => { console.log('webview2 onLoadStart', event.nativeEvent); }}
           onLoadEnd={(event) => { console.log('webview2 onLoadEnd', event.nativeEvent); }}
           javaScriptEnabled
+          scalesPageToFit
           source={require('./test.html')}/>
       </View>
     );
