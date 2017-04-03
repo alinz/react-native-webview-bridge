@@ -1,6 +1,7 @@
 package com.github.alinz.reactnativewebviewbridge;
 
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.app.Activity;
 
@@ -50,7 +51,7 @@ class StatusBridge {
                     activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            webView.evaluateJavascript(script, null);
+                            evaluateJavascript(webView, script);
                         }
                     });
                 } catch (IOException e) {
@@ -78,6 +79,14 @@ class StatusBridge {
             e.printStackTrace();
 
             return "";
+        }
+    }
+
+    static private void evaluateJavascript(WebView root, String javascript) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            root.evaluateJavascript(javascript, null);
+        } else {
+            root.loadUrl("javascript:" + javascript);
         }
     }
 }
