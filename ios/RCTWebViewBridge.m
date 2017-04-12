@@ -72,6 +72,8 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
         _webView.delegate = self;
         [self addSubview:_webView];
     }
+    // Change the default decelerationRate of scrollView
+    _webView.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
     return self;
 }
 
@@ -85,7 +87,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
         // Hiding highlight button for now
 //        UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
         UIMenuItem *shareMenuItem = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(shareAction:)];
-        
+
         [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem, /*highlightMenuItem,*/ shareMenuItem, nil]];
     }
 }
@@ -96,7 +98,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     if (self.onSelection) {
         self.onSelection(event);
     }
-    
+
 }
 
 /*
@@ -116,7 +118,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
             return YES;
         }
     }
-    
+
     return [super canPerformAction:action withSender:sender];
 }
 
@@ -159,7 +161,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
         }
     }());
                                          );
-    
+
     NSString *command = [NSString stringWithFormat: format, message];
     [_webView stringByEvaluatingJavaScriptFromString:command];
 }
@@ -173,7 +175,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 {
     if (![_source isEqualToDictionary:source]) {
         _source = [source copy];
-        
+
         // Check for a static html source first
         NSString *html = [RCTConvert NSString:source[@"html"]];
         if (html) {
@@ -181,7 +183,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
             [_webView loadHTMLString:html baseURL:baseURL];
             return;
         }
-        
+
         NSURLRequest *request = [RCTConvert NSURLRequest:source];
         // Because of the way React works, as pages redirect, we actually end up
         // passing the redirect urls back here, so we ignore them if trying to load
@@ -234,7 +236,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                                                                                                    @"canGoBack": @(_webView.canGoBack),
                                                                                                    @"canGoForward" : @(_webView.canGoForward),
                                                                                                    }];
-    
+
     return event;
 }
 
@@ -250,29 +252,29 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     if (!hideKeyboardAccessoryView) {
         return;
     }
-    
+
     UIView* subview;
     for (UIView* view in _webView.scrollView.subviews) {
         if([[view.class description] hasPrefix:@"UIWeb"])
             subview = view;
     }
-    
+
     if(subview == nil) return;
-    
+
     NSString* name = [NSString stringWithFormat:@"%@_SwizzleHelper", subview.class.superclass];
     Class newClass = NSClassFromString(name);
-    
+
     if(newClass == nil)
     {
         newClass = objc_allocateClassPair(subview.class, [name cStringUsingEncoding:NSASCIIStringEncoding], 0);
         if(!newClass) return;
-        
+
         Method method = class_getInstanceMethod([_SwizzleHelper class], @selector(inputAccessoryView));
         class_addMethod(newClass, @selector(inputAccessoryView), method_getImplementation(method), method_getTypeEncoding(method));
-        
+
         objc_registerClassPair(newClass);
     }
-    
+
     object_setClass(subview, newClass);
 }
 
@@ -282,19 +284,19 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
  navigationType:(UIWebViewNavigationType)navigationType
 {
     BOOL isJSNavigation = [request.URL.scheme isEqualToString:RCTJSNavigationScheme];
-    
+
     if (!isJSNavigation && [request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
         NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge.__fetch__()"];
-        
+
         NSMutableDictionary<NSString *, id> *onBridgeMessageEvent = [[NSMutableDictionary alloc] initWithDictionary:@{
                                                                                                                       @"messages": [self stringArrayJsonToArray: message]
                                                                                                                       }];
-        
+
         _onBridgeMessage(onBridgeMessageEvent);
-        
+
         isJSNavigation = YES;
     }
-    
+
     // skip this for the JS Navigation handler
     if (!isJSNavigation && _onShouldStartLoadWithRequest) {
         NSMutableDictionary<NSString *, id> *event = [self baseEvent];
@@ -308,7 +310,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
             return NO;
         }
     }
-    
+
     if (_onLoadingStart) {
         // We have this check to filter out iframe requests and whatnot
         BOOL isTopFrame = [request.URL isEqual:request.mainDocumentURL];
@@ -321,7 +323,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
             _onLoadingStart(event);
         }
     }
-    
+
     // JS Navigation handler
     return !isJSNavigation;
 }
@@ -336,7 +338,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
             // http://stackoverflow.com/questions/1024748/how-do-i-fix-nsurlerrordomain-error-999-in-iphone-3-0-os
             return;
         }
-        
+
         NSMutableDictionary<NSString *, id> *event = [self baseEvent];
         [event addEntriesFromDictionary:@{
                                           @"domain": error.domain,
@@ -353,13 +355,13 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     NSString *webViewBridgeScriptContent = [self webViewBridgeScript];
     [webView stringByEvaluatingJavaScriptFromString:webViewBridgeScriptContent];
     //////////////////////////////////////////////////////////////////////////////
-    
+
     if (_injectedJavaScript != nil) {
         NSString *jsEvaluationValue = [webView stringByEvaluatingJavaScriptFromString:_injectedJavaScript];
-        
+
         NSMutableDictionary<NSString *, id> *event = [self baseEvent];
         event[@"jsEvaluationValue"] = jsEvaluationValue;
-        
+
         _onLoadingFinish(event);
     }
     // we only need the final 'finishLoad' call so only fire the event when we're actually done loading.
@@ -384,32 +386,32 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     // NSString *webViewBridgeScriptContent = [NSString stringWithContentsOfFile:webViewBridgeScriptFile
     //                                                                  encoding:NSUTF8StringEncoding
     //                                                                     error:nil];
-    
+
     return NSStringMultiline(
                              (function (window) {
         'use strict';
-        
+
         //Make sure that if WebViewBridge already in scope we don't override it.
         if (window.WebViewBridge) {
             return;
         }
-        
+
         var RNWBSchema = 'wvb';
         var sendQueue = [];
         var receiveQueue = [];
         var doc = window.document;
         var customEvent = doc.createEvent('Event');
-        
+
         function callFunc(func, message) {
             if ('function' === typeof func) {
                 func(message);
             }
         }
-        
+
         function signalNative() {
             window.location = RNWBSchema + '://message' + new Date().getTime();
         }
-        
+
         //I made the private function ugly signiture so user doesn't called them accidently.
         //if you do, then I have nothing to say. :(
         var WebViewBridge = {
@@ -428,10 +430,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
             //since our sendQueue array only contains string, and our connection to native
             //can only accept string, we need to convert array of strings into single string.
             var messages = JSON.stringify(sendQueue);
-            
+
             //we make sure that sendQueue is resets
             sendQueue = [];
-            
+
             //return the messages back to native side.
             return messages;
         },
@@ -442,7 +444,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
                 callFunc(WebViewBridge.onError, "message is type '" + typeof message + "', and it needs to be string");
                 return;
             }
-            
+
             //we queue the messages to make sure that native can collects all of them in one shot.
             sendQueue.push(message);
             //signal the objective-c that there is a message in the queue
@@ -451,9 +453,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
         onMessage: null,
         onError: null
         };
-        
+
         window.WebViewBridge = WebViewBridge;
-        
+
         //dispatch event
         customEvent.initEvent('WebViewBridge', true, true);
         doc.dispatchEvent(customEvent);
