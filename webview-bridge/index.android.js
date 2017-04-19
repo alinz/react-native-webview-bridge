@@ -180,6 +180,14 @@ var WebViewBridge = React.createClass({
     );
   },
 
+  resetOkHttpClient: function () {
+    UIManager.dispatchViewManagerCommand(
+      this.getWebViewBridgeHandle(),
+      UIManager.RCTWebViewBridge.Commands.resetOkHttpClient,
+      []
+    );
+  },
+
   /**
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward

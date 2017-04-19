@@ -57,6 +57,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     private static final String HTTP_METHOD_POST = "POST";
 
     public static final int COMMAND_SEND_TO_BRIDGE = 101;
+    public static final int RESET_OK_HTTP_CLIENT = 102;
 
     private static final String BLANK_URL = "about:blank";
 
@@ -83,6 +84,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         Map<String, Integer> commandsMap = super.getCommandsMap();
 
         commandsMap.put("sendToBridge", COMMAND_SEND_TO_BRIDGE);
+        commandsMap.put("resetOkHttpClient", RESET_OK_HTTP_CLIENT);
 
         return commandsMap;
     }
@@ -123,7 +125,9 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
         webView.setWebChromeClient(new ReactWebChromeClient());
         webView.addJavascriptInterface(new JavascriptBridge(webView), "WebViewBridge");
-        webView.addJavascriptInterface(new StatusBridge(reactContext, webView), "StatusBridge");
+        StatusBridge bridge = new StatusBridge(reactContext, webView);
+        webView.addJavascriptInterface(bridge, "StatusBridge");
+        webView.setStatusBridge(bridge);
 
         return webView;
     }
@@ -135,6 +139,9 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         switch (commandId) {
             case COMMAND_SEND_TO_BRIDGE:
                 sendToBridge(root, args.getString(0));
+                break;
+            case RESET_OK_HTTP_CLIENT:
+                ((ReactWebView) root).getStatusBridge().resetCleint();
                 break;
             default:
                 //do nothing!!!!
@@ -201,6 +208,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     private static class ReactWebView extends WebView implements LifecycleEventListener {
         private @Nullable String injectedJS;
         private @Nullable String injectedOnStartLoadingJS;
+        private StatusBridge bridge;
         private boolean messagingEnabled = false;
 
         private class ReactWebViewBridge {
@@ -316,6 +324,14 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         private void cleanupCallbacksAndDestroy() {
             setWebViewClient(null);
             destroy();
+        }
+
+        public void setStatusBridge(StatusBridge bridge) {
+            this.bridge = bridge;
+        }
+
+        public StatusBridge getStatusBridge() {
+            return this.bridge;
         }
     }
 

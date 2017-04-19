@@ -26,6 +26,10 @@ class StatusBridge {
     public StatusBridge(ThemedReactContext context, WebView webView) {
         this.context = context;
         this.webView = webView;
+        this.resetCleint();
+    }
+
+    public void resetCleint() {
         Builder b = new Builder();
         b.readTimeout(310, TimeUnit.SECONDS);
         client = b.build();
