@@ -1,0 +1,13 @@
+{
+  "name": "SampleRN20",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.43.4",
+    "react-native-webview-bridge": "file:../"
+  }
+}

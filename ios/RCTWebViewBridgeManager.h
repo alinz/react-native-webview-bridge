@@ -10,7 +10,11 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
+#if __has_include(<React/RCTViewManager.h>)
+#import <React/RCTViewManager.h>
+#else
 #import "RCTViewManager.h"
+#endif
 
 @interface RCTWebViewBridgeManager : RCTViewManager
 

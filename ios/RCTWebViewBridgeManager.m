@@ -11,11 +11,25 @@
  */
 
 #import "RCTWebViewBridgeManager.h"
-
-#import "RCTBridge.h"
-#import "RCTUIManager.h"
 #import "RCTWebViewBridge.h"
+
+#if __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#else
+#import "RCTBridge.h"
+#endif
+
+#if __has_include(<React/RCTUIManager.h>)
+#import <React/RCTUIManager.h>
+#else
+#import "RCTUIManager.h"
+#endif
+
+#if __has_include(<React/UIView+React.h>)
+#import <React/UIView+React.h>
+#else
 #import "UIView+React.h"
+#endif
 
 @interface RCTWebViewBridgeManager () <RCTWebViewBridgeDelegate>
 
