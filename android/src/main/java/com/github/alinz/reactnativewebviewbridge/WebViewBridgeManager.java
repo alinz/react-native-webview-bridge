@@ -44,9 +44,15 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 import javax.annotation.Nullable;
+
 import com.facebook.react.common.build.ReactBuildConfig;
 import com.facebook.react.views.webview.WebViewConfig;
 import android.webkit.ValueCallback;
+
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 public class WebViewBridgeManager extends ReactWebViewManager {
     private static final String REACT_CLASS = "RCTWebViewBridge";
@@ -58,12 +64,15 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
     public static final int COMMAND_SEND_TO_BRIDGE = 101;
     public static final int RESET_OK_HTTP_CLIENT = 102;
+    public static final int GEO_PERMISSIONS_GRANTED = 103;
 
     private static final String BLANK_URL = "about:blank";
 
     private WebViewConfig mWebViewConfig;
+    private static ReactApplicationContext reactNativeContext;
 
-    public WebViewBridgeManager() {
+    public WebViewBridgeManager(ReactApplicationContext context) {
+        this.reactNativeContext = context;
         mWebViewConfig = new WebViewConfig() {
             public void configWebView(WebView webView) {
             }
@@ -80,20 +89,47 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     }
 
     @Override
-    public @Nullable Map<String, Integer> getCommandsMap() {
+    public @Nullable
+    Map<String, Integer> getCommandsMap() {
         Map<String, Integer> commandsMap = super.getCommandsMap();
 
         commandsMap.put("sendToBridge", COMMAND_SEND_TO_BRIDGE);
         commandsMap.put("resetOkHttpClient", RESET_OK_HTTP_CLIENT);
+        commandsMap.put("geoPermissionsGranted", GEO_PERMISSIONS_GRANTED);
 
         return commandsMap;
     }
 
     protected static class ReactWebChromeClient extends WebChromeClient {
 
+        String origin;
+        GeolocationPermissions.Callback callback;
+
         public void onProgressChanged(WebView view, int newProgress) {
             if (newProgress < 80) {
                 ((ReactWebView) view).callInjectedOnStartLoadingJavaScript();
+            }
+        }
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+            try {
+                WritableMap params = Arguments.createMap();
+                JSONObject event = new JSONObject();
+                event.put("type", "request_geo_permissions");
+                params.putString("jsonEvent", event.toString());
+                reactNativeContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("gethEvent", params);
+                this.callback = callback;
+                this.origin = origin;
+            } catch (JSONException e) {
+
+            }
+        }
+
+        public void geoCallback() {
+            if (callback != null) {
+                callback.invoke(origin, true, false);
             }
         }
     }
@@ -101,17 +137,13 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     @Override
     protected WebView createViewInstance(ThemedReactContext reactContext) {
         ReactWebView webView = new ReactWebView(reactContext);
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-                callback.invoke(origin, true, false);
-            }
-        });
         reactContext.addLifecycleEventListener(webView);
         mWebViewConfig.configWebView(webView);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
         webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setGeolocationEnabled(true);
         webView.setInitialScale(1);
 
         // Fixes broken full-screen modals/galleries due to body height being 0.
@@ -123,7 +155,8 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             WebView.setWebContentsDebuggingEnabled(true);
         }
 
-        webView.setWebChromeClient(new ReactWebChromeClient());
+        ReactWebChromeClient client = new ReactWebChromeClient();
+        webView.setWebChromeClient(client);
         webView.addJavascriptInterface(new JavascriptBridge(webView), "WebViewBridge");
         StatusBridge bridge = new StatusBridge(reactContext, webView);
         webView.addJavascriptInterface(bridge, "StatusBridge");
@@ -142,6 +175,10 @@ public class WebViewBridgeManager extends ReactWebViewManager {
                 break;
             case RESET_OK_HTTP_CLIENT:
                 ((ReactWebView) root).getStatusBridge().resetCleint();
+                break;
+
+            case GEO_PERMISSIONS_GRANTED:
+                ((ReactWebChromeClient) ((ReactWebView) root).getWebChromeClient()).geoCallback();
                 break;
             default:
                 //do nothing!!!!
@@ -206,8 +243,10 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     }
 
     private static class ReactWebView extends WebView implements LifecycleEventListener {
-        private @Nullable String injectedJS;
-        private @Nullable String injectedOnStartLoadingJS;
+        private @Nullable
+        String injectedJS;
+        private @Nullable
+        String injectedOnStartLoadingJS;
         private StatusBridge bridge;
         private boolean messagingEnabled = false;
 
@@ -229,7 +268,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
          *
          * Activity Context is required for creation of dialogs internally by WebView
          * Reactive Native needed for access to ReactNative internal system functionality
-         *
          */
         public ReactWebView(ThemedReactContext reactContext) {
             super(reactContext);
@@ -328,6 +366,18 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
         public void setStatusBridge(StatusBridge bridge) {
             this.bridge = bridge;
+        }
+
+        private ReactWebChromeClient chromeClient;
+
+        @Override
+        public void setWebChromeClient(WebChromeClient client) {
+            super.setWebChromeClient(client);
+            chromeClient = (ReactWebChromeClient) client;
+        }
+
+        public ReactWebChromeClient getWebChromeClient() {
+            return this.chromeClient;
         }
 
         public StatusBridge getStatusBridge() {
