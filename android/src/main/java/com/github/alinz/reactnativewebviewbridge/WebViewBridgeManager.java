@@ -150,12 +150,12 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
     private void sendToBridge(WebView root, String message) {
         String script = "WebViewBridge.onMessage('" + message + "');";
-        WebViewBridgeManager.evaluateJavascript(root, script);
+        WebViewBridgeManager.evaluateJavascript(root, script, null);
     }
 
-    static private void evaluateJavascript(WebView root, String javascript) {
+    static private void evaluateJavascript(WebView root, String javascript, ValueCallback<String> callback) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            root.evaluateJavascript(javascript, null);
+            root.evaluateJavascript(javascript, callback);
         } else {
             root.loadUrl("javascript:" + javascript);
         }
@@ -283,7 +283,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         public void callInjectedOnStartLoadingJavaScript() {
             if (injectedOnStartLoadingJS != null &&
                     !TextUtils.isEmpty(injectedOnStartLoadingJS)) {
-                evaluateJavascript(injectedOnStartLoadingJS, new ValueCallback<String>() {
+                WebViewBridgeManager.evaluateJavascript(this,injectedOnStartLoadingJS, new ValueCallback<String>() {
                             @Override
                             public void onReceiveValue(String value) {
 
@@ -298,7 +298,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
                 if (ReactBuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     // See isNative in lodash
                     String testPostMessageNative = "String(window.postMessage) === String(Object.hasOwnProperty).replace('hasOwnProperty', 'postMessage')";
-                    evaluateJavascript(testPostMessageNative, new ValueCallback<String>() {
+                    WebViewBridgeManager.evaluateJavascript(this,testPostMessageNative, new ValueCallback<String>() {
                         @Override
                         public void onReceiveValue(String value) {
                             if (value.equals("true")) {
