@@ -2,85 +2,71 @@ package com.github.alinz.reactnativewebviewbridge;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Picture;
 import android.net.Uri;
-import android.util.Log;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.*;
-import android.net.http.SslError;
-import android.app.Activity;
-
 import com.facebook.common.logging.FLog;
+import com.facebook.react.bridge.*;
 import com.facebook.react.common.ReactConstants;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.LifecycleEventListener;
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
-import com.facebook.react.bridge.ReadableMapKeySetIterator;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.common.MapBuilder;
-import com.facebook.react.common.build.ReactBuildConfig;
-import com.facebook.react.module.annotations.ReactModule;
-import com.facebook.react.uimanager.SimpleViewManager;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.uimanager.events.ContentSizeChangeEvent;
 import com.facebook.react.uimanager.events.Event;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import com.facebook.react.views.webview.ReactWebViewManager;
+import com.facebook.react.views.webview.WebViewConfig;
 import com.facebook.react.views.webview.events.TopLoadingErrorEvent;
 import com.facebook.react.views.webview.events.TopLoadingFinishEvent;
 import com.facebook.react.views.webview.events.TopLoadingStartEvent;
 import com.facebook.react.views.webview.events.TopMessageEvent;
-import com.facebook.react.views.webview.ReactWebViewManager;
-import android.text.TextUtils;
-import android.graphics.Bitmap;
-
-import java.util.Map;
-import java.net.URL;
-import java.net.MalformedURLException;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient.Builder;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.Map;
 
-import com.facebook.react.common.build.ReactBuildConfig;
-import com.facebook.react.views.webview.WebViewConfig;
-import android.webkit.ValueCallback;
-
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
-import org.json.JSONObject;
-import org.json.JSONException;
+import static okhttp3.internal.Util.UTF_8;
 
 public class WebViewBridgeManager extends ReactWebViewManager {
     private static final String REACT_CLASS = "RCTWebViewBridge";
-    private static final String HTML_ENCODING = "UTF-8";
-    private static final String HTML_MIME_TYPE = "text/html; charset=utf-8";
     private static final String BRIDGE_NAME = "__REACT_WEB_VIEW_BRIDGE";
 
-    private static final String HTTP_METHOD_POST = "POST";
 
-    public static final int COMMAND_SEND_TO_BRIDGE = 101;
-    public static final int RESET_OK_HTTP_CLIENT = 102;
+    private static final int COMMAND_SEND_TO_BRIDGE = 101;
+    private static final int RESET_OK_HTTP_CLIENT = 102;
     public static final int GEO_PERMISSIONS_GRANTED = 103;
 
-    private static final String BLANK_URL = "about:blank";
+    private static final String TAG = "WebViewBridgeManager";
 
     private WebViewConfig mWebViewConfig;
     private static ReactApplicationContext reactNativeContext;
+    private OkHttpClient client;
+    private static boolean debug;
 
-    public WebViewBridgeManager(ReactApplicationContext context) {
+    public WebViewBridgeManager(ReactApplicationContext context, boolean debug) {
         this.reactNativeContext = context;
+        this.debug = debug;
+        Builder b = new Builder();
+        client = b
+                .followRedirects(false)
+                .followSslRedirects(false)
+                .build();
         mWebViewConfig = new WebViewConfig() {
             public void configWebView(WebView webView) {
             }
         };
-    }
-
-    public WebViewBridgeManager(WebViewConfig webViewConfig) {
-        mWebViewConfig = webViewConfig;
     }
 
     @Override
@@ -105,12 +91,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         String origin;
         GeolocationPermissions.Callback callback;
 
-        public void onProgressChanged(WebView view, int newProgress) {
-            if (newProgress < 80) {
-                ((ReactWebView) view).callInjectedOnStartLoadingJavaScript();
-            }
-        }
-
         @Override
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
             try {
@@ -134,9 +114,12 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         }
     }
 
+    static String userAgent = "";
+
     @Override
     protected WebView createViewInstance(ThemedReactContext reactContext) {
         ReactWebView webView = new ReactWebView(reactContext);
+        userAgent = webView.getSettings().getUserAgentString();
         reactContext.addLifecycleEventListener(webView);
         mWebViewConfig.configWebView(webView);
         webView.getSettings().setBuiltInZoomControls(true);
@@ -151,12 +134,13 @@ public class WebViewBridgeManager extends ReactWebViewManager {
                 new LayoutParams(LayoutParams.MATCH_PARENT,
                         LayoutParams.MATCH_PARENT));
 
-        if (ReactBuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (debug && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
 
         ReactWebChromeClient client = new ReactWebChromeClient();
         webView.setWebChromeClient(client);
+        webView.setWebViewClient(new ReactWebViewClient());
         webView.addJavascriptInterface(new JavascriptBridge(webView), "WebViewBridge");
         StatusBridge bridge = new StatusBridge(reactContext, webView);
         webView.addJavascriptInterface(bridge, "StatusBridge");
@@ -238,8 +222,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
     @Override
     protected void addEventEmitters(ThemedReactContext reactContext, WebView view) {
-        // Do not register default touch emitter and let WebView implementation handle touches
-        view.setWebViewClient(new ReactWebViewClient());
+
     }
 
     private static class ReactWebView extends WebView implements LifecycleEventListener {
@@ -265,7 +248,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
         /**
          * WebView must be created with an context of the current activity
-         *
+         * <p>
          * Activity Context is required for creation of dialogs internally by WebView
          * Reactive Native needed for access to ReactNative internal system functionality
          */
@@ -318,25 +301,12 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             }
         }
 
-        public void callInjectedOnStartLoadingJavaScript() {
-            if (injectedOnStartLoadingJS != null &&
-                    !TextUtils.isEmpty(injectedOnStartLoadingJS)) {
-                WebViewBridgeManager.evaluateJavascript(this,injectedOnStartLoadingJS, new ValueCallback<String>() {
-                            @Override
-                            public void onReceiveValue(String value) {
-
-                            }
-                        }
-                );
-            }
-        }
-
         public void linkBridge() {
             if (messagingEnabled) {
-                if (ReactBuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (debug && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     // See isNative in lodash
                     String testPostMessageNative = "String(window.postMessage) === String(Object.hasOwnProperty).replace('hasOwnProperty', 'postMessage')";
-                    WebViewBridgeManager.evaluateJavascript(this,testPostMessageNative, new ValueCallback<String>() {
+                    WebViewBridgeManager.evaluateJavascript(this, testPostMessageNative, new ValueCallback<String>() {
                         @Override
                         public void onReceiveValue(String value) {
                             if (value.equals("true")) {
@@ -385,7 +355,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         }
     }
 
-    private static class ReactWebViewClient extends WebViewClient {
+    private class ReactWebViewClient extends WebViewClient {
 
         private boolean mLastLoadFailed = false;
 
@@ -479,6 +449,47 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             event.putBoolean("canGoForward", webView.canGoForward());
             return event;
         }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+            String urlStr = request.getUrl().toString();
+            Uri url = request.getUrl();
+            Log.d(TAG, "\nnew request ");
+            Log.d(TAG, "url " + urlStr);
+            Log.d(TAG, "host " + request.getUrl().getHost());
+            Log.d(TAG, "path " + request.getUrl().getPath());
+            Log.d(TAG, "main " + request.isForMainFrame());
+            Log.d(TAG, "headers " + request.getRequestHeaders().toString());
+            Log.d(TAG, "method " + request.getMethod());
+            if (!request.isForMainFrame() || urlStr == null || urlStr.trim().equals("") || !(urlStr.startsWith("http") && !urlStr.startsWith("www")) || urlStr.contains("|")) {
+                return super.shouldInterceptRequest(view, request);
+            }
+
+            try {
+                Request req = new Request.Builder()
+                        .url(urlStr)
+                        .header("User-Agent", userAgent)
+                        .build();
+
+                Response response = client.newCall(req).execute();
+                Log.d(TAG, "response headers " + response.headers().toString());
+                Log.d(TAG, "response code " + response.code());
+                Log.d(TAG, "response suc " + response.isSuccessful());
+
+                if (response.isRedirect()) {
+                    return super.shouldInterceptRequest(view, request);
+                }
+                InputStream is = response.body().byteStream();
+                MediaType contentType = response.body().contentType();
+                Charset charset = contentType != null ? contentType.charset(UTF_8) : UTF_8;
+                if (response.code() == 200) {
+                    is = new InputStreamWithInjectedJS(is, ((ReactWebView) view).injectedOnStartLoadingJS, charset);
+                }
+                return new WebResourceResponse("text/html", charset.name(), is);
+            } catch (IOException e) {
+                return new WebResourceResponse("text/html", "UTF-8", null);
+            }
+        }
     }
 
     @Override
@@ -494,5 +505,4 @@ public class WebViewBridgeManager extends ReactWebViewManager {
                 reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         eventDispatcher.dispatchEvent(event);
     }
-
 }

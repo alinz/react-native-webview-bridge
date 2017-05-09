@@ -11,6 +11,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class WebViewBridgePackage implements ReactPackage {
+
+    private boolean debug;
+
+    public WebViewBridgePackage(boolean debug) {
+        this.debug = debug;
+    }
+
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactApplicationContext) {
         return new ArrayList<>();
@@ -19,7 +26,7 @@ public class WebViewBridgePackage implements ReactPackage {
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactApplicationContext) {
         return Arrays.<ViewManager>asList(
-                new WebViewBridgeManager(reactApplicationContext)
+                new WebViewBridgeManager(reactApplicationContext, this.debug)
         );
     }
 
