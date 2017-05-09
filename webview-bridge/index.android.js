@@ -188,6 +188,14 @@ var WebViewBridge = React.createClass({
     );
   },
 
+  geoPermissionsGranted: function () {
+    UIManager.dispatchViewManagerCommand(
+      this.getWebViewBridgeHandle(),
+      UIManager.RCTWebViewBridge.Commands.geoPermissionsGranted,
+      []
+    );
+  },
+
   /**
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward
