@@ -66,9 +66,11 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
         _automaticallyAdjustContentInsets = YES;
         _contentInset = UIEdgeInsetsZero;
         _webView = [[UIWebView alloc] initWithFrame:self.bounds];
+
         UILongPressGestureRecognizer *tapRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(_handleTap:)];
         tapRecognizer.delegate = self;
         [_webView addGestureRecognizer:tapRecognizer];
+
         _webView.delegate = self;
         [self addSubview:_webView];
     }
@@ -85,15 +87,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
         [self becomeFirstResponder];
         UIMenuItem *commentMenuItem = [[UIMenuItem alloc] initWithTitle:@"Comment" action:@selector(commentAction:)];
         // Hiding highlight button for now
-//        UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
-        UIMenuItem *shareMenuItem = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(shareAction:)];
+        // UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
+        // UIMenuItem *shareMenuItem = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(shareAction:)];
 
-        [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem, /*highlightMenuItem,*/ shareMenuItem, nil]];
+        [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem,/* highlightMenuItem, shareMenuItem,*/ nil]];
     }
 }
 
 - (void)commentAction:(id)sender {
-    NSLog(@"inside self");
     NSMutableDictionary<NSString *, id> *event = [self baseEvent];
     if (self.onSelection) {
         self.onSelection(event);
@@ -107,10 +108,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 }
 */
 
+/*
 - (void)shareAction:(id)sender {
     NSLog(@"inside share action");
 }
-
+*/
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
     if (_webView.superview != nil) {
@@ -122,11 +124,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     return [super canPerformAction:action withSender:sender];
 }
 
-
-
-
-- (BOOL)canBecomeFirstResponder
-{
+- (BOOL)canBecomeFirstResponder {
     return YES;
 }
 
