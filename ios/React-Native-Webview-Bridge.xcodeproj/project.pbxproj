@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9EC4EE3F1E15824F006C8F89 /* WVURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC4EE3E1E15824F006C8F89 /* WVURLConnection.m */; };
 		9EF4097B1E0929E900B7C524 /* RCTWKWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF4097A1E0929E900B7C524 /* RCTWKWebView.m */; };
 		9EF4097E1E092A2500B7C524 /* RCTWKWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF4097D1E092A2500B7C524 /* RCTWKWebViewManager.m */; };
 /* End PBXBuildFile section */
@@ -27,8 +26,6 @@
 /* Begin PBXFileReference section */
 		4114DC4C1C187C3A003CD988 /* libReact-Native-Webview-Bridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libReact-Native-Webview-Bridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4114DC5F1C187CE4003CD988 /* webviewbridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = webviewbridge.js; sourceTree = "<group>"; };
-		9EC4EE3E1E15824F006C8F89 /* WVURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WVURLConnection.m; sourceTree = SOURCE_ROOT; };
-		9EC4EE401E15826E006C8F89 /* WVURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WVURLConnection.h; sourceTree = SOURCE_ROOT; };
 		9EF409791E0929C900B7C524 /* RCTWKWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTWKWebView.h; sourceTree = SOURCE_ROOT; };
 		9EF4097A1E0929E900B7C524 /* RCTWKWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWKWebView.m; sourceTree = SOURCE_ROOT; };
 		9EF4097C1E092A1400B7C524 /* RCTWKWebViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTWKWebViewManager.h; sourceTree = SOURCE_ROOT; };
@@ -70,8 +67,6 @@
 				9EF4097A1E0929E900B7C524 /* RCTWKWebView.m */,
 				9EF4097C1E092A1400B7C524 /* RCTWKWebViewManager.h */,
 				9EF4097D1E092A2500B7C524 /* RCTWKWebViewManager.m */,
-				9EC4EE3E1E15824F006C8F89 /* WVURLConnection.m */,
-				9EC4EE401E15826E006C8F89 /* WVURLConnection.h */,
 			);
 			path = "React-Native-Webview-Bridge";
 			sourceTree = "<group>";
@@ -141,7 +136,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EC4EE3F1E15824F006C8F89 /* WVURLConnection.m in Sources */,
 				9EF4097B1E0929E900B7C524 /* RCTWKWebView.m in Sources */,
 				9EF4097E1E092A2500B7C524 /* RCTWKWebViewManager.m in Sources */,
 			);
@@ -233,6 +227,7 @@
 		4114DC561C187C3A003CD988 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../../modules/react-native-status/ios/RCTStatus";
 				HEADER_SEARCH_PATHS = (
 					"$(inhereted)",
 					"$(SRCROOT)/../../../node_module/React/**",
@@ -248,6 +243,7 @@
 		4114DC571C187C3A003CD988 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../../../modules/react-native-status/ios/RCTStatus";
 				HEADER_SEARCH_PATHS = (
 					"$(inhereted)",
 					"$(SRCROOT)/../../../node_module/React/**",

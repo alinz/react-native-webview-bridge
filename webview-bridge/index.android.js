@@ -180,14 +180,6 @@ var WebViewBridge = React.createClass({
     );
   },
 
-  resetOkHttpClient: function () {
-    UIManager.dispatchViewManagerCommand(
-      this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.resetOkHttpClient,
-      []
-    );
-  },
-
   geoPermissionsGranted: function () {
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),

@@ -10,7 +10,7 @@
 #import "React/RCTUtils.h"
 #import "React/RCTView.h"
 #import "React/UIView+React.h"
-#import "WVURLConnection.h"
+#import <Statusgo/Statusgo.h>
 
 //This is a very elegent way of defining multiline string in objective-c.
 //source: http://stackoverflow.com/a/23387659/828487
@@ -40,22 +40,22 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 {
     if ((self = [super initWithFrame:frame])) {
         super.backgroundColor = [UIColor clearColor];
-        
+
         _automaticallyAdjustContentInsets = YES;
         _contentInset = UIEdgeInsetsZero;
-        
+
         WKWebViewConfiguration* config = [[WKWebViewConfiguration alloc] init];
         WKUserContentController* userController = [[WKUserContentController alloc]init];
         [userController addScriptMessageHandler:self name:@"reactNative"];
         [userController addScriptMessageHandler:self name:@"sendRequest"];
         config.userContentController = userController;
-        
+
         WKUserScript* bridgeScript = [[WKUserScript alloc]
                                       initWithSource: [self webViewBridgeScript]
                                       injectionTime:WKUserScriptInjectionTimeAtDocumentStart
                                       forMainFrameOnly:NO];
         [config.userContentController addUserScript:bridgeScript];
-        
+
         _webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:config];
         _webView.UIDelegate = self;
         _webView.navigationDelegate = self;
@@ -77,7 +77,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
             request = mutableRequest;
         }
     }
-    
+
     [_webView loadRequest:request];
 }
 
@@ -119,28 +119,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (void)sendIt:(NSString *)body
 {
-    NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-    NSString *callbackId = [responseDic objectForKey:@"callbackId"];
-    NSString *host = [responseDic objectForKey:@"host"];
-    NSString *payload = [responseDic objectForKey:@"payload"];
-    
-    NSData *postData = [payload dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:host]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
-    [request setTimeoutInterval:310];
-    
-    WVURLConnection *urlConn = [WVURLConnection alloc];
-    [urlConn setWebView:_webView];
-    [urlConn setCallbackId:callbackId];
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:urlConn];
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *data = [body dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *responseDic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+        NSString *callbackId = [responseDic objectForKey:@"callbackId"];
+        NSString *host = [responseDic objectForKey:@"host"];
+        NSString *payload = [responseDic objectForKey:@"payload"];
+
+        char *result = CallRPC((char *) [payload UTF8String]);
+        NSString *response = [NSString stringWithUTF8String: result];
+        NSString *trimmedResponse = [response stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+        NSString *format = @"httpCallback('%@', '%@');";
+
+        NSString *command = [NSString stringWithFormat: format, callbackId, trimmedResponse];
+        dispatch_async( dispatch_get_main_queue(), ^{
+            [_webView evaluateJavaScript:command completionHandler:nil];
+        });
+    });
 }
 
 - (void)sendToBridge:(NSString *)message

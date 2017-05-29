@@ -45,7 +45,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
 
 
     private static final int COMMAND_SEND_TO_BRIDGE = 101;
-    private static final int RESET_OK_HTTP_CLIENT = 102;
     public static final int GEO_PERMISSIONS_GRANTED = 103;
 
     private static final String TAG = "WebViewBridgeManager";
@@ -80,7 +79,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
         Map<String, Integer> commandsMap = super.getCommandsMap();
 
         commandsMap.put("sendToBridge", COMMAND_SEND_TO_BRIDGE);
-        commandsMap.put("resetOkHttpClient", RESET_OK_HTTP_CLIENT);
         commandsMap.put("geoPermissionsGranted", GEO_PERMISSIONS_GRANTED);
 
         return commandsMap;
@@ -157,10 +155,6 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             case COMMAND_SEND_TO_BRIDGE:
                 sendToBridge(root, args.getString(0));
                 break;
-            case RESET_OK_HTTP_CLIENT:
-                ((ReactWebView) root).getStatusBridge().resetCleint();
-                break;
-
             case GEO_PERMISSIONS_GRANTED:
                 ((ReactWebChromeClient) ((ReactWebView) root).getWebChromeClient()).geoCallback();
                 break;

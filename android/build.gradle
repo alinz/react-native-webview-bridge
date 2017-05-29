@@ -31,4 +31,5 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
+    compile(group: 'status-im', name: 'status-go', version: 'bug-whisper-on-geth1.6.1-g3f6f0fa+', ext: 'aar')
 }
