@@ -10,12 +10,12 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import "RCTWebViewBridgeManager.h"
+ #import "RCTWebViewBridgeManager.h"
 
-#import "RCTBridge.h"
-#import "RCTUIManager.h"
-#import "RCTWebViewBridge.h"
-#import "UIView+React.h"
+ #import <React/RCTBridge.h>
+ #import <React/RCTUIManager.h>
+ #import "RCTWebViewBridge.h"
+ #import <React/UIView+React.h>
 
 @interface RCTWebViewBridgeManager () <RCTWebViewBridgeDelegate>
 
@@ -128,7 +128,7 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
     _shouldStartLoad = YES;
     request[@"lockIdentifier"] = @(_shouldStartLoadLock.condition);
     callback(request);
-    
+
     // Block the main thread for a maximum of 250ms until the JS thread returns
     if ([_shouldStartLoadLock lockWhenCondition:0 beforeDate:[NSDate dateWithTimeIntervalSinceNow:.25]]) {
         BOOL returnValue = _shouldStartLoad;
