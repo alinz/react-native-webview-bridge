@@ -20,6 +20,7 @@ var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
+var { Component } = React;
 var {
   ActivityIndicator,
   EdgeInsetsPropType,
@@ -33,7 +34,7 @@ var {
     WebViewBridgeManager
   }
 } = ReactNative;
-var { PropTypes } = React;
+import PropTypes from 'prop-types';
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
@@ -90,40 +91,27 @@ var defaultRenderError = (errorDomain, errorCode, errorDesc) => (
 /**
  * Renders a native WebView.
  */
-var WebViewBridge = React.createClass({
+class WebViewBridge extends Component {
   statics: {
     JSNavigationScheme: JSNavigationScheme,
     NavigationType: NavigationType,
-  },
+  }
 
-  propTypes: {
-    ...WebView.propTypes,
-
-    /**
-     * Will be called once the message is being sent from webview
-     */
-    onBridgeMessage: PropTypes.func,
-
-    hideKeyboardAccessoryView: PropTypes.bool,
-
-    keyboardDisplayRequiresUserAction: PropTypes.bool,
-  },
-
-  getInitialState: function() {
+  getInitialState() {
     return {
       viewState: WebViewBridgeState.IDLE,
       lastErrorEvent: (null: ?ErrorEvent),
       startInLoadingState: true,
     };
-  },
+  }
 
-  componentWillMount: function() {
+  componentWillMount() {
     if (this.props.startInLoadingState) {
       this.setState({viewState: WebViewBridgeState.LOADING});
     }
-  },
+  }
 
-  render: function() {
+  render() {
     var otherView = null;
 
     if (this.state.viewState === WebViewBridgeState.LOADING) {
@@ -202,57 +190,57 @@ var WebViewBridge = React.createClass({
         {otherView}
       </View>
     );
-  },
+  }
 
-  goForward: function() {
+  goForward() {
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),
       UIManager.RCTWebViewBridge.Commands.goForward,
       null
     );
-  },
+  }
 
-  goBack: function() {
+  goBack() {
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),
       UIManager.RCTWebViewBridge.Commands.goBack,
       null
     );
-  },
+  }
 
-  reload: function() {
+  reload() {
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),
       UIManager.RCTWebViewBridge.Commands.reload,
       null
     );
-  },
+  }
 
-  sendToBridge: function (message: string) {
+  sendToBridge (message: string) {
     WebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
-  },
+  }
 
   /**
    * We return an event with a bunch of fields including:
    *  url, title, loading, canGoBack, canGoForward
    */
-  updateNavigationState: function(event: Event) {
+  updateNavigationState(event: Event) {
     if (this.props.onNavigationStateChange) {
       this.props.onNavigationStateChange(event.nativeEvent);
     }
-  },
+  }
 
-  getWebViewBridgeHandle: function(): any {
+  getWebViewBridgeHandle(): any {
     return ReactNative.findNodeHandle(this.refs[RCT_WEBVIEWBRIDGE_REF]);
-  },
+  }
 
-  onLoadingStart: function(event: Event) {
+  onLoadingStart(event: Event) {
     var onLoadStart = this.props.onLoadStart;
     onLoadStart && onLoadStart(event);
     this.updateNavigationState(event);
-  },
+  }
 
-  onLoadingError: function(event: Event) {
+  onLoadingError(event: Event) {
     event.persist(); // persist this event because we need to store it
     var {onError, onLoadEnd} = this.props;
     onError && onError(event);
@@ -263,9 +251,9 @@ var WebViewBridge = React.createClass({
       lastErrorEvent: event.nativeEvent,
       viewState: WebViewBridgeState.ERROR
     });
-  },
+  }
 
-  onLoadingFinish: function(event: Event) {
+  onLoadingFinish(event: Event) {
     var {onLoad, onLoadEnd} = this.props;
     onLoad && onLoad(event);
     onLoadEnd && onLoadEnd(event);
@@ -273,8 +261,21 @@ var WebViewBridge = React.createClass({
       viewState: WebViewBridgeState.IDLE,
     });
     this.updateNavigationState(event);
-  },
-});
+  }
+};
+
+WebViewBridge.propTypes = {
+  ...WebView.propTypes,
+
+  /**
+   * Will be called once the message is being sent from webview
+   */
+  onBridgeMessage: PropTypes.func,
+
+  hideKeyboardAccessoryView: PropTypes.bool,
+
+  keyboardDisplayRequiresUserAction: PropTypes.bool,
+};
 
 var RCTWebViewBridge = requireNativeComponent('RCTWebViewBridge', WebViewBridge, {
   nativeOnly: {
