@@ -200,7 +200,7 @@ class WebViewBridge extends Component{
     });
   }
 
-  onLoadingFinish: function(event) {
+  onLoadingFinish(event) {
     var {onLoad, onLoadEnd} = this.props;
     onLoad && onLoad(event);
     onLoadEnd && onLoadEnd(event);
