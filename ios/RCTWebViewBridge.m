@@ -94,7 +94,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 }
 
 - (void)commentAction:(id)sender {
-    NSDictionary<NSString *, id> *events = @{ @"selectionAction": @"comment" };
+    NSDictionary<NSString *, id> *event = @{ @"selectionAction": @"comment" };
     if (self.onSelection) {
         self.onSelection(event);
     }
@@ -102,7 +102,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 }
 
 - (void)highlightAction:(id)sender {
-    NSDictionary<NSString *, id> *events = @{ @"selectionAction": @"highlight" };
+    NSDictionary<NSString *, id> *event = @{ @"selectionAction": @"highlight" };
+    if (self.onSelection) {
+      self.onSelection(event);
+    }
 }
 
 /*
