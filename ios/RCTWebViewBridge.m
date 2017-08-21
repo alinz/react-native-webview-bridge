@@ -86,27 +86,24 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         [self becomeFirstResponder];
         UIMenuItem *commentMenuItem = [[UIMenuItem alloc] initWithTitle:@"Comment" action:@selector(commentAction:)];
-        // Hiding highlight button for now
-        // UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
+        UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
         // UIMenuItem *shareMenuItem = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(shareAction:)];
 
-        [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem,/* highlightMenuItem, shareMenuItem,*/ nil]];
+        [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem, highlightMenuItem, /*shareMenuItem,*/ nil]];
     }
 }
 
 - (void)commentAction:(id)sender {
-    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+    NSDictionary<NSString *, id> *events = @{ @"selectionAction": @"comment" };
     if (self.onSelection) {
         self.onSelection(event);
     }
 
 }
 
-/*
 - (void)highlightAction:(id)sender {
-    NSLog(@"inside highlight action");
+    NSDictionary<NSString *, id> *events = @{ @"selectionAction": @"highlight" };
 }
-*/
 
 /*
 - (void)shareAction:(id)sender {
