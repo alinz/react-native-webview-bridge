@@ -31,5 +31,5 @@ repositories {
 
 dependencies {
     compile 'com.facebook.react:react-native:+'
-    compile(group: 'status-im', name: 'status-go', version: 'develop-g8fb2424', ext: 'aar')
+    compile(group: 'status-im', name: 'status-go', version: 'signal-event-g38dba07', ext: 'aar')
 }
