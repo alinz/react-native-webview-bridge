@@ -13,10 +13,6 @@
  */
 'use strict';
 
-import PropTypes from 'prop-types';
-
-var createReactClass = require('create-react-class');
-
 var React = require('react');
 var ReactNative = require('react-native');
 var invariant = require('invariant');
@@ -37,7 +33,7 @@ var {
     WebViewBridgeManager
   }
 } = ReactNative;
-
+var { PropTypes } = React;
 
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
 
@@ -52,7 +48,7 @@ var RCTWebViewBridge = requireNativeComponent('RCTWebViewBridge', WebViewBridge)
 /**
  * Renders a native WebView.
  */
-var WebViewBridge = createReactClass({
+var WebViewBridge = React.createClass({
 
   propTypes: {
     ...RCTWebViewBridge.propTypes,
