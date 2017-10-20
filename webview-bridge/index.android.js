@@ -50,9 +50,16 @@ var RCTWebViewBridge = requireNativeComponent('RCTWebViewBridge', WebViewBridge)
  * Renders a native WebView.
  */
 class WebViewBridge extends Component{
+  
+  constructor(props) {
+    super(props);
 
-  getInitialState() {
-    return {
+    this.onLoadingStart = this.onLoadingStart.bind(this);
+    this.onLoadingError = this.onLoadingError.bind(this);
+    this.onLoadingFinish = this.onLoadingFinish.bind(this);
+    this.onMessage = this.onMessage.bind(this);
+
+    this.state = {
       viewState: WebViewBridgeState.IDLE,
       lastErrorEvent: null,
       startInLoadingState: true,

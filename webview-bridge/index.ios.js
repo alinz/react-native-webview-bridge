@@ -97,8 +97,15 @@ class WebViewBridge extends Component {
     NavigationType: NavigationType,
   }
 
-  getInitialState() {
-    return {
+  constructor() {
+    super(props);
+
+    this.onLoadingStart = this.onLoadingStart.bind(this);
+    this.onLoadingError = this.onLoadingError.bind(this);
+    this.onLoadingFinish = this.onLoadingFinish.bind(this);
+    this.onMessage = this.onMessage.bind(this);
+
+    this.state =  {
       viewState: WebViewBridgeState.IDLE,
       lastErrorEvent: (null: ?ErrorEvent),
       startInLoadingState: true,
