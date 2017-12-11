@@ -14,8 +14,12 @@
  */
 'use strict';
 
-var React = require('react');
+// HACKFIX: https://github.com/facebook/metro-bundler/issues/74 - error: bundling failed: UnableToResolveError: Unable to resolve module `react` from `/Users/garyfung/Dropbox/Code/react-native-webview-bridge-RN0.40/webview-bridge/index.ios.js`: Module does not exist in the module map
+// do same in node_modules/create-react-class/index.js on npm/yarn upgrade
+// NOTE: metro bundler can't find react because node_modules symlink to this local package on ~/Dropbox?
+var React = require('/Users/garyfung/Documents/code/WonderSwipe/node_modules/react');
 var ReactNative = require('react-native');
+var createReactClass = require('create-react-class');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
@@ -26,14 +30,15 @@ var {
   StyleSheet,
   Text,
   View,
+  ViewPropTypes,
   WebView,
   requireNativeComponent,
   UIManager,
   NativeModules: {
-    WebViewBridgeManager
-  }
+    WebViewBridgeManager,
+  },
 } = ReactNative;
-var { PropTypes } = React;
+var PropTypes = require('prop-types');
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
@@ -90,7 +95,7 @@ var defaultRenderError = (errorDomain, errorCode, errorDesc) => (
 /**
  * Renders a native WebView.
  */
-var WebViewBridge = React.createClass({
+var WebViewBridge = createReactClass({
   statics: {
     JSNavigationScheme: JSNavigationScheme,
     NavigationType: NavigationType,
@@ -261,7 +266,7 @@ var WebViewBridge = React.createClass({
 
     this.setState({
       lastErrorEvent: event.nativeEvent,
-      viewState: WebViewBridgeState.ERROR
+      viewState: WebViewBridgeState.ERROR,
     });
   },
 
@@ -316,7 +321,7 @@ var styles = StyleSheet.create({
   },
   webView: {
     backgroundColor: '#ffffff',
-  }
+  },
 });
 
 module.exports = WebViewBridge;

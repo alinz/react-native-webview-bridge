@@ -11,6 +11,7 @@ var {
   View,
   WebView
 } = React;
+var createReactClass = require('create-react-class');
 
 var WebViewBridge = require('react-native-webview-bridge');
 
@@ -29,7 +30,7 @@ const injectScript = `
   }());
 `;
 
-var Sample2 = React.createClass({
+var Sample2 = createReactClass({
   onBridgeMessage: function (message) {
     const { webviewbridge } = this.refs;
 
