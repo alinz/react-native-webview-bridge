@@ -33,7 +33,7 @@ var {
     WebViewBridgeManager
   }
 } = ReactNative;
-var { PropTypes } = React;
+var PropTypes = require('prop-types')
 
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
 
@@ -67,7 +67,7 @@ var WebViewBridge = React.createClass({
     };
   },
 
-  
+
   componentWillMount: function() {
     DeviceEventEmitter.addListener("webViewBridgeMessage", (body) => {
       const { onBridgeMessage } = this.props;
