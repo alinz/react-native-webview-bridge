@@ -33,7 +33,7 @@ var {
     WebViewBridgeManager
   }
 } = ReactNative
-var { PropTypes } = React
+var PropTypes = require('prop-types')
 
 var BGWASH = 'rgba(255,255,255,0.8)'
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge'
