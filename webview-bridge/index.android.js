@@ -14,6 +14,7 @@
 'use strict';
 
 var createReactClass = require('create-react-class')
+var React = require('react')
 var ReactNative = require('react-native');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
