@@ -11,7 +11,7 @@
  */
 
  #import "RCTWebViewBridge.h"
-
+ #import "MJRWebView.h"
  #import <UIKit/UIKit.h>
 
  #import <React/RCTAutoInsetsProtocol.h>
@@ -55,7 +55,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 
 @implementation RCTWebViewBridge
 {
-    UIWebView *_webView;
+    MJRWebView *_webView;
     NSString *_injectedJavaScript;
 }
 
@@ -65,11 +65,12 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
         super.backgroundColor = [UIColor clearColor];
         _automaticallyAdjustContentInsets = YES;
         _contentInset = UIEdgeInsetsZero;
-        _webView = [[UIWebView alloc] initWithFrame:self.bounds];
+        _webView = [[MJRWebView alloc] initWithFrame:self.bounds];
 
-        UILongPressGestureRecognizer *tapRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(_handleTap:)];
-        tapRecognizer.delegate = self;
-        [_webView addGestureRecognizer:tapRecognizer];
+        UIMenuItem *commentMenuItem = [[UIMenuItem alloc] initWithTitle:@"Comment" action:@selector(commentAction:)];
+        UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
+        [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem, highlightMenuItem, /*shareMenuItem,*/ nil]];
+
 
         _webView.delegate = self;
         [self addSubview:_webView];
@@ -80,18 +81,6 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 }
 
 RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
-
-- (void)_handleTap:(UITapGestureRecognizer *)recognizer
-{
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
-        [self becomeFirstResponder];
-        UIMenuItem *commentMenuItem = [[UIMenuItem alloc] initWithTitle:@"Comment" action:@selector(commentAction:)];
-        UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
-        // UIMenuItem *shareMenuItem = [[UIMenuItem alloc] initWithTitle:@"Share" action:@selector(shareAction:)];
-
-        [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem, highlightMenuItem, /*shareMenuItem,*/ nil]];
-    }
-}
 
 - (void)commentAction:(id)sender {
     NSDictionary<NSString *, id> *event = @{ @"selectionAction": @"comment" };
@@ -122,15 +111,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     }
 
     return [super canPerformAction:action withSender:sender];
-}
-
-- (BOOL)canBecomeFirstResponder {
-    return YES;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
 }
 
 - (void)goForward

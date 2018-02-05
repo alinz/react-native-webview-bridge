@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C2F869B2025E7820000D0A7 /* MJRWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F869A2025E7820000D0A7 /* MJRWebView.m */; };
 		4114DC5C1C187CCB003CD988 /* RCTWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */; };
 		4114DC5D1C187CCB003CD988 /* RCTWebViewBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4114DC5B1C187CCB003CD988 /* RCTWebViewBridgeManager.m */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1C2F86992025E7820000D0A7 /* MJRWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MJRWebView.h; sourceTree = SOURCE_ROOT; };
+		1C2F869A2025E7820000D0A7 /* MJRWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MJRWebView.m; sourceTree = SOURCE_ROOT; };
 		4114DC4C1C187C3A003CD988 /* libReact-Native-Webview-Bridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libReact-Native-Webview-Bridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4114DC581C187CCB003CD988 /* RCTWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTWebViewBridge.h; sourceTree = SOURCE_ROOT; };
 		4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridge.m; sourceTree = SOURCE_ROOT; };
@@ -67,6 +70,8 @@
 				4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */,
 				4114DC5A1C187CCB003CD988 /* RCTWebViewBridgeManager.h */,
 				4114DC5B1C187CCB003CD988 /* RCTWebViewBridgeManager.m */,
+				1C2F86992025E7820000D0A7 /* MJRWebView.h */,
+				1C2F869A2025E7820000D0A7 /* MJRWebView.m */,
 			);
 			path = "React-Native-Webview-Bridge";
 			sourceTree = "<group>";
@@ -138,6 +143,7 @@
 			files = (
 				4114DC5D1C187CCB003CD988 /* RCTWebViewBridgeManager.m in Sources */,
 				4114DC5C1C187CCB003CD988 /* RCTWebViewBridge.m in Sources */,
+				1C2F869B2025E7820000D0A7 /* MJRWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
