@@ -108,7 +108,9 @@ var WebViewBridge = createReactClass({
 
     keyboardDisplayRequiresUserAction: PropTypes.bool,
 
-    onSelection: PropTypes.func
+    onSelection: PropTypes.func,
+
+    onDoubleTap: PropTypes.func
   },
 
   getInitialState: function() {

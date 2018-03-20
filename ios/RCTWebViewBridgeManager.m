@@ -51,8 +51,7 @@ RCT_EXPORT_VIEW_PROPERTY(onShouldStartLoadWithRequest, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(allowsInlineMediaPlayback, _webView.allowsInlineMediaPlayback, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onBridgeMessage, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onSelection, RCTBubblingEventBlock)
-
-
+RCT_EXPORT_VIEW_PROPERTY(onDoubleTap, RCTBubblingEventBlock)
 
 - (NSDictionary<NSString *, id> *)constantsToExport
 {

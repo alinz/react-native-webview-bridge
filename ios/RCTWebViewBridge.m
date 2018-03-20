@@ -49,7 +49,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 @property (nonatomic, copy) RCTDirectEventBlock onShouldStartLoadWithRequest;
 @property (nonatomic, copy) RCTDirectEventBlock onBridgeMessage;
 @property (nonatomic, copy) RCTBubblingEventBlock onSelection;
-
+@property (nonatomic, copy) RCTBubblingEventBlock onDoubleTap;
 
 @end
 
@@ -71,6 +71,11 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
         UIMenuItem *highlightMenuItem = [[UIMenuItem alloc] initWithTitle:@"Highlight" action:@selector(highlightAction:)];
         [[UIMenuController sharedMenuController] setMenuItems:[NSArray arrayWithObjects:commentMenuItem, highlightMenuItem, /*shareMenuItem,*/ nil]];
 
+        UITapGestureRecognizer *singleFingerDTap = [[UITapGestureRecognizer alloc]
+                                                    initWithTarget:self action:@selector(handleDoubleTap:)];
+        singleFingerDTap.numberOfTapsRequired = 2;
+        singleFingerDTap.delegate = self;
+        [_webView addGestureRecognizer:singleFingerDTap];
 
         _webView.delegate = self;
         [self addSubview:_webView];
@@ -81,6 +86,34 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 }
 
 RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
+
+- (void)handleDoubleTap:(UITapGestureRecognizer *)doubleTapGesture {
+    CGPoint touchPoint = [doubleTapGesture locationInView: self];
+    NSDictionary *event = @{ @"location": @{
+                                     @"x": @(touchPoint.x),
+                                     @"y": @(touchPoint.y)
+                                     }
+                             };
+
+    if (self.onDoubleTap) {
+        self.onDoubleTap(event);
+    }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    BOOL isTapGesture = [otherGestureRecognizer isKindOfClass:[UITapGestureRecognizer class]];
+    if (isTapGesture) {
+        UITapGestureRecognizer *doubleTapGesture = (UITapGestureRecognizer *)otherGestureRecognizer;
+
+        if ([doubleTapGesture numberOfTapsRequired] == 2) {
+            [otherGestureRecognizer requireGestureRecognizerToFail:gestureRecognizer];
+        }
+    }
+    return YES;
+}
+
 
 - (void)commentAction:(id)sender {
     NSDictionary<NSString *, id> *event = @{ @"selectionAction": @"comment" };
