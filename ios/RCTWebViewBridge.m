@@ -115,35 +115,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 }
 
 
-- (void)commentAction:(id)sender {
-    NSDictionary<NSString *, id> *event = @{ @"selectionAction": @"comment" };
-    if (self.onSelection) {
-        self.onSelection(event);
-    }
-
-}
-
-- (void)highlightAction:(id)sender {
-    NSDictionary<NSString *, id> *event = @{ @"selectionAction": @"highlight" };
-    if (self.onSelection) {
-      self.onSelection(event);
-    }
-}
-
-/*
-- (void)shareAction:(id)sender {
-    NSLog(@"inside share action");
-}
-*/
-
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-    if (_webView.superview != nil) {
-        if ((action == @selector(commentAction:) || action == @selector(highlightAction:)) || action == @selector(shareAction:)) {
-            return YES;
-        }
-    }
-
-    return [super canPerformAction:action withSender:sender];
+    return NO;
 }
 
 - (void)goForward
