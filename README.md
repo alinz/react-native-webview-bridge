@@ -81,6 +81,20 @@ compile project(':react-native-webview-bridge')
 
 5. run `react-native run-android` to see if everything is compilable.
 
+## Proguard configuration
+
+If proguard (minification/obfuscation) is enabled in your project, add these rules to your `proguard-rules.pro`:
+
+```
+
+# react-native-webview-bridge
+-keepattributes JavascriptInterface
+-keep class com.github.alinz.reactnativewebviewbridge.**
+-keepclassmembers class ** {
+    @android.webkit.JavascriptInterface <methods>;
+}
+```
+
 ## Usage
 
 just import the module with one of your choices way:
