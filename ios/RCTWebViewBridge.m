@@ -87,8 +87,10 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
       }
     }());
   );
+  // Escape singlequotes or messages containing ' will fail
+  NSString *quotedMessage = [message stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"];
 
-  NSString *command = [NSString stringWithFormat: format, message];
+  NSString *command = [NSString stringWithFormat: format, quotedMessage];
   [_webView stringByEvaluatingJavaScriptFromString:command];
 }
 
