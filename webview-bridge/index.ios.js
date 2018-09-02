@@ -177,9 +177,10 @@ var WebViewBridge = createReactClass({
       const onBridgeMessageCallback = this.props.onBridgeMessage;
       if (onBridgeMessageCallback) {
         const messages = event.nativeEvent.messages;
-        messages.forEach((message) => {
-          onBridgeMessageCallback(message);
-        });
+        if (messages && typeof messages.forEach === "function")
+          messages.forEach((message) => {
+            onBridgeMessageCallback(message);
+          });
       }
     };
 
