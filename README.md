@@ -174,7 +174,7 @@ var Sample2 = React.createClass({
         ref="webviewbridge"
         onBridgeMessage={this.onBridgeMessage.bind(this)}
         injectedJavaScript={injectScript}
-        source={{uri: "http://google.com"}}/>
+        source={{uri: "https://google.com"}}/>
     );
   }
 });
