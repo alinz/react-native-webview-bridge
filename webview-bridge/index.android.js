@@ -14,6 +14,8 @@
 'use strict';
 
 var React = require('react');
+React.createClass = require('create-react-class');
+var PropTypes = require('prop-types');
 var ReactNative = require('react-native');
 var createReactClass = require('create-react-class');
 var invariant = require('invariant');
@@ -35,7 +37,7 @@ var {
     WebViewBridgeManager
   }
 } = ReactNative;
-var PropTypes = require('prop-types');
+var { PropTypes } = PropTypes;
 
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
 

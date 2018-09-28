@@ -45,7 +45,7 @@ in your react-native project, run `npm install react-native-webview-bridge --sav
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 ```
 
-2. add the following code to add the package to `MainApplication.java`` (`MainActivity.java` if RN < 0.29)
+2. add the following code to add the package to `MainApplication.java` (`MainActivity.java` if RN < 0.29)
 
 ```java
 protected List<ReactPackage> getPackages() {
@@ -166,7 +166,7 @@ var Sample2 = createReactClass({
         ref="webviewbridge"
         onBridgeMessage={this.onBridgeMessage.bind(this)}
         injectedJavaScript={injectScript}
-        source={{uri: "http://google.com"}}/>
+        source={{uri: "https://google.com"}}/>
     );
   }
 });

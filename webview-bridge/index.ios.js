@@ -14,10 +14,9 @@
  */
 'use strict';
 
-// HACKFIX: https://github.com/facebook/metro-bundler/issues/74 - error: bundling failed: UnableToResolveError: Unable to resolve module `react` from `/Users/garyfung/Dropbox/Code/react-native-webview-bridge-RN0.40/webview-bridge/index.ios.js`: Module does not exist in the module map
-// do same in node_modules/create-react-class/index.js on npm/yarn upgrade
-// NOTE: metro bundler can't find react because node_modules symlink to this local package on ~/Dropbox?
-var React = require('/Users/garyfung/Documents/code/WonderSwipe/node_modules/react');
+var React = require('react');
+React.createClass = require('create-react-class');
+var PropTypes = require('prop-types');
 var ReactNative = require('react-native');
 var createReactClass = require('create-react-class');
 var invariant = require('invariant');
@@ -38,7 +37,7 @@ var {
     WebViewBridgeManager,
   },
 } = ReactNative;
-var PropTypes = require('prop-types');
+var { PropTypes } = PropTypes;
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
