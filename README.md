@@ -1,11 +1,3 @@
-# Looking for Maintainer(s)
-I have been really busy and I can't continue maintaing this repo alone. I would like to ask if anyone wants to help I can grant a permission both on github and npm to start merging a lot of request and dealing with issues.
-
-Please send me your github and npm id so I can add you in.
-
-Thanks!
-
-
 ## Please take a look at this [issue](https://github.com/alinz/react-native-webview-bridge/issues/109) first
 
 # React Native WebView Javascript Bridge
@@ -154,7 +146,7 @@ const injectScript = `
                   }());
 `;
 
-var Sample2 = React.createClass({
+var Sample2 = createReactClass({
   onBridgeMessage(message){
     const { webviewbridge } = this.refs;
 

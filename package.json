@@ -30,8 +30,9 @@
   },
   "homepage": "https://github.com/alinz/react-native-webview-bridge",
   "dependencies": {
-    "invariant": "2.2.0",
+    "create-react-class": "^15.6.0",
+    "invariant": "^2.2.2",
     "keymirror": "0.1.1",
-    "create-react-class": "15.6.3"
+    "prop-types": "^15.5.10"
   }
 }
