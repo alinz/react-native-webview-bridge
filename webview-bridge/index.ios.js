@@ -15,7 +15,6 @@
 'use strict';
 
 var React = require('react');
-React.createClass = require('create-react-class');
 var PropTypes = require('prop-types');
 var ReactNative = require('react-native');
 var createReactClass = require('create-react-class');
@@ -37,7 +36,6 @@ var {
     WebViewBridgeManager,
   },
 } = ReactNative;
-var { PropTypes } = PropTypes;
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
