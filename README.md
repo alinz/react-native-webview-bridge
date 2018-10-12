@@ -1,6 +1,12 @@
 ## Please take a look at this [issue](https://github.com/alinz/react-native-webview-bridge/issues/109) first
 
 # React Native WebView Javascript Bridge
+
+[![GitHub tag](https://img.shields.io/github/tag/alinz/react-native-webview-bridge.svg)](https://github.com/alinz/react-native-webview-bridge)
+[![npm version](https://badge.fury.io/js/react-native-webview-bridge.svg)](https://badge.fury.io/js/react-native-webview-bridge)
+[![GitHub license](https://img.shields.io/github/license/alinz/react-native-webview-bridge.svg)](https://github.com/alinz/react-native-webview-bridge/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/alinz/react-native-webview-bridge.svg)](https://github.com/alinz/react-native-webview-bridge/stargazers)
+
 I have been testing and reading a lot of way to safely create a bridge between react-native and webview. I'm happy to announced that the wait is over and from **React-Native 0.20 and above**, the bridge is fully functional.
 
 
