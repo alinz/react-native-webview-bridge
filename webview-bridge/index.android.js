@@ -169,6 +169,14 @@ var WebViewBridge = createReactClass({
       null
     );
   },
+
+  stopLoading: function() {
+    UIManager.dispatchViewManagerCommand(
+      this.getWebViewBridgeHandle(),
+      UIManager.RCTWebViewBridge.Commands.stopLoading,
+      null
+    );
+  },
   
   stopLoading: function() {
     UIManager.dispatchViewManagerCommand(
