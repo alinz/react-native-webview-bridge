@@ -17,7 +17,7 @@ class JavascriptBridge {
     }
 
     @JavascriptInterface
-    public void send(String message) {
+    public void submitFromWeb(String message) {
         WritableMap event = Arguments.createMap();
         event.putString("message", message);
         ReactContext reactContext = (ReactContext) this.webView.getContext();

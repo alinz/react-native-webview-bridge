@@ -36,7 +36,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     @Override
     protected WebView createViewInstance(ThemedReactContext reactContext) {
         WebView root = super.createViewInstance(reactContext);
-        root.addJavascriptInterface(new JavascriptBridge(root), "WebViewBridge");
+        root.addJavascriptInterface(new JavascriptBridge(root), "ctandroid");
         return root;
     }
 
@@ -54,7 +54,7 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     }
 
     private void sendToBridge(WebView root, String message) {
-        String script = "WebViewBridge.onMessage('" + message + "');";
+        String script = "const msgObj = JSON.parse('" + message + "'); window[msgObj.callback].call(null, msgObj.arg);";
         WebViewBridgeManager.evaluateJavascript(root, script);
     }
 

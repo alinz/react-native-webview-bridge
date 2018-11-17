@@ -64,7 +64,7 @@
     onError: null
   };
 
-  window.WebViewBridge = WebViewBridge;
+  window.ctandroid = WebViewBridge;
 
   //dispatch event
   customEvent.initEvent('WebViewBridge', true, true);
