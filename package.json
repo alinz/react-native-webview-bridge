@@ -33,6 +33,7 @@
     "create-react-class": "^15.6.0",
     "invariant": "^2.2.2",
     "keymirror": "0.1.1",
-    "prop-types": "^15.5.10"
+    "prop-types": "^15.5.10",
+    "react-native-webview": "^5.2.1"
   }
 }
