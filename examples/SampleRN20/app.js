@@ -8,9 +8,9 @@ var React = require('react-native');
 var {
   StyleSheet,
   Text,
-  View,
-  WebView
+  View
 } = React;
+var WebView = require('react-native-webview')
 var createReactClass = require('create-react-class');
 
 var WebViewBridge = require('react-native-webview-bridge');
