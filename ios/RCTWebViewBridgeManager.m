@@ -11,11 +11,25 @@
  */
 
 #import "RCTWebViewBridgeManager.h"
-
-#import <React/RCTBridge.h>
-#import <React/RCTUIManager.h>
 #import "RCTWebViewBridge.h"
+
+#if __has_include(<React/RCTBridge.h>)
+#import <React/RCTBridge.h>
+#else
+#import "RCTBridge.h"
+#endif
+
+#if __has_include(<React/RCTUIManager.h>)
+#import <React/RCTUIManager.h>
+#else
+#import "RCTUIManager.h"
+#endif
+
+#if __has_include(<React/UIView+React.h>)
+#import <React/UIView+React.h>
+#else
 #import "UIView+React.h"
+#endif
 
 @interface RCTWebViewBridgeManager () <RCTWebViewBridgeDelegate>
 
@@ -49,8 +63,8 @@ RCT_EXPORT_VIEW_PROPERTY(onLoadingFinish, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onLoadingError, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onShouldStartLoadWithRequest, RCTDirectEventBlock)
 RCT_REMAP_VIEW_PROPERTY(allowsInlineMediaPlayback, _webView.allowsInlineMediaPlayback, BOOL)
-RCT_REMAP_VIEW_PROPERTY(mediaPlaybackRequiresUserAction, _webView.mediaPlaybackRequiresUserAction, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(onBridgeMessage, RCTDirectEventBlock)
+RCT_REMAP_VIEW_PROPERTY(keyboardDisplayRequiresUserAction, _webView.keyboardDisplayRequiresUserAction, BOOL)
 
 - (NSDictionary<NSString *, id> *)constantsToExport
 {
@@ -87,7 +101,7 @@ RCT_EXPORT_METHOD(goBack:(nonnull NSNumber *)reactTag)
 RCT_EXPORT_METHOD(goForward:(nonnull NSNumber *)reactTag)
 {
   [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebViewBridge *> *viewRegistry) {
-    RCTWebViewBridge *view = viewRegistry[reactTag];
+    RCTWebViewBridge* view = viewRegistry[reactTag];
     if (![view isKindOfClass:[RCTWebViewBridge class]]) {
       RCTLogError(@"Invalid view returned from registry, expecting RCTWebViewBridge, got: %@", view);
     } else {
