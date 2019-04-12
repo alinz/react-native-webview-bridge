@@ -149,7 +149,7 @@ var WebViewBridge = createReactClass({
   goForward: function() {
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.goForward,
+      UIManager.getViewManagerConfig('RCTWebViewBridge').Commands.goForward,
       null
     );
   },
@@ -157,7 +157,7 @@ var WebViewBridge = createReactClass({
   goBack: function() {
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.goBack,
+      UIManager.getViewManagerConfig('RCTWebViewBridge').Commands.goBack,
       null
     );
   },
@@ -165,7 +165,7 @@ var WebViewBridge = createReactClass({
   reload: function() {
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.reload,
+      UIManager.getViewManagerConfig('RCTWebViewBridge').Commands.reload,
       null
     );
   },
@@ -173,7 +173,7 @@ var WebViewBridge = createReactClass({
   sendToBridge: function (message: string) {
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.sendToBridge,
+      UIManager.getViewManagerConfig('RCTWebViewBridge').Commands.sendToBridge,
       [message]
     );
   },
