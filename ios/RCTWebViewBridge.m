@@ -14,12 +14,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RCTAutoInsetsProtocol.h"
-#import "RCTConvert.h"
-#import "RCTEventDispatcher.h"
-#import "RCTLog.h"
-#import "RCTUtils.h"
-#import "RCTView.h"
+#import <React/RCTAutoInsetsProtocol.h>
+#import <React/RCTConvert.h>
+#import <React/RCTEventDispatcher.h>
+#import <React/RCTLog.h>
+#import <React/RCTUtils.h>
+#import <React/RCTView.h>
 #import "UIView+React.h"
 #import <objc/runtime.h>
 
@@ -65,6 +65,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
     _contentInset = UIEdgeInsetsZero;
     _webView = [[UIWebView alloc] initWithFrame:self.bounds];
     _webView.delegate = self;
+    _webView.mediaPlaybackRequiresUserAction = NO;
     [self addSubview:_webView];
   }
   return self;
@@ -111,8 +112,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     }());
   );
 
-  NSString *command = [NSString stringWithFormat: format, message];
-  [_webView stringByEvaluatingJavaScriptFromString:message];
+  // Escape singlequotes or messages containing ' will fail
+  NSString *quotedMessage = [message stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"];
+
+  NSString *command = [NSString stringWithFormat: format, quotedMessage];
+  [_webView stringByEvaluatingJavaScriptFromString:command];
 }
 
 - (NSURL *)URL

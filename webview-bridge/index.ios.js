@@ -15,7 +15,9 @@
 'use strict';
 
 var React = require('react');
+var PropTypes = require('prop-types');
 var ReactNative = require('react-native');
+var createReactClass = require('create-react-class');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
@@ -26,14 +28,14 @@ var {
   StyleSheet,
   Text,
   View,
+  ViewPropTypes,
   WebView,
   requireNativeComponent,
   UIManager,
   NativeModules: {
-    WebViewBridgeManager
-  }
+    WebViewBridgeManager,
+  },
 } = ReactNative;
-var { PropTypes } = React;
 
 var BGWASH = 'rgba(255,255,255,0.8)';
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
@@ -90,7 +92,7 @@ var defaultRenderError = (errorDomain, errorCode, errorDesc) => (
 /**
  * Renders a native WebView.
  */
-var WebViewBridge = React.createClass({
+var WebViewBridge = createReactClass({
   statics: {
     JSNavigationScheme: JSNavigationScheme,
     NavigationType: NavigationType,
@@ -172,9 +174,10 @@ var WebViewBridge = React.createClass({
       const onBridgeMessageCallback = this.props.onBridgeMessage;
       if (onBridgeMessageCallback) {
         const messages = event.nativeEvent.messages;
-        messages.forEach((message) => {
-          onBridgeMessageCallback(message);
-        });
+        if (messages && typeof messages.forEach === "function")
+          messages.forEach((message) => {
+            onBridgeMessageCallback(message);
+          });
       }
     };
 
@@ -271,7 +274,7 @@ var WebViewBridge = React.createClass({
 
     this.setState({
       lastErrorEvent: event.nativeEvent,
-      viewState: WebViewBridgeState.ERROR
+      viewState: WebViewBridgeState.ERROR,
     });
   },
 
@@ -326,7 +329,7 @@ var styles = StyleSheet.create({
   },
   webView: {
     backgroundColor: '#ffffff',
-  }
+  },
 });
 
 module.exports = WebViewBridge;

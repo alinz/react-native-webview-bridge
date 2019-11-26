@@ -14,7 +14,9 @@
 'use strict';
 
 var React = require('react');
+var PropTypes = require('prop-types');
 var ReactNative = require('react-native');
+var createReactClass = require('create-react-class');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
@@ -26,6 +28,7 @@ var {
   StyleSheet,
   Text,
   View,
+  ViewPropTypes,
   WebView,
   requireNativeComponent,
   DeviceEventEmitter,
@@ -33,7 +36,6 @@ var {
     WebViewBridgeManager
   }
 } = ReactNative;
-var { PropTypes } = React;
 
 var RCT_WEBVIEWBRIDGE_REF = 'webviewbridge';
 
@@ -48,7 +50,7 @@ var RCTWebViewBridge = requireNativeComponent('RCTWebViewBridge', WebViewBridge)
 /**
  * Renders a native WebView.
  */
-var WebViewBridge = React.createClass({
+var WebViewBridge = createReactClass({
 
   propTypes: {
     ...RCTWebViewBridge.propTypes,
