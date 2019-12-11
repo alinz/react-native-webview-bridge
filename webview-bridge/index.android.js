@@ -70,7 +70,7 @@ var WebViewBridge = createReactClass({
   },
 
   
-  componentWillMount: function() {
+  componentDidMount: function() {
     DeviceEventEmitter.addListener("webViewBridgeMessage", (body) => {
       const { onBridgeMessage } = this.props;
       const message = body.message;
