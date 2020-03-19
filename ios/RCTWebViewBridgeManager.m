@@ -61,6 +61,7 @@ RCT_EXPORT_VIEW_PROPERTY(onBridgeMessage, RCTDirectEventBlock)
       @"FormSubmitted": @(UIWebViewNavigationTypeFormSubmitted),
       @"BackForward": @(UIWebViewNavigationTypeBackForward),
       @"Reload": @(UIWebViewNavigationTypeReload),
+      @"StopLoading": @(UIWebViewNavigationTypeStopLoading),
       @"FormResubmitted": @(UIWebViewNavigationTypeFormResubmitted),
       @"Other": @(UIWebViewNavigationTypeOther)
     },
@@ -104,6 +105,18 @@ RCT_EXPORT_METHOD(reload:(nonnull NSNumber *)reactTag)
       RCTLogError(@"Invalid view returned from registry, expecting RCTWebViewBridge, got: %@", view);
     } else {
       [view reload];
+    }
+  }];
+}
+
+RCT_EXPORT_METHOD(stopLoading:(nonnull NSNumber *)reactTag)
+{
+  [self.bridge.uiManager addUIBlock:^(__unused RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTWebViewBridge *> *viewRegistry) {
+    RCTWebViewBridge *view = viewRegistry[reactTag];
+    if (![view isKindOfClass:[RCTWebViewBridge class]]) {
+      RCTLogError(@"Invalid view returned from registry, expecting RCTWebViewBridge, got: %@", view);
+    } else {
+      [view stopLoading];
     }
   }];
 }

@@ -53,6 +53,7 @@ var NavigationType = {
   formsubmit: RCTWebViewBridgeManager.NavigationType.FormSubmitted,
   backforward: RCTWebViewBridgeManager.NavigationType.BackForward,
   reload: RCTWebViewBridgeManager.NavigationType.Reload,
+  stopLoading: RCTWebViewBridgeManager.NavigationType.StopLoading,
   formresubmit: RCTWebViewBridgeManager.NavigationType.FormResubmitted,
   other: RCTWebViewBridgeManager.NavigationType.Other,
 };
@@ -227,6 +228,14 @@ var WebViewBridge = createReactClass({
     UIManager.dispatchViewManagerCommand(
       this.getWebViewBridgeHandle(),
       UIManager.RCTWebViewBridge.Commands.reload,
+      null
+    );
+  },
+
+  stopLoading: function() {
+    UIManager.dispatchViewManagerCommand(
+      this.getWebViewBridgeHandle(),
+      UIManager.RCTWebViewBridge.Commands.stopLoading,
       null
     );
   },
