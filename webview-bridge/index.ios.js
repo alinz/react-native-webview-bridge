@@ -21,7 +21,7 @@ var createReactClass = require('create-react-class');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
-
+import { WebView } from "react-native-webview";
 var {
   ActivityIndicator,
   EdgeInsetsPropType,
@@ -29,7 +29,6 @@ var {
   Text,
   View,
   ViewPropTypes,
-  WebView,
   requireNativeComponent,
   UIManager,
   NativeModules: {
