@@ -1,0 +1,281 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4114DC5C1C187CCB003CD988 /* RCTWebViewBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */; };
+		4114DC5D1C187CCB003CD988 /* RCTWebViewBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4114DC5B1C187CCB003CD988 /* RCTWebViewBridgeManager.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4114DC4A1C187C3A003CD988 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4114DC4C1C187C3A003CD988 /* libReact-Native-Webview-Bridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libReact-Native-Webview-Bridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4114DC581C187CCB003CD988 /* RCTWebViewBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTWebViewBridge.h; sourceTree = SOURCE_ROOT; };
+		4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridge.m; sourceTree = SOURCE_ROOT; };
+		4114DC5A1C187CCB003CD988 /* RCTWebViewBridgeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTWebViewBridgeManager.h; sourceTree = SOURCE_ROOT; };
+		4114DC5B1C187CCB003CD988 /* RCTWebViewBridgeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTWebViewBridgeManager.m; sourceTree = SOURCE_ROOT; };
+		4114DC5F1C187CE4003CD988 /* webviewbridge.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = webviewbridge.js; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4114DC491C187C3A003CD988 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4114DC431C187C3A003CD988 = {
+			isa = PBXGroup;
+			children = (
+				4114DC4E1C187C3A003CD988 /* React-Native-Webview-Bridge */,
+				4114DC5E1C187CE4003CD988 /* scripts */,
+				4114DC4D1C187C3A003CD988 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4114DC4D1C187C3A003CD988 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4114DC4C1C187C3A003CD988 /* libReact-Native-Webview-Bridge.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4114DC4E1C187C3A003CD988 /* React-Native-Webview-Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				4114DC581C187CCB003CD988 /* RCTWebViewBridge.h */,
+				4114DC591C187CCB003CD988 /* RCTWebViewBridge.m */,
+				4114DC5A1C187CCB003CD988 /* RCTWebViewBridgeManager.h */,
+				4114DC5B1C187CCB003CD988 /* RCTWebViewBridgeManager.m */,
+			);
+			path = "React-Native-Webview-Bridge";
+			sourceTree = "<group>";
+		};
+		4114DC5E1C187CE4003CD988 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				4114DC5F1C187CE4003CD988 /* webviewbridge.js */,
+			);
+			name = scripts;
+			path = ../scripts;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4114DC4B1C187C3A003CD988 /* React-Native-Webview-Bridge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4114DC551C187C3A003CD988 /* Build configuration list for PBXNativeTarget "React-Native-Webview-Bridge" */;
+			buildPhases = (
+				4114DC481C187C3A003CD988 /* Sources */,
+				4114DC491C187C3A003CD988 /* Frameworks */,
+				4114DC4A1C187C3A003CD988 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "React-Native-Webview-Bridge";
+			productName = "React-Native-Webview-Bridge";
+			productReference = 4114DC4C1C187C3A003CD988 /* libReact-Native-Webview-Bridge.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4114DC441C187C3A003CD988 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = alinz;
+				TargetAttributes = {
+					4114DC4B1C187C3A003CD988 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+				};
+			};
+			buildConfigurationList = 4114DC471C187C3A003CD988 /* Build configuration list for PBXProject "React-Native-Webview-Bridge" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4114DC431C187C3A003CD988;
+			productRefGroup = 4114DC4D1C187C3A003CD988 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4114DC4B1C187C3A003CD988 /* React-Native-Webview-Bridge */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4114DC481C187C3A003CD988 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4114DC5D1C187CCB003CD988 /* RCTWebViewBridgeManager.m in Sources */,
+				4114DC5C1C187CCB003CD988 /* RCTWebViewBridge.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4114DC531C187C3A003CD988 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		4114DC541C187C3A003CD988 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4114DC561C187C3A003CD988 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inhereted)",
+					"$(SRCROOT)/../../../node_module/React/**",
+					"$(SRCROOT)/../../../node_modules/react-native/React/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		4114DC571C187C3A003CD988 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inhereted)",
+					"$(SRCROOT)/../../../node_module/React/**",
+					"$(SRCROOT)/../../../node_modules/react-native/React/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4114DC471C187C3A003CD988 /* Build configuration list for PBXProject "React-Native-Webview-Bridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4114DC531C187C3A003CD988 /* Debug */,
+				4114DC541C187C3A003CD988 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4114DC551C187C3A003CD988 /* Build configuration list for PBXNativeTarget "React-Native-Webview-Bridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4114DC561C187C3A003CD988 /* Debug */,
+				4114DC571C187C3A003CD988 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4114DC441C187C3A003CD988 /* Project object */;
+}
