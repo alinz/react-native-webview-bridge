@@ -22,7 +22,6 @@ var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 import { WebView } from "react-native-webview";
 
-var WebView = require('react-native-webview');
 var {
   ReactNativeViewAttributes,
   UIManager,
