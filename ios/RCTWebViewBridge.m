@@ -30,7 +30,7 @@
 #define NSStringMultiline(...) [[NSString alloc] initWithCString:#__VA_ARGS__ encoding:NSUTF8StringEncoding]
 
 //we don'e need this one since it has been defined in RCTWebView.m
-//NSString *const RCTJSNavigationScheme = @"react-js-navigation";
+NSString *const RCTJSNavigationScheme = @"react-js-navigation";
 NSString *const RCTWebViewBridgeSchema = @"wvb";
 
 // runtime trick to remove UIWebview keyboard default toolbar
