@@ -22,6 +22,7 @@ var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 import { WebView } from "react-native-webview";
 
+var WebView = require('react-native-webview');
 var {
   ReactNativeViewAttributes,
   UIManager,
@@ -70,7 +71,7 @@ var WebViewBridge = createReactClass({
   },
 
   
-  componentWillMount: function() {
+  componentDidMount: function() {
     DeviceEventEmitter.addListener("webViewBridgeMessage", (body) => {
       const { onBridgeMessage } = this.props;
       const message = body.message;

@@ -21,7 +21,12 @@ var createReactClass = require('create-react-class');
 var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
+<<<<<<< HEAD
 import { WebView } from "react-native-webview";
+=======
+
+var WebView = require('react-native-webview');
+>>>>>>> 8f303f50c23d67f68a4219a4d33a0bac9d9237b5
 var {
   ActivityIndicator,
   EdgeInsetsPropType,
@@ -118,7 +123,7 @@ var WebViewBridge = createReactClass({
     };
   },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     if (this.props.startInLoadingState) {
       this.setState({viewState: WebViewBridgeState.LOADING});
     }
