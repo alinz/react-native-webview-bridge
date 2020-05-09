@@ -6,17 +6,16 @@ import android.webkit.WebView;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.views.webview.ReactWebViewManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.reactnativecommunity.webview.RNCWebViewManager;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
-public class WebViewBridgeManager extends ReactWebViewManager {
+public class WebViewBridgeManager extends RNCWebViewManager {
     private static final String REACT_CLASS = "RCTWebViewBridge";
 
     public static final int COMMAND_INJECT_WEBVIEW_BRIDGE = 101;
@@ -78,8 +77,8 @@ public class WebViewBridgeManager extends ReactWebViewManager {
     private static String inputStreamToString(InputStream input) throws IOException {
         StringBuilder builder = new StringBuilder();
         int ch;
-        while((ch = input.read()) != -1){
-            builder.append((char)ch);
+        while ((ch = input.read()) != -1) {
+            builder.append((char) ch);
         }
         input.close();
         return builder.toString();
@@ -124,10 +123,10 @@ public class WebViewBridgeManager extends ReactWebViewManager {
             root.loadUrl("javascript:" + javascript);
         }
     }
-    
+
     @ReactProp(name = "requestFocus")
     public void requestFocus(WebView root, boolean isRequestFocus) {
-        if(isRequestFocus) {
+        if (isRequestFocus) {
             root.requestFocus();
         }
     }
