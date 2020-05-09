@@ -31,4 +31,5 @@ repositories {
 
 dependencies {
   api 'com.facebook.react:react-native:+'
+  implementation project(path: ':react-native-webview')
 }
