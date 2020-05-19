@@ -1,16 +1,13 @@
 package com.github.alinz.reactnativewebviewbridge;
 
-import android.content.Context;
 import android.webkit.WebView;
 
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.reactnativecommunity.webview.RNCWebViewManager;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -18,17 +15,7 @@ import javax.annotation.Nullable;
 public class WebViewBridgeManager extends RNCWebViewManager {
     private static final String REACT_CLASS = "RCTWebViewBridge";
 
-    public static final int COMMAND_INJECT_WEBVIEW_BRIDGE = 101;
-    public static final int COMMAND_INJECT_RPC = 102;
-    public static final int COMMAND_SEND_TO_BRIDGE = 103;
-
-    private ReactApplicationContext reactApplicationContext;
-
-    public WebViewBridgeManager(ReactApplicationContext reactApplicationContext) {
-        super();
-        //we need to know the context because we need to load files from asset
-        this.reactApplicationContext = reactApplicationContext;
-    }
+    public static final int COMMAND_SEND_TO_BRIDGE = 101;
 
     @Override
     public String getName() {
@@ -42,8 +29,6 @@ public class WebViewBridgeManager extends RNCWebViewManager {
         Map<String, Integer> commandsMap = super.getCommandsMap();
 
         commandsMap.put("sendToBridge", COMMAND_SEND_TO_BRIDGE);
-        commandsMap.put("injectWebViewBridge", COMMAND_INJECT_WEBVIEW_BRIDGE);
-        commandsMap.put("injectRPC", COMMAND_INJECT_RPC);
 
         return commandsMap;
     }
@@ -63,56 +48,13 @@ public class WebViewBridgeManager extends RNCWebViewManager {
             case COMMAND_SEND_TO_BRIDGE:
                 sendToBridge(root, args.getString(0));
                 break;
-            case COMMAND_INJECT_WEBVIEW_BRIDGE:
-                injectWebViewBridgeScript(root);
-                break;
-            case COMMAND_INJECT_RPC:
-                injectWebViewBridgeRPCScript(root);
-                break;
             default:
                 //do nothing!!!!
         }
     }
 
-    private static String inputStreamToString(InputStream input) throws IOException {
-        StringBuilder builder = new StringBuilder();
-        int ch;
-        while ((ch = input.read()) != -1) {
-            builder.append((char) ch);
-        }
-        input.close();
-        return builder.toString();
-    }
-
-    private static String loadAsset(String filename, final Context context) {
-        String output = null;
-
-        try {
-            InputStream inputStream = context.getAssets().open(filename);
-            output = inputStreamToString(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return output;
-    }
-
-    private void injectWebViewBridgeScript(WebView root) {
-        String injectContent = loadAsset("WebViewBridge.js", this.reactApplicationContext);
-        if (injectContent != null) {
-            evaluateJavascript(root, injectContent);
-        }
-    }
-
-    private void injectWebViewBridgeRPCScript(WebView root) {
-        String injectContent = loadAsset("WebViewBridgeRPC.js", this.reactApplicationContext);
-        if (injectContent != null) {
-            evaluateJavascript(root, injectContent);
-        }
-    }
-
     private void sendToBridge(WebView root, String message) {
-        String script = "(function(){ if (WebViewBridge && WebViewBridge.__push__) { WebViewBridge.__push__(\"" + message + "\"); } }());";
+        String script = "WebViewBridge.onMessage('" + message + "');";
         WebViewBridgeManager.evaluateJavascript(root, script);
     }
 
@@ -122,18 +64,6 @@ public class WebViewBridgeManager extends RNCWebViewManager {
         } else {
             root.loadUrl("javascript:" + javascript);
         }
-    }
-
-    @ReactProp(name = "requestFocus")
-    public void requestFocus(WebView root, boolean isRequestFocus) {
-        if (isRequestFocus) {
-            root.requestFocus();
-        }
-    }
-
-    @ReactProp(name = "injectedJavaScript")
-    public void setInjectedJavaScript(WebView root, @Nullable String injectedJavaScript) {
-        evaluateJavascript(root, injectedJavaScript);
     }
 
     @ReactProp(name = "allowFileAccessFromFileURLs")
