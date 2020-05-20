@@ -211,7 +211,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
   UIView* subview;
   for (UIView* view in _webView.scrollView.subviews) {
-    if([[view.class description] hasPrefix:@"UIWeb"])
+    if([[view.class description] hasPrefix:@"WK"])
       subview = view;
   }
 
