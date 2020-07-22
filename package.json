@@ -34,6 +34,6 @@
     "invariant": "^2.2.2",
     "keymirror": "0.1.1",
     "prop-types": "^15.5.10",
-     "react-native-webview": "^9.4.0"
+     "react-native-webview": "^10.3.2"
   }
 }
