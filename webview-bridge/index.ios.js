@@ -22,7 +22,7 @@ var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
-import { WebView } from "react-native-webview";
+//import { WebView } from "react-native-webview";
 
 var {
   ActivityIndicator,
@@ -100,7 +100,7 @@ var WebViewBridge = createReactClass({
   },
 
   propTypes: {
-    ...WebView.propTypes,
+//     ...WebView.propTypes,
 
     /**
      * Will be called once the message is being sent from webview
