@@ -10,8 +10,12 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
+#if __has_include(<React/RCTView.h>)
 #import <React/RCTView.h>
-
+#else
+#import "RCTView.h"
+#endif
+    
 @class RCTWebViewBridge;
 
 /**
@@ -44,5 +48,7 @@ shouldStartLoadForRequest:(NSMutableDictionary<NSString *, id> *)request
 - (void)goBack;
 - (void)reload;
 - (void)sendToBridge:(NSString *)message;
+- (NSString*) getElementHTML:(NSString*)elementId;
+- (NSString*) getSelectedHTML;
 
 @end

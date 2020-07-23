@@ -13,6 +13,8 @@
 #import "RCTWebViewBridge.h"
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
+#import "WKWebView+SynchronousEvaluateJavaScript.h"
 
 #import <React/RCTAutoInsetsProtocol.h>
 #import <React/RCTConvert.h>
@@ -28,7 +30,7 @@
 #define NSStringMultiline(...) [[NSString alloc] initWithCString:#__VA_ARGS__ encoding:NSUTF8StringEncoding]
 
 //we don'e need this one since it has been defined in RCTWebView.m
-//NSString *const RCTJSNavigationScheme = @"react-js-navigation";
+NSString *const RCTJSNavigationScheme = @"react-js-navigation";
 NSString *const RCTWebViewBridgeSchema = @"wvb";
 
 // runtime trick to remove UIWebview keyboard default toolbar
@@ -41,7 +43,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 }
 @end
 
-@interface RCTWebViewBridge () <UIWebViewDelegate, RCTAutoInsetsProtocol>
+@interface RCTWebViewBridge () <WKNavigationDelegate, RCTAutoInsetsProtocol>
 
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingStart;
 @property (nonatomic, copy) RCTDirectEventBlock onLoadingFinish;
@@ -53,7 +55,7 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
 
 @implementation RCTWebViewBridge
 {
-  UIWebView *_webView;
+  WKWebView *_webView;
   NSString *_injectedJavaScript;
 }
 
@@ -63,9 +65,10 @@ NSString *const RCTWebViewBridgeSchema = @"wvb";
     super.backgroundColor = [UIColor clearColor];
     _automaticallyAdjustContentInsets = YES;
     _contentInset = UIEdgeInsetsZero;
-    _webView = [[UIWebView alloc] initWithFrame:self.bounds];
-    _webView.delegate = self;
-    _webView.mediaPlaybackRequiresUserAction = NO;
+    WKWebViewConfiguration *theConfiguration = [[WKWebViewConfiguration alloc] init];
+    _webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:theConfiguration];
+      [_webView setNavigationDelegate:self];
+//    _webView.mediaPlaybackRequiresUserAction = NO;
     [self addSubview:_webView];
   }
   return self;
@@ -86,6 +89,18 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (void)reload
 {
   [_webView reload];
+}
+
+- (NSString*) getElementHTML:(NSString*)elementId
+{
+    NSString* JSString = [NSString stringWithFormat:@"document.getElementById(\"%@\").innerHTML",elementId];
+    return [_webView stringByEvaluatingJavaScriptFromString:JSString];
+}
+
+- (NSString*) getSelectedHTML {
+    NSString* JSString = [NSString stringWithFormat:@"document.getSelection()"];
+    NSLog(@"selectedHTML is: %@",JSString);
+    return [_webView stringByEvaluatingJavaScriptFromString:JSString];
 }
 
 - (void)sendToBridge:(NSString *)message
@@ -109,7 +124,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
 - (NSURL *)URL
 {
-  return _webView.request.URL;
+  return _webView.URL;
 }
 
 - (void)setSource:(NSDictionary *)source
@@ -130,7 +145,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
     // passing the redirect urls back here, so we ignore them if trying to load
     // the same url. We'll expose a call to 'reload' to allow a user to load
     // the existing page.
-    if ([request.URL isEqual:_webView.request.URL]) {
+    if ([request.URL isEqual:_webView.URL]) {
       return;
     }
     if (!request.URL) {
@@ -171,7 +186,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 - (NSMutableDictionary<NSString *, id> *)baseEvent
 {
   NSMutableDictionary<NSString *, id> *event = [[NSMutableDictionary alloc] initWithDictionary:@{
-    @"url": _webView.request.URL.absoluteString ?: @"",
+    @"url": _webView.URL.absoluteString ?: @"",
     @"loading" : @(_webView.loading),
     @"title": [_webView stringByEvaluatingJavaScriptFromString:@"document.title"],
     @"canGoBack": @(_webView.canGoBack),
@@ -196,7 +211,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
 
   UIView* subview;
   for (UIView* view in _webView.scrollView.subviews) {
-    if([[view.class description] hasPrefix:@"UIWeb"])
+    if([[view.class description] hasPrefix:@"WK"])
       subview = view;
   }
 
@@ -219,97 +234,210 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithCoder:(NSCoder *)aDecoder)
   object_setClass(subview, newClass);
 }
 
-#pragma mark - UIWebViewDelegate methods
-
-- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
- navigationType:(UIWebViewNavigationType)navigationType
+#pragma mark - WKNavigationDelegate methods
+- (void)webView:(WKWebView *)webView
+    decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction
+    decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-  BOOL isJSNavigation = [request.URL.scheme isEqualToString:RCTJSNavigationScheme];
+    BOOL isJSNavigation = [navigationAction.request.URL.scheme isEqualToString:RCTJSNavigationScheme];
 
-  if (!isJSNavigation && [request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
-    NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge.__fetch__()"];
+    if (!isJSNavigation && [navigationAction.request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
+        NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge.__fetch__()"];
 
-    NSMutableDictionary<NSString *, id> *onBridgeMessageEvent = [[NSMutableDictionary alloc] initWithDictionary:@{
-      @"messages": [self stringArrayJsonToArray: message]
-    }];
+        NSMutableDictionary<NSString *, id> *onBridgeMessageEvent = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                                                      @"messages": [self stringArrayJsonToArray: message]
+                                                                                                                      }];
 
-    _onBridgeMessage(onBridgeMessageEvent);
+        _onBridgeMessage(onBridgeMessageEvent);
 
-    isJSNavigation = YES;
-  }
-
-  // skip this for the JS Navigation handler
-  if (!isJSNavigation && _onShouldStartLoadWithRequest) {
-    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
-    [event addEntriesFromDictionary: @{
-      @"url": (request.URL).absoluteString,
-      @"navigationType": @(navigationType)
-    }];
-    if (![self.delegate webView:self
-      shouldStartLoadForRequest:event
-                   withCallback:_onShouldStartLoadWithRequest]) {
-      return NO;
-    }
-  }
-
-  if (_onLoadingStart) {
-    // We have this check to filter out iframe requests and whatnot
-    BOOL isTopFrame = [request.URL isEqual:request.mainDocumentURL];
-    if (isTopFrame) {
-      NSMutableDictionary<NSString *, id> *event = [self baseEvent];
-      [event addEntriesFromDictionary: @{
-        @"url": (request.URL).absoluteString,
-        @"navigationType": @(navigationType)
-      }];
-      _onLoadingStart(event);
-    }
-  }
-
-  // JS Navigation handler
-  return !isJSNavigation;
-}
-
-- (void)webView:(__unused UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-  if (_onLoadingError) {
-    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
-      // NSURLErrorCancelled is reported when a page has a redirect OR if you load
-      // a new URL in the WebView before the previous one came back. We can just
-      // ignore these since they aren't real errors.
-      // http://stackoverflow.com/questions/1024748/how-do-i-fix-nsurlerrordomain-error-999-in-iphone-3-0-os
-      return;
+        isJSNavigation = YES;
     }
 
-    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
-    [event addEntriesFromDictionary:@{
-      @"domain": error.domain,
-      @"code": @(error.code),
-      @"description": error.localizedDescription,
-    }];
-    _onLoadingError(event);
-  }
+    // skip this for the JS Navigation handler
+    if (!isJSNavigation && _onShouldStartLoadWithRequest) {
+        NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+        [event addEntriesFromDictionary: @{
+                                           @"url": (navigationAction.request.URL).absoluteString,
+                                           @"navigationType": @(navigationAction.navigationType)
+                                           }];
+        if (![self.delegate webView:self
+          shouldStartLoadForRequest:event
+                       withCallback:_onShouldStartLoadWithRequest]) {
+            decisionHandler(WKNavigationActionPolicyCancel);
+            return;
+        }
+    }
+
+    if (_onLoadingStart) {
+        // We have this check to filter out iframe requests and whatnot
+        BOOL isTopFrame = [navigationAction.request.URL isEqual:navigationAction.request.mainDocumentURL];
+        if (isTopFrame) {
+            NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+            [event addEntriesFromDictionary: @{
+                                               @"url": (navigationAction.request.URL).absoluteString,
+                                               @"navigationType": @(navigationAction.navigationType)
+                                               }];
+            _onLoadingStart(event);
+        }
+    }
+
+    // JS Navigation handler
+    decisionHandler(isJSNavigation ? WKNavigationActionPolicyCancel : WKNavigationActionPolicyAllow);
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+//- (BOOL)webView:(__unused UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
+// navigationType:(UIWebViewNavigationType)navigationType
+//{
+//  BOOL isJSNavigation = [request.URL.scheme isEqualToString:RCTJSNavigationScheme];
+//
+//  if (!isJSNavigation && [request.URL.scheme isEqualToString:RCTWebViewBridgeSchema]) {
+//    NSString* message = [webView stringByEvaluatingJavaScriptFromString:@"WebViewBridge.__fetch__()"];
+//
+//    NSMutableDictionary<NSString *, id> *onBridgeMessageEvent = [[NSMutableDictionary alloc] initWithDictionary:@{
+//      @"messages": [self stringArrayJsonToArray: message]
+//    }];
+//
+//    _onBridgeMessage(onBridgeMessageEvent);
+//
+//    isJSNavigation = YES;
+//  }
+//
+//  // skip this for the JS Navigation handler
+//  if (!isJSNavigation && _onShouldStartLoadWithRequest) {
+//    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+//    [event addEntriesFromDictionary: @{
+//      @"url": (request.URL).absoluteString,
+//      @"navigationType": @(navigationType)
+//    }];
+//    if (![self.delegate webView:self
+//      shouldStartLoadForRequest:event
+//                   withCallback:_onShouldStartLoadWithRequest]) {
+//      return NO;
+//    }
+//  }
+//
+//  if (_onLoadingStart) {
+//    // We have this check to filter out iframe requests and whatnot
+//    BOOL isTopFrame = [request.URL isEqual:request.mainDocumentURL];
+//    if (isTopFrame) {
+//      NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+//      [event addEntriesFromDictionary: @{
+//        @"url": (request.URL).absoluteString,
+//        @"navigationType": @(navigationType)
+//      }];
+//      _onLoadingStart(event);
+//    }
+//  }
+//
+//  // JS Navigation handler
+//  return !isJSNavigation;
+//}
+//
+
+- (void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
-  //injecting WebViewBridge Script
-  NSString *webViewBridgeScriptContent = [self webViewBridgeScript];
-  [webView stringByEvaluatingJavaScriptFromString:webViewBridgeScriptContent];
-  //////////////////////////////////////////////////////////////////////////////
+    if (_onLoadingError) {
+        if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
+            // NSURLErrorCancelled is reported when a page has a redirect OR if you load
+            // a new URL in the WebView before the previous one came back. We can just
+            // ignore these since they aren't real errors.
+            // http://stackoverflow.com/questions/1024748/how-do-i-fix-nsurlerrordomain-error-999-in-iphone-3-0-os
+            return;
+        }
 
-  if (_injectedJavaScript != nil) {
-    NSString *jsEvaluationValue = [webView stringByEvaluatingJavaScriptFromString:_injectedJavaScript];
-
-    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
-    event[@"jsEvaluationValue"] = jsEvaluationValue;
-
-    _onLoadingFinish(event);
-  }
-  // we only need the final 'finishLoad' call so only fire the event when we're actually done loading.
-  else if (_onLoadingFinish && !webView.loading && ![webView.request.URL.absoluteString isEqualToString:@"about:blank"]) {
-    _onLoadingFinish([self baseEvent]);
-  }
+        NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+        [event addEntriesFromDictionary:@{
+                                          @"domain": error.domain,
+                                          @"code": @(error.code),
+                                          @"description": error.localizedDescription,
+                                          }];
+        _onLoadingError(event);
+    }
 }
+
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error
+{
+    if (_onLoadingError) {
+        if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
+            // NSURLErrorCancelled is reported when a page has a redirect OR if you load
+            // a new URL in the WebView before the previous one came back. We can just
+            // ignore these since they aren't real errors.
+            // http://stackoverflow.com/questions/1024748/how-do-i-fix-nsurlerrordomain-error-999-in-iphone-3-0-os
+            return;
+        }
+
+        NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+        [event addEntriesFromDictionary:@{
+                                          @"domain": error.domain,
+                                          @"code": @(error.code),
+                                          @"description": error.localizedDescription,
+                                          }];
+        _onLoadingError(event);
+    }
+}
+
+//- (void)webView:(__unused UIWebView *)webView didFailLoadWithError:(NSError *)error
+//{
+//  if (_onLoadingError) {
+//    if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
+//      // NSURLErrorCancelled is reported when a page has a redirect OR if you load
+//      // a new URL in the WebView before the previous one came back. We can just
+//      // ignore these since they aren't real errors.
+//      // http://stackoverflow.com/questions/1024748/how-do-i-fix-nsurlerrordomain-error-999-in-iphone-3-0-os
+//      return;
+//    }
+//
+//    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+//    [event addEntriesFromDictionary:@{
+//      @"domain": error.domain,
+//      @"code": @(error.code),
+//      @"description": error.localizedDescription,
+//    }];
+//    _onLoadingError(event);
+//  }
+//}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    //injecting WebViewBridge Script
+    NSString *webViewBridgeScriptContent = [self webViewBridgeScript];
+    [webView stringByEvaluatingJavaScriptFromString:webViewBridgeScriptContent];
+    //////////////////////////////////////////////////////////////////////////////
+
+    if (_injectedJavaScript != nil) {
+        NSString *jsEvaluationValue = [webView stringByEvaluatingJavaScriptFromString:_injectedJavaScript];
+
+        NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+        event[@"jsEvaluationValue"] = jsEvaluationValue;
+
+        _onLoadingFinish(event);
+    }
+    // we only need the final 'finishLoad' call so only fire the event when we're actually done loading.
+    else if (_onLoadingFinish && !webView.loading && ![webView.URL.absoluteString isEqualToString:@"about:blank"]) {
+        _onLoadingFinish([self baseEvent]);
+    }
+}
+
+//- (void)webViewDidFinishLoad:(UIWebView *)webView
+//{
+//  //injecting WebViewBridge Script
+//  NSString *webViewBridgeScriptContent = [self webViewBridgeScript];
+//  [webView stringByEvaluatingJavaScriptFromString:webViewBridgeScriptContent];
+//  //////////////////////////////////////////////////////////////////////////////
+//
+//  if (_injectedJavaScript != nil) {
+//    NSString *jsEvaluationValue = [webView stringByEvaluatingJavaScriptFromString:_injectedJavaScript];
+//
+//    NSMutableDictionary<NSString *, id> *event = [self baseEvent];
+//    event[@"jsEvaluationValue"] = jsEvaluationValue;
+//
+//    _onLoadingFinish(event);
+//  }
+//  // we only need the final 'finishLoad' call so only fire the event when we're actually done loading.
+//  else if (_onLoadingFinish && !webView.loading && ![webView.request.URL.absoluteString isEqualToString:@"about:blank"]) {
+//    _onLoadingFinish([self baseEvent]);
+//  }
+//}
 
 - (NSArray*)stringArrayJsonToArray:(NSString *)message
 {
