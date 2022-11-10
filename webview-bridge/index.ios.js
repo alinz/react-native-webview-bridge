@@ -26,11 +26,9 @@ var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSourc
 
 var {
   ActivityIndicator,
-  EdgeInsetsPropType,
   StyleSheet,
   Text,
   View,
-  ViewPropTypes,
   requireNativeComponent,
   UIManager,
   NativeModules: {
