@@ -21,15 +21,13 @@ var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
-var WebView = require('react-native-webview');
+//var WebView = require('react-native-webview');
 var {
   ReactNativeViewAttributes,
   UIManager,
-  EdgeInsetsPropType,
   StyleSheet,
   Text,
   View,
-  ViewPropTypes,
   requireNativeComponent,
   DeviceEventEmitter,
   NativeModules: {
@@ -69,7 +67,7 @@ var WebViewBridge = createReactClass({
     };
   },
 
-  
+
   componentDidMount: function() {
     DeviceEventEmitter.addListener("webViewBridgeMessage", (body) => {
       const { onBridgeMessage } = this.props;
@@ -87,21 +85,21 @@ var WebViewBridge = createReactClass({
   render: function() {
     var otherView = null;
 
-   if (this.state.viewState === WebViewBridgeState.LOADING) {
+    if (this.state.viewState === WebViewBridgeState.LOADING) {
       otherView = this.props.renderLoading && this.props.renderLoading();
     } else if (this.state.viewState === WebViewBridgeState.ERROR) {
       var errorEvent = this.state.lastErrorEvent;
       otherView = this.props.renderError && this.props.renderError(
-        errorEvent.domain,
-        errorEvent.code,
-        errorEvent.description);
+          errorEvent.domain,
+          errorEvent.code,
+          errorEvent.description);
     } else if (this.state.viewState !== WebViewBridgeState.IDLE) {
       console.error('RCTWebViewBridge invalid state encountered: ' + this.state.loading);
     }
 
     var webViewStyles = [styles.container, this.props.style];
     if (this.state.viewState === WebViewBridgeState.LOADING ||
-      this.state.viewState === WebViewBridgeState.ERROR) {
+        this.state.viewState === WebViewBridgeState.ERROR) {
       // if we're in either LOADING or ERROR states, don't show the webView
       webViewStyles.push(styles.hidden);
     }
@@ -119,24 +117,24 @@ var WebViewBridge = createReactClass({
     let {source, ...props} = {...this.props};
 
     var webView =
-      <RCTWebViewBridge
-        ref={RCT_WEBVIEWBRIDGE_REF}
-        key="webViewKey"
- 				javaScriptEnabled={true}
-        {...props}
-        source={resolveAssetSource(source)}
-        style={webViewStyles}
-        onLoadingStart={this.onLoadingStart}
-        onLoadingFinish={this.onLoadingFinish}
-        onLoadingError={this.onLoadingError}
-        onChange={this.onMessage}
-      />;
+        <RCTWebViewBridge
+            ref={RCT_WEBVIEWBRIDGE_REF}
+            key="webViewKey"
+            javaScriptEnabled={true}
+            {...props}
+            source={resolveAssetSource(source)}
+            style={webViewStyles}
+            onLoadingStart={this.onLoadingStart}
+            onLoadingFinish={this.onLoadingFinish}
+            onLoadingError={this.onLoadingError}
+            onChange={this.onMessage}
+        />;
 
     return (
-      <View style={styles.container}>
-        {webView}
-        {otherView}
-      </View>
+        <View style={styles.container}>
+          {webView}
+          {otherView}
+        </View>
     );
   },
 
@@ -148,33 +146,33 @@ var WebViewBridge = createReactClass({
 
   goForward: function() {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.goForward,
-      null
+        this.getWebViewBridgeHandle(),
+        UIManager.RCTWebViewBridge.Commands.goForward,
+        null
     );
   },
 
   goBack: function() {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.goBack,
-      null
+        this.getWebViewBridgeHandle(),
+        UIManager.RCTWebViewBridge.Commands.goBack,
+        null
     );
   },
 
   reload: function() {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.reload,
-      null
+        this.getWebViewBridgeHandle(),
+        UIManager.RCTWebViewBridge.Commands.reload,
+        null
     );
   },
 
   sendToBridge: function (message: string) {
     UIManager.dispatchViewManagerCommand(
-      this.getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.sendToBridge,
-      [message]
+        this.getWebViewBridgeHandle(),
+        UIManager.RCTWebViewBridge.Commands.sendToBridge,
+        [message]
     );
   },
 

@@ -4,15 +4,15 @@ import android.webkit.WebView;
 
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.uimanager.ThemedReactContext;
-import com.facebook.react.views.webview.ReactWebViewManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.reactnativecommunity.webview.RNCWebViewManager;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
-public class WebViewBridgeManager extends ReactWebViewManager {
+public class WebViewBridgeManager extends RNCWebViewManager {
     private static final String REACT_CLASS = "RCTWebViewBridge";
 
     public static final int COMMAND_SEND_TO_BRIDGE = 101;

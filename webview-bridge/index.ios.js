@@ -22,14 +22,13 @@ var invariant = require('invariant');
 var keyMirror = require('keymirror');
 var resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
-var WebView = require('react-native-webview');
+//import { WebView } from "react-native-webview";
+
 var {
   ActivityIndicator,
-  EdgeInsetsPropType,
   StyleSheet,
   Text,
   View,
-  ViewPropTypes,
   requireNativeComponent,
   UIManager,
   NativeModules: {
@@ -99,7 +98,7 @@ var WebViewBridge = createReactClass({
   },
 
   propTypes: {
-    ...WebView.propTypes,
+//     ...WebView.propTypes,
 
     /**
      * Will be called once the message is being sent from webview
@@ -233,6 +232,16 @@ var WebViewBridge = createReactClass({
 
   sendToBridge: function (message: string) {
     WebViewBridgeManager.sendToBridge(this.getWebViewBridgeHandle(), message);
+  },
+
+  getElementHTML: function (elementId: string, callback) {
+    var html = WebViewBridgeManager.getElementHTML(this.getWebViewBridgeHandle(), elementId, callback);
+    console.log("html from editor is " + html);
+  },
+
+  getSelectedHTML: function (elementId: string, callback) {
+    var html = WebViewBridgeManager.getSelectedHTML(this.getWebViewBridgeHandle(), elementId, callback);
+    console.log("html from editor is " + html);
   },
 
   /**
